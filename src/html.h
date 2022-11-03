@@ -8,8 +8,9 @@ const char index_html[] PROGMEM = R"rawliteral(
 </head>
 <body>
 <div class="o-container o-container--small c-card u-high">
-  <h2>Device Settings - %DEVICEIP%</h2>
-
+<div class="c-card__item c-card__item--info o-media">
+  <h2 class="c-heading">Device Settings <span class="c-heading__sub">%DEVICEIP%</span></h2>
+</div>
 <form class="c-card u-high">
   <div class="o-form-element">
     <label class="c-label">
