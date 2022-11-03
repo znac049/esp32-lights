@@ -5,6 +5,7 @@
 
 // main.cpp
 extern bool ledState;
+extern const int ledPin;
 
 // webserver.cpp
 extern void setupWebserver();

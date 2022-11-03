@@ -15,38 +15,40 @@ const char index_html[] PROGMEM = R"rawliteral(
   <div class="o-form-element">
     <label class="c-label">
       Device name
-      <input class="c-field c-field--label" type="text" placeholder="%DEVICENAME%" />
+      <input id="devicename" class="c-field c-field--label" type="text" placeholder="%DEVICENAME%" />
     </label>
     <label class="c-label">
       Number of LEDs
-      <input class="c-field c-field--label" type="text" placeholder="%NUMLEDS%" />
+      <input id="numleds" class="c-field c-field--label" type="text" placeholder="%NUMLEDS%" />
     </label>
     <label class="c-label">
       LED Order
-      <select class="c-field c-field--label">
+      <select id="order" class="c-field c-field--label">
         %LEDORDER%
       </select>
     </label>
     <label class="c-label">
       Pattern
-      <input class="c-field c-field--label" type="text" placeholder="" />
+      <input id="pattern" class="c-field c-field--label" type="text" placeholder="" />
     </label>
   </div>
     <footer class="c-card__footer">
-    <button type="button" class="c-button c-button--ghost c-button--info">
+    <button id="save" type="button" class="c-button c-button--ghost c-button--info">
       Save
     </button>
   </footer>
 
-</form
-
-
-    <div class="card">
-      <h2>Output - GPIO 2</h2>
-      <p class="state">state: <span id="state">%STATE%</span></p>
-      <p><button id="button" class="c-button">Toggle</button></p>
-    </div>
-
+</form>
+</div>
+<div class="o-container o-container--small c-card u-high"></div>
+  <div class="c-card__item c-card__item--info o-media">
+    <h2 class="c-heading">Output - GPIO %LEDPIN%</h2>
+  </div>    
+  <div class="c-card u-high">
+    <p class="state">state: <span id="state">%STATE%</span></p>
+    <p><button id="button" class="c-button">Toggle</button></p>
+  </div>
+</div>
 
 <script>
   var gateway = `ws://${window.location.hostname}/ws`;
@@ -78,13 +80,25 @@ const char index_html[] PROGMEM = R"rawliteral(
   }
   function onLoad(event) {
     initWebSocket();
-    initButton();
+    initEventCatchers();
   }
-  function initButton() {
+  function initEventCatchers() {
     document.getElementById('button').addEventListener('click', toggle);
+    document.getElementById('save').addEventListener('click', savedata);
   }
-  function toggle(){
+  function toggle() {
     websocket.send('toggle');
+  }
+  function savedata() {
+    var json = `{
+          "save": {
+            "name": "fred",
+            "numleds": "42",
+            "order": "GRB",
+            "pattern": "0"
+          }
+        }`;
+    websocket.send(json);
   }
 </script>
 </body>
