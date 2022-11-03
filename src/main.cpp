@@ -165,7 +165,7 @@ void setup(){
 void loop() {
   ws.cleanupClients();
   digitalWrite(ledPin, ledState);
-  Serial.print(".");
+  //Serial.print(".");
 
   jub.loop();
 }

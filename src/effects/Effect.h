@@ -8,7 +8,7 @@ extern CRGB leds[MAX_LEDS];
 
 class Effect {
     public:
-        int numLEDs = 10;
+        int numLEDs = 16;
 
     public:
         //Effect();

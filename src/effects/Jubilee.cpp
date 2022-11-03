@@ -27,7 +27,7 @@ void JubileeEffect::loop()
     leds[i] = smartLeds[i].getCurrent();
   }
 
-  Serial.print("-");
+  //Serial.print("-");
   FastLED.show();
   delay(20);
 }
