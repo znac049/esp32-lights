@@ -4,6 +4,7 @@
 #include <ESPAsyncWebServer.h>
 #include <AsyncElegantOTA.h>
 #include <Preferences.h>
+#include <FastLED.h>
 
 #include "lights.h"
 #include "Settings.h"
@@ -60,37 +61,54 @@ void initWebSocket()
     server.addHandler(&ws);
 }
 
-String lookupMacro(const String& var)
+String lookupMacro(const String& macroName)
 {
-    Serial.println(var);
-    if(var == "STATE"){
+    String res;
+
+    Serial.println(macroName);
+    if(macroName == "STATE"){
         if (ledState){
             return "ON";
         }
         else{
             return "OFF";
         }
-    } else if (var == "DEVICENAME") {
+    } else if (macroName == "DEVICENAME") {
         return Settings::deviceName;
     }
-    else if (var == "DEVICEIP") {
+    else if (macroName == "DEVICEIP") {
         return WiFi.localIP().toString();
     }
-    else if (var == "LEDORDER") {
-        return "<option>RGB</option>"
-               "<option>RBG</option>"
-               "<option>GRB</option>"
-               "<option>GBR</option>"
-               "<option>BRG</option>"
-               "<option>BGR</option>";
+    else if (macroName == "LEDORDER") {
+        res = "<option value=\"";
+        res += RGB;
+        res += "\">RGB</option><option value=\"";
+        res += RBG;
+        res += "\">RBG</option><option value=\"";
+        res += GRB;
+        res += "\">GRB</option><option value=\"";
+        res += GBR;
+        res += "\">GBR</option><option value=\"";
+        res += BRG;
+        res += "\">BRG</option><option value=\"";
+        res += BGR;
+        res += "\">BGR</option>";
+
+        return res;
     }
-    else if (var == "NUMLEDS") {
+    else if (macroName == "NUMLEDS") {
         char tmpstr[8];
         return itoa(MAX_LEDS, tmpstr, 10);
     }
-    else if (var == "LEDPIN") {
+    else if (macroName == "LEDPIN") {
         char tmpstr[8];
         return  itoa(ledPin, tmpstr, 10);
+    }
+    else if (macroName == "PATTERNS") {
+        res = "<option value=\"0\">Jubilee</option>";
+        res += "<option value=\"1\">Torpedo</option>";
+
+        return res;
     }
 
     return String();

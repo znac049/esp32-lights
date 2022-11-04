@@ -15,11 +15,11 @@ const char index_html[] PROGMEM = R"rawliteral(
   <div class="o-form-element">
     <label class="c-label">
       Device name
-      <input id="devicename" class="c-field c-field--label" type="text" placeholder="%DEVICENAME%" />
+      <input id="devicename" class="c-field c-field--label" type="text" value="%DEVICENAME%" />
     </label>
     <label class="c-label">
       Number of LEDs
-      <input id="numleds" class="c-field c-field--label" type="text" placeholder="%NUMLEDS%" />
+      <input id="numleds" class="c-field c-field--label" type="text" value="%NUMLEDS%" />
     </label>
     <label class="c-label">
       LED Order
@@ -29,7 +29,9 @@ const char index_html[] PROGMEM = R"rawliteral(
     </label>
     <label class="c-label">
       Pattern
-      <input id="pattern" class="c-field c-field--label" type="text" placeholder="" />
+      <select id="pattern" class="c-field c-field--label">
+        %PATTERNS%
+      </select>
     </label>
   </div>
     <footer class="c-card__footer">
@@ -93,9 +95,9 @@ const char index_html[] PROGMEM = R"rawliteral(
     var json = `{
           "save": {
             "name": "` + document.getElementById('devicename').value + `",
-            "numleds": "42",
-            "order": "GRB",
-            "pattern": "0"
+            "numleds": "` + document.getElementById('numleds').value + `",
+            "order": "` + document.getElementById('order').value + `",
+            "pattern": "` + document.getElementById('pattern').value + `"
           }
         }`;
     websocket.send(json);
