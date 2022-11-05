@@ -1,4 +1,9 @@
-#include "Jubilee.h"
+#include <FastLED.h>
+
+#include "defs.h"
+#include "SmartLED.h"
+#include "effects/Effect.h"
+#include "effects/Jubilee.h"
 
 const CRGB JubileeEffect::colours[] = {
     CRGB::Red,   CRGB::Red,   CRGB::Red,   CRGB::Red,   CRGB::Red, 

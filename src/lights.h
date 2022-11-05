@@ -1,7 +1,15 @@
 #ifndef _LIGHTS_H_
 #define _LIGHTS_H_
 
-#define MAX_LEDS 150
+#include "defs.h"
+
+struct Effects {
+    String name;
+    Effect& effect;
+};
+
+// globals.cpp
+extern CRGB leds[MAX_LEDS];
 
 // main.cpp
 extern bool ledState;

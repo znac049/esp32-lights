@@ -1,9 +1,6 @@
 #ifndef _SETTINGS_H_
 #define _SETTINGS_H_
 
-#include <WString.h>
-#include "lights.h"
-
 class Settings {
     public:
         static String deviceName;

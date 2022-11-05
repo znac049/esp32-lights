@@ -1,7 +1,15 @@
 #include <Preferences.h>
 
 #include "FASTLED.h"
+#include <WString.h>
+
+#include "defs.h"
+#include "SmartLED.h"
+#include "effects/Effect.h"
+#include "effects/Jubilee.h"
+#include "effects/Torpedo.h"
 #include "Settings.h"
+#include "lights.h"
 
 String Settings::deviceName;
 int Settings::numLEDs;

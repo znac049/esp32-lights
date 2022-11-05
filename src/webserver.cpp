@@ -6,6 +6,8 @@
 #include <Preferences.h>
 #include <FastLED.h>
 
+#include "defs.h"
+#include "effects/Effect.h"
 #include "lights.h"
 #include "Settings.h"
 #include "html.html"
@@ -63,21 +65,21 @@ void initWebSocket()
 
 String lookupMacro(const String& macroName)
 {
-    String res;
+    String res = "";
 
     Serial.println(macroName);
     if(macroName == "STATE"){
         if (ledState){
-            return "ON";
+            res = "ON";
         }
         else{
-            return "OFF";
+            res = "OFF";
         }
     } else if (macroName == "DEVICENAME") {
-        return Settings::deviceName;
+        res = Settings::deviceName;
     }
     else if (macroName == "DEVICEIP") {
-        return WiFi.localIP().toString();
+        res = WiFi.localIP().toString();
     }
     else if (macroName == "LEDORDER") {
         res = "<option value=\"";
@@ -93,25 +95,23 @@ String lookupMacro(const String& macroName)
         res += "\">BRG</option><option value=\"";
         res += BGR;
         res += "\">BGR</option>";
-
-        return res;
     }
     else if (macroName == "NUMLEDS") {
-        char tmpstr[8];
-        return itoa(MAX_LEDS, tmpstr, 10);
+        res = MAX_LEDS;
+//        char tmpstr[8];
+//        return itoa(MAX_LEDS, tmpstr, 10);
     }
     else if (macroName == "LEDPIN") {
-        char tmpstr[8];
-        return  itoa(ledPin, tmpstr, 10);
+        res = ledPin;
+//        char tmpstr[8];
+//        return  itoa(ledPin, tmpstr, 10);
     }
     else if (macroName == "PATTERNS") {
         res = "<option value=\"0\">Jubilee</option>";
         res += "<option value=\"1\">Torpedo</option>";
-
-        return res;
     }
 
-    return String();
+    return res;
 }
 
 void setupWebserver()

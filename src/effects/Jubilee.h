@@ -1,11 +1,6 @@
 #ifndef _JUBILEE_H_
 #define _JUBILEE_H_
 
-#include "lights.h"
-#include "FastLED.h"
-#include "SmartLED.h"
-#include "Effect.h"
-
 class JubileeEffect : public Effect {
     public:
         static const CRGB colours[];

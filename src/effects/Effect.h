@@ -1,9 +1,6 @@
 #ifndef _EFFECT_H_
 #define _EFFECT_H_
 
-#include "lights.h"
-#include "FastLED.h"
-
 extern CRGB leds[MAX_LEDS];
 
 class Effect {

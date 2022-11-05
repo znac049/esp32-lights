@@ -1,3 +1,5 @@
+#include "FastLED.h"
+
 #include "SmartLED.h"
 
 SmartLED::SmartLED() 
