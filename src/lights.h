@@ -5,7 +5,7 @@
 
 struct Effects {
     String name;
-    Effect& effect;
+    Effect *effect;
 };
 
 // globals.cpp

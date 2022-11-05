@@ -13,18 +13,15 @@
 
 #include "lights.h"
 
-extern JubileeEffect *jub = new JubileeEffect();
-extern TorpedoEffect *torp = new TorpedoEffect();
+extern JubileeEffect jub;
+extern TorpedoEffect torp;
 
 #define DATA_PIN 32
 
 const char* ssid = "BT-TCCJ6M";
 const char* password = "K69JyKkdNHm7ce";
 
-struct Effects effects[2] = {
-  { jub->getName(), (Effect) jub },
-  { torp->getName(), (Effect) torp }
-};
+struct Effects effects[2];
 
 bool ledState = 0;
 const int ledPin = 21;
@@ -40,6 +37,10 @@ void setup()
   // Serial port for debugging purposes
   Serial.begin(115200);
   Settings::load();
+  effects[0].name = jub.getName();
+  effects[0].effect = dynamic_cast<Effect*>(&jub);
+  effects[1].name = torp.getName();
+  effects[1].effect = dynamic_cast<Effect*>(&torp);
 
   Serial.println("Device name: " + Settings::deviceName);
 
@@ -50,8 +51,8 @@ void setup()
   pinMode(ledPin, OUTPUT);
   digitalWrite(ledPin, LOW);
 
-  Serial.println(jub->getName());
-  Serial.println(torp->getName());
+  Serial.println(jub.getName());
+  Serial.println(torp.getName());
   
   // Connect to Wi-Fi
   WiFi.begin(ssid, password);
@@ -70,14 +71,14 @@ void setup()
 
   setupWebserver();
   
-  jub->reset();
+  jub.reset();
 }
 
 void loop() {
   cleanupWebsocketClients();
   digitalWrite(ledPin, ledState);
 
-  jub->loop();
+  jub.loop();
 }
 
 int setLED(int offset, CRGB colour) {
