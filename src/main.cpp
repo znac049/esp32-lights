@@ -22,7 +22,7 @@ const char* ssid = "BT-TCCJ6M";
 const char* password = "K69JyKkdNHm7ce";
 
 int effectNum=0;
-struct Effects effects[2];
+struct Effects effects[3];
 #define NUM_EFFECTS (sizeof(effects) / sizeof(struct Effect))
 
 bool ledState = 0;
@@ -44,6 +44,8 @@ void setup()
   effects[0].effect = dynamic_cast<Effect*>(&jub);
   effects[1].name = torp.getName();
   effects[1].effect = dynamic_cast<Effect*>(&torp);
+  effects[2].name = torp.getName();
+  effects[2].effect = dynamic_cast<Effect*>(&torp);
 
   Serial.println("Device name: " + Settings::deviceName);
 

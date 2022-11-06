@@ -109,6 +109,7 @@ String lookupMacro(const String& macroName)
     else if (macroName == "PATTERNS") {
         res = "<option value=\"0\">Jubilee</option>";
         res += "<option value=\"1\">Torpedo</option>";
+        res += "<option value=\"2\">Simple</option>";
     }
 
     return res;
