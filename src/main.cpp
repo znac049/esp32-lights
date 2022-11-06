@@ -53,6 +53,8 @@ void setup()
 
   Serial.println(jub.getName());
   Serial.println(torp.getName());
+  Serial.println(effects[0].effect->getName());
+  Serial.println(effects[1].effect->getName());
   
   // Connect to Wi-Fi
   WiFi.begin(ssid, password);
