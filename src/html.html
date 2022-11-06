@@ -41,15 +41,17 @@ const char index_html[] PROGMEM = R"rawliteral(
   </footer>
 
 </form>
+<div class="c-card__item c-card__item--error o-media">
+  <h2 class="c-heading">Firmware Update</h2>
+  Blah, blah, blah
 </div>
-<div class="o-container o-container--small c-card u-high"></div>
-  <div class="c-card__item c-card__item--info o-media">
-    <h2 class="c-heading">Output - GPIO %LEDPIN%</h2>
-  </div>    
-  <div class="c-card u-high">
-    <p class="state">state: <span id="state">%STATE%</span></p>
-    <p><button id="button" class="c-button">Toggle</button></p>
-  </div>
+<div class="c-card__item c-card__item--info o-media">
+  <h2 class="c-heading">Output - GPIO %LEDPIN%</h2>
+</div>    
+<div class="c-card u-high">
+  <p class="state">state: <span id="state">%STATE%</span></p>
+  <p><button id="button" class="c-button">Toggle</button></p>
+</div>
 </div>
 
 <script>
@@ -100,7 +102,13 @@ const char index_html[] PROGMEM = R"rawliteral(
             "pattern": "` + document.getElementById('pattern').value + `"
           }
         }`;
-    websocket.send(json);
+
+    var res = 'save?name=' + document.getElementById('devicename').value +
+                  '&numleds=' + document.getElementById('numleds').value + 
+                  '&order=' + document.getElementById('order').value +
+                  '&pattern=' + document.getElementById('pattern').value;
+
+    websocket.send(res);
   }
 </script>
 </body>

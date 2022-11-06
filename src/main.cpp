@@ -21,7 +21,9 @@ extern TorpedoEffect torp;
 const char* ssid = "BT-TCCJ6M";
 const char* password = "K69JyKkdNHm7ce";
 
+int effectNum=0;
 struct Effects effects[2];
+#define NUM_EFFECTS (sizeof(effects) / sizeof(struct Effect))
 
 bool ledState = 0;
 const int ledPin = 21;
@@ -37,6 +39,7 @@ void setup()
   // Serial port for debugging purposes
   Serial.begin(115200);
   Settings::load();
+  
   effects[0].name = jub.getName();
   effects[0].effect = dynamic_cast<Effect*>(&jub);
   effects[1].name = torp.getName();
@@ -51,10 +54,10 @@ void setup()
   pinMode(ledPin, OUTPUT);
   digitalWrite(ledPin, LOW);
 
-  Serial.println(jub.getName());
-  Serial.println(torp.getName());
-  Serial.println(effects[0].effect->getName());
-  Serial.println(effects[1].effect->getName());
+  //Serial.println(jub.getName());
+  //Serial.println(torp.getName());
+  //Serial.println(effects[0].effect->getName());
+  //Serial.println(effects[1].effect->getName());
   
   // Connect to Wi-Fi
   WiFi.begin(ssid, password);
@@ -73,14 +76,22 @@ void setup()
 
   setupWebserver();
   
-  jub.reset();
+  effectNum = Settings::patternNumber;
+  if (effectNum >= NUM_EFFECTS) {
+    effectNum = 0;
+    Settings::patternNumber = effectNum;
+    Settings::save();
+  }
+  Serial.print("Starting pattern: ");
+  Serial.println(effects[effectNum].effect->getName());
+  effects[effectNum].effect->reset();
 }
 
 void loop() {
   cleanupWebsocketClients();
   digitalWrite(ledPin, ledState);
 
-  jub.loop();
+  effects[effectNum].effect->loop();
 }
 
 int setLED(int offset, CRGB colour) {
