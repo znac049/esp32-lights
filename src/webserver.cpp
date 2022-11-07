@@ -80,11 +80,7 @@ void handleWebSocketMessage(void *arg, uint8_t *data, size_t len)
     AwsFrameInfo *info = (AwsFrameInfo*)arg;
     if (info->final && info->index == 0 && info->len == len && info->opcode == WS_TEXT) {
         data[len] = 0;
-        //Serial.print("ws got: ");
-        //Serial.println((char*) data);
-
         action = decodeAction((const char *) data);
-        //Serial.println("Action: " + action);
 
         if (action.equals("toggle")) {
             ledState = !ledState;
@@ -95,12 +91,6 @@ void handleWebSocketMessage(void *arg, uint8_t *data, size_t len)
             String numleds = getArg((const char *) data, "numleds", "");
             String order = getArg((const char *) data, "order", "");
             String pattern = getArg((const char *) data, "pattern", "");
-
-            //Serial.println("New device name: " + name);
-            //Serial.println("num LEDs: " + numleds);
-            //Serial.println("LED order: " + order);
-            //Serial.println("Pattern #: " + pattern);
-            //Serial.println("-------------------");
 
             if (Settings::setDeviceName(name)) {
                 Serial.println("Name has changed.");

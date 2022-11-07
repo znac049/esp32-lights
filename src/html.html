@@ -9,7 +9,7 @@ const char index_html[] PROGMEM = R"rawliteral(
 <body>
  <div class="columns">
   <div class="column is-half is-offset-one-quarter">
-   <div class="panel">
+   <div class="panel is-primary">
     <p class="panel-heading">
       Device Settings - %DEVICEIP%
     </p>
@@ -58,10 +58,29 @@ const char index_html[] PROGMEM = R"rawliteral(
      </div>
 
     </form>
+
+    <div class="block"></div>
+
+    <div class="panel is-danger">
+     <p class="panel-heading">
+       Danger Zone
+     </p>
+    </div>
+  
+    <div class="block">
+     This device supports over the air (OTA) firmware updates. If you want to use this feature then be sure you 
+     know what you are doing as uploading a bad firmware can brick the device.
+    </div>
+    <div class="block">
+     If you really want to do this, press the button below:
+    </div>
+    <div class="control">
+     <button id="ota" class="button is-danger">Update Firmware</button>
+    </div>
    </div>
 
    <div class="column is-quarter">
-    <div class="panel">
+    <div class="panel is-warning">
      <p class="panel-heading">
       Debug LEDs
      </p>
@@ -69,7 +88,7 @@ const char index_html[] PROGMEM = R"rawliteral(
 
     <div class="block">
      <p class="state">state: <span id="state">%STATE%</span></p>
-     <p><button id="button" class="c-button">Toggle</button></p>  
+     <p><button id="button" class="button is-warning">Toggle LED</button></p>  
     </div>
    </div>
  
@@ -111,6 +130,7 @@ const char index_html[] PROGMEM = R"rawliteral(
   function initEventCatchers() {
     document.getElementById('button').addEventListener('click', toggle);
     document.getElementById('save').addEventListener('click', savedata);
+    document.getElementById('ota').addEventListener('click', function() {window.location='/update'});
   }
   function toggle() {
     websocket.send('toggle');
