@@ -13,3 +13,4 @@ JubileeEffect jub;
 TorpedoEffect torp;
 SimpleEffect simple;
 RandomTwinkleEffect rte;
+RainbowChaseEffect rainbow;

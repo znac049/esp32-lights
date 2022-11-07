@@ -10,7 +10,6 @@ const char *SimpleEffect::getName(void) {
 
 void SimpleEffect::reset()
 {
-
 }
 
 void SimpleEffect::loop()

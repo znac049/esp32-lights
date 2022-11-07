@@ -7,6 +7,9 @@ class Effect {
     public:
         int numLEDs = 16;
 
+    protected:
+        byte *Wheel(byte WheelPos);
+        
     public:
         //Effect();
 

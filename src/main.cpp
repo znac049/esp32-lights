@@ -15,6 +15,7 @@ extern JubileeEffect jub;
 extern TorpedoEffect torp;
 extern SimpleEffect simple;
 extern RandomTwinkleEffect rte;
+extern RainbowChaseEffect rainbow;
 
 #define DATA_PIN 32
 
@@ -28,7 +29,8 @@ Effect *effects[] = {
   dynamic_cast<Effect*>(&jub),
   dynamic_cast<Effect*>(&torp),
   dynamic_cast<Effect*>(&simple),
-  dynamic_cast<Effect*>(&rte)
+  dynamic_cast<Effect*>(&rte),
+  dynamic_cast<Effect*>(&rainbow),
 };
 
 int numEffects = 4; //(sizeof(effects) / sizeof(struct Effect));
