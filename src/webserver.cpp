@@ -100,6 +100,7 @@ void handleWebSocketMessage(void *arg, uint8_t *data, size_t len)
 
             if (Settings::setNumLEDs(numleds)) {
                 Serial.println("Number of LEDs has changed.");
+                numleds = Settings::numLEDs;
             }
 
             if (Settings::setLEDOrder(order)) {

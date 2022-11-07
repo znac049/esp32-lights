@@ -30,10 +30,10 @@ Effect *effects[] = {
   dynamic_cast<Effect*>(&torp),
   dynamic_cast<Effect*>(&simple),
   dynamic_cast<Effect*>(&rte),
-  dynamic_cast<Effect*>(&rainbow),
+  dynamic_cast<Effect*>(&rainbow), 
 };
 
-int numEffects = 4; //(sizeof(effects) / sizeof(struct Effect));
+int numEffects = 5; //(sizeof(effects) / sizeof(struct Effect));
 
 bool ledState = 0;
 const int ledPin = 21;
