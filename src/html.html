@@ -8,7 +8,7 @@ const char index_html[] PROGMEM = R"rawliteral(
 </head>
 <body>
 <div class="o-container o-container--small c-card u-high">
-<div class="c-card__item c-card__item--info o-media">
+<div class="c-card__item c-card__item--info ghost o-media">
   <h2 class="c-heading">Device Settings <span class="c-heading__sub">%DEVICEIP%</span></h2>
 </div>
 <form class="c-card u-high">
@@ -41,9 +41,11 @@ const char index_html[] PROGMEM = R"rawliteral(
   </footer>
 
 </form>
+
+<blaze-divider type="dashed">Danger Zone</blaze-divider>
+
 <div class="c-card__item c-card__item--error o-media">
   <h2 class="c-heading">Firmware Update</h2>
-  Blah, blah, blah
 </div>
 <div class="c-card__item c-card__item--info o-media">
   <h2 class="c-heading">Output - GPIO %LEDPIN%</h2>
@@ -94,15 +96,6 @@ const char index_html[] PROGMEM = R"rawliteral(
     websocket.send('toggle');
   }
   function savedata() {
-    var json = `{
-          "save": {
-            "name": "` + document.getElementById('devicename').value + `",
-            "numleds": "` + document.getElementById('numleds').value + `",
-            "order": "` + document.getElementById('order').value + `",
-            "pattern": "` + document.getElementById('pattern').value + `"
-          }
-        }`;
-
     var res = 'save?name=' + document.getElementById('devicename').value +
                   '&numleds=' + document.getElementById('numleds').value + 
                   '&order=' + document.getElementById('order').value +

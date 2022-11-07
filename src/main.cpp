@@ -6,10 +6,7 @@
 
 #include "defs.h"
 #include "SmartLED.h"
-#include "effects/Effect.h"
-#include "effects/Jubilee.h"
-#include "effects/Torpedo.h"
-#include "effects/Simple.h"
+#include "effects/effects.h"
 #include "Settings.h"
 
 #include "lights.h"
@@ -17,6 +14,7 @@
 extern JubileeEffect jub;
 extern TorpedoEffect torp;
 extern SimpleEffect simple;
+extern RandomTwinkleEffect rte;
 
 #define DATA_PIN 32
 
@@ -25,8 +23,8 @@ const char* password = "K69JyKkdNHm7ce";
 
 int runningEffect=0;
 int effectNum=0;
-struct Effects effects[3];
-int numEffects = 3; //(sizeof(effects) / sizeof(struct Effect));
+struct Effects effects[4];
+int numEffects = 4; //(sizeof(effects) / sizeof(struct Effect));
 
 bool ledState = 0;
 const int ledPin = 21;
@@ -49,6 +47,8 @@ void setup()
   effects[1].effect = dynamic_cast<Effect*>(&torp);
   effects[2].name = torp.getName();
   effects[2].effect = dynamic_cast<Effect*>(&simple);
+  effects[3].name = rte.getName();
+  effects[3].effect = dynamic_cast<Effect*>(&rte);
 
   Serial.println("Device name: " + Settings::deviceName);
 

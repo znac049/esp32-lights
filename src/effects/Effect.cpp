@@ -21,20 +21,6 @@ void Effect::loop()
 }
 
 /*
-void TwinkleRandom(int Count, int SpeedDelay, boolean OnlyOne) {
-  leds.setAll(0,0,0);
- 
-  for (int i=0; i<Count; i++) {
-     leds.setPixel(random(NUM_LEDS),random(0,255),random(0,255),random(0,255));
-     leds.show();
-     delay(SpeedDelay);
-     if(OnlyOne) {
-       leds.setAll(0,0,0);
-     }
-   }
- 
-  delay(SpeedDelay);
-}
 
 void Sparkle(byte red, byte green, byte blue, int SpeedDelay) {
   int Pixel = random(NUM_LEDS);
