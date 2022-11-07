@@ -9,21 +9,24 @@
 #include "effects/Effect.h"
 #include "effects/Jubilee.h"
 #include "effects/Torpedo.h"
+#include "effects/Simple.h"
 #include "Settings.h"
 
 #include "lights.h"
 
 extern JubileeEffect jub;
 extern TorpedoEffect torp;
+extern SimpleEffect simple;
 
 #define DATA_PIN 32
 
 const char* ssid = "BT-TCCJ6M";
 const char* password = "K69JyKkdNHm7ce";
 
+int runningEffect=0;
 int effectNum=0;
 struct Effects effects[3];
-#define NUM_EFFECTS (sizeof(effects) / sizeof(struct Effect))
+int numEffects = 3; //(sizeof(effects) / sizeof(struct Effect));
 
 bool ledState = 0;
 const int ledPin = 21;
@@ -45,7 +48,7 @@ void setup()
   effects[1].name = torp.getName();
   effects[1].effect = dynamic_cast<Effect*>(&torp);
   effects[2].name = torp.getName();
-  effects[2].effect = dynamic_cast<Effect*>(&torp);
+  effects[2].effect = dynamic_cast<Effect*>(&simple);
 
   Serial.println("Device name: " + Settings::deviceName);
 
@@ -60,6 +63,9 @@ void setup()
   //Serial.println(torp.getName());
   //Serial.println(effects[0].effect->getName());
   //Serial.println(effects[1].effect->getName());
+  for (int i=0; i<numEffects; i++) {
+    Serial.println(effects[i].effect->getName());
+  }
   
   // Connect to Wi-Fi
   WiFi.begin(ssid, password);
@@ -79,11 +85,17 @@ void setup()
   setupWebserver();
   
   effectNum = Settings::patternNumber;
-  if (effectNum >= NUM_EFFECTS) {
+
+  Serial.print("Pattern Number=");
+  Serial.println(effectNum);
+
+  if (effectNum >= numEffects) {
     effectNum = 0;
-    Settings::patternNumber = effectNum;
-    Settings::save();
+    Settings::setPatternNumber(effectNum);
   }
+
+  runningEffect = effectNum;
+
   Serial.print("Starting pattern: ");
   Serial.println(effects[effectNum].effect->getName());
   effects[effectNum].effect->reset();
@@ -92,6 +104,12 @@ void setup()
 void loop() {
   cleanupWebsocketClients();
   digitalWrite(ledPin, ledState);
+
+  // Have the selected effect changed?
+  if (runningEffect != effectNum) {
+    effects[effectNum].effect->reset();
+    runningEffect = effectNum;
+  }
 
   effects[effectNum].effect->loop();
 }

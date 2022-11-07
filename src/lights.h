@@ -14,6 +14,9 @@ extern CRGB leds[MAX_LEDS];
 // main.cpp
 extern bool ledState;
 extern const int ledPin;
+extern int effectNum;
+extern int numEffects;
+extern struct Effects effects[];
 
 // webserver.cpp
 extern void setupWebserver();

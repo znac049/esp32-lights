@@ -10,6 +10,13 @@ class Settings {
 
         static bool load();
         static bool save();
+        static bool setDeviceName(String newName);
+        static bool setNumLEDs(String newval);
+        static bool setNumLEDs(int newval);
+        static bool setLEDOrder(String newval);
+        static bool setLEDOrder(int newval);
+        static bool setPatternNumber(String newval);
+        static bool setPatternNumber(int newval);
 };
 
 #endif

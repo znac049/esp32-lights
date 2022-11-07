@@ -20,16 +20,114 @@ void notifyClients()
     ws.textAll(String(ledState));
 }
 
+String decodeAction(const char *args) {
+    String res = args;
+    int query = res.indexOf('?');
+
+    if (query != -1) {
+        res = res.substring(0, query);
+    }
+
+    //Serial.println("Decoded action: " + res);
+    return res;
+}
+
+String getArg(const char *args, const char *arg, const char *def) {
+    String str = args;
+    int sep = str.indexOf('?');
+
+    if (sep == -1) {
+        //Serial.println("getArg(def): " + String(def));
+        return def;
+    }
+
+    while (sep != -1) {
+        String elem;
+        int eq;
+        String key, val;
+
+        str = str.substring(sep+1);
+
+        //Serial.println("Args: " + str);
+
+        sep = str.indexOf('&');
+        if (sep != -1) {
+            elem = str.substring(0, sep);
+        }
+        else {
+            elem = str;
+        }
+
+        //Serial.println("Elem=" + elem);
+
+        eq = elem.indexOf('=');
+        if (eq != -1) {
+            key = elem.substring(0, eq);
+            val = elem.substring(eq+1);
+
+            //Serial.println("k=" + key + ", v=" + val);
+
+            if (key.equals(arg)) {
+                //Serial.println("Found arg " + key + ": " + val);
+                return val;
+            }
+        }
+        else {
+            key = elem;
+            //Serial.println("k=" + key);
+            if (key.equals(arg)) {
+                //Serial.println("Found arg (no value)" + key + ": " + def + "(default)");
+                return def;
+            }
+        }
+    }
+}
+
 void handleWebSocketMessage(void *arg, uint8_t *data, size_t len)
 {
+    String action;
+
     AwsFrameInfo *info = (AwsFrameInfo*)arg;
     if (info->final && info->index == 0 && info->len == len && info->opcode == WS_TEXT) {
         data[len] = 0;
         Serial.print("ws got: ");
         Serial.println((char*) data);
-        if (strcmp((char*)data, "toggle") == 0) {
+
+        action = decodeAction((const char *) data);
+        Serial.println("Action: " + action);
+
+        if (action.equals("toggle")) {
             ledState = !ledState;
             notifyClients();
+        }
+        else if (action.equals("save")) {
+            String name = getArg((const char *) data, "name", "esp32");
+            String numleds = getArg((const char *) data, "numleds", "");
+            String order = getArg((const char *) data, "order", "");
+            String pattern = getArg((const char *) data, "pattern", "");
+
+            Serial.println("New device name: " + name);
+            Serial.println("num LEDs: " + numleds);
+            Serial.println("LED order: " + order);
+            Serial.println("Pattern #: " + pattern);
+            Serial.println("-------------------");
+
+            if (Settings::setDeviceName(name)) {
+                Serial.println("Name has changed.");
+            }
+
+            if (Settings::setNumLEDs(numleds)) {
+                Serial.println("Number of LEDs has changed.");
+            }
+
+            if (Settings::setLEDOrder(order)) {
+                Serial.println("LED Order has changed.");
+            }
+
+            if (Settings::setPatternNumber(pattern)) {
+                Serial.println("Patern Number changed.");
+                effectNum = Settings::patternNumber;
+            }
         }
     }
 }
@@ -98,18 +196,21 @@ String lookupMacro(const String& macroName)
     }
     else if (macroName == "NUMLEDS") {
         res = MAX_LEDS;
-//        char tmpstr[8];
-//        return itoa(MAX_LEDS, tmpstr, 10);
     }
     else if (macroName == "LEDPIN") {
         res = ledPin;
-//        char tmpstr[8];
-//        return  itoa(ledPin, tmpstr, 10);
     }
     else if (macroName == "PATTERNS") {
-        res = "<option value=\"0\">Jubilee</option>";
-        res += "<option value=\"1\">Torpedo</option>";
-        res += "<option value=\"2\">Simple</option>";
+        res = "";
+        for (int i=0; i<numEffects; i++) {
+            res += "<option value=\"" + String(i) + "\"";
+            if (effectNum == i) {
+                res += " selected";
+            }
+            res += ">";
+            res += effects[i].effect->getName();
+            res += "</option>";
+        }
     }
 
     return res;

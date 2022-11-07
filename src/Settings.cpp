@@ -46,8 +46,12 @@ bool Settings::load()
 
     prefs.end();
 
-    Serial.println("Settings loaded from nvram.");
-
+    Serial.println("Settings loaded from nvram:");
+    Serial.println(" deviceName: " + Settings::deviceName);
+    Serial.println(" Num LEDS: " + String(Settings::numLEDs));
+    Serial.println(" LED Order: " + String(Settings::LEDOrder));
+    Serial.println(" Pattern #: " + String(Settings::patternNumber));
+    
     return true;
 }
 
@@ -66,3 +70,60 @@ bool Settings::save()
 
     return true;
 }
+
+bool Settings::setDeviceName(String newName) {
+    if (!newName.equals(Settings::deviceName)) {
+        Settings::deviceName = newName;
+        Settings::save();
+
+        return true;
+    }
+
+    return false;
+}
+
+bool Settings::setNumLEDs(int newval) {
+    if (newval != Settings::numLEDs) {
+        Settings::numLEDs = newval;
+        Settings::save();
+
+        return true;
+    }   
+
+    return false;
+}
+
+bool Settings::setNumLEDs(String newval) {
+    return Settings::setNumLEDs(newval.toInt());
+}
+
+bool Settings::setLEDOrder(int newval) {
+    if (newval != Settings::LEDOrder) {
+        Settings::LEDOrder = newval;
+        Settings::save();
+
+        return true;
+    }   
+
+    return false;
+}
+
+bool Settings::setLEDOrder(String newval) {
+    return Settings::setLEDOrder(newval.toInt());
+}
+
+bool Settings::setPatternNumber(int newval) {
+    if (newval != Settings::patternNumber) {
+        Settings::patternNumber = newval;
+        Settings::save();
+
+        return true;
+    }   
+
+    return false;
+}
+
+bool Settings::setPatternNumber(String newval) {
+    return Settings::setPatternNumber(newval.toInt());
+}
+
