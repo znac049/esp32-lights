@@ -1,61 +1,81 @@
 const char index_html[] PROGMEM = R"rawliteral(
 <!DOCTYPE HTML><html>
 <head>
-  <title>CLC - Chippers Light Controller</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://unpkg.com/@blaze/css@x.x.x/dist/blaze/blaze.css">
-  <link rel="icon" href="data:,">
+ <title>CLC - Chippers Light Controller</title>
+ <meta name="viewport" content="width=device-width, initial-scale=1">
+ <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+ <link rel="icon" href="data:,">
 </head>
 <body>
-<div class="o-container o-container--small c-card u-high">
-<div class="c-card__item c-card__item--info ghost o-media">
-  <h2 class="c-heading">Device Settings <span class="c-heading__sub">%DEVICEIP%</span></h2>
-</div>
-<form class="c-card u-high">
-  <div class="o-form-element">
-    <label class="c-label">
-      Device name
-      <input id="devicename" class="c-field c-field--label" type="text" value="%DEVICENAME%" />
-    </label>
-    <label class="c-label">
-      Number of LEDs
-      <input id="numleds" class="c-field c-field--label" type="text" value="%NUMLEDS%" />
-    </label>
-    <label class="c-label">
-      LED Order
-      <select id="order" class="c-field c-field--label">
-        %LEDORDER%
-      </select>
-    </label>
-    <label class="c-label">
-      Pattern
-      <select id="pattern" class="c-field c-field--label">
-        %PATTERNS%
-      </select>
-    </label>
+ <div class="columns">
+  <div class="column is-half is-offset-one-quarter">
+   <div class="panel">
+    <p class="panel-heading">
+      Device Settings - %DEVICEIP%
+    </p>
+   </div>
+   <form>
+    <div class="field">
+      <label class="label">Device Name</label>
+      <div class="control">
+       <input id="devicename" class="input" type="text" value="%DEVICENAME%" />
+      </div>
+     </div>
+
+     <div class="field">
+      <label class="label">number of LEDs</label>
+      <div class="control">
+       <input id="numleds" class="input" type="text" value="%NUMLEDS%" />
+      </div>
+     </div>
+
+     <div class="field">
+      <label class="label">LED Colour Order</label>
+      <div class="control">
+       <div class="select">
+        <select id="order" class="input" type="text" value="%NUMLEDS%">
+         %LEDORDER%
+        </select>
+       </div>
+      </div>
+     </div>
+
+     <div class="field">
+      <label class="label">Pattern</label>
+      <div class="control">
+       <div class="select">
+        <select id="pattern" class="input" type="text" value="%NUMLEDS%">
+         %PATTERNS%
+        </select>
+       </div>
+      </div>
+     </div>
+
+     <div class="control">
+      <div class="control">
+       <button id="save" class="button is-primary">Save</button>
+      </div>
+     </div>
+
+    </form>
+   </div>
+
+   <div class="column is-quarter">
+    <div class="panel">
+     <p class="panel-heading">
+      Debug LEDs
+     </p>
+    </div>
+
+    <div class="block">
+     <p class="state">state: <span id="state">%STATE%</span></p>
+     <p><button id="button" class="c-button">Toggle</button></p>  
+    </div>
+   </div>
+ 
   </div>
-    <footer class="c-card__footer">
-    <button id="save" type="button" class="c-button c-button--ghost c-button--info">
-      Save
-    </button>
-  </footer>
-
-</form>
-
-<blaze-divider type="dashed">Danger Zone</blaze-divider>
-
-<div class="c-card__item c-card__item--error o-media">
-  <h2 class="c-heading">Firmware Update</h2>
-</div>
-<div class="c-card__item c-card__item--info o-media">
-  <h2 class="c-heading">Output - GPIO %LEDPIN%</h2>
-</div>    
-<div class="c-card u-high">
-  <p class="state">state: <span id="state">%STATE%</span></p>
-  <p><button id="button" class="c-button">Toggle</button></p>
-</div>
-</div>
-
+ </div>
+ 
 <script>
   var gateway = `ws://${window.location.hostname}/ws`;
   var websocket;
