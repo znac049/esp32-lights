@@ -37,9 +37,21 @@ int getColour(CRGB colour)
 
 void setup()
 {
+  Effect *zob[] = {
+    dynamic_cast<Effect*>(&jub),
+    dynamic_cast<Effect*>(&torp),
+    dynamic_cast<Effect*>(&simple),
+    dynamic_cast<Effect*>(&rte)
+  };
+
   // Serial port for debugging purposes
   Serial.begin(115200);
   Settings::load();
+
+  for (int i=0; i<4; i++) {
+    Serial.println("FX: " + String(zob[i]->getName()));
+  }
+  Serial.println("-----------------");
   
   effects[0].name = jub.getName();
   effects[0].effect = dynamic_cast<Effect*>(&jub);
