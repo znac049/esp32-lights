@@ -3,6 +3,7 @@
 #include <AsyncTCP.h>
 #include <ESPAsyncWebServer.h>
 #include <AsyncElegantOTA.h>
+#include <ESPmDNS.h>
 #include <Preferences.h>
 #include <FastLED.h>
 
@@ -37,7 +38,6 @@ String getArg(const char *args, const char *arg, const char *def) {
     int sep = str.indexOf('?');
 
     if (sep == -1) {
-        //Serial.println("getArg(def): " + String(def));
         return def;
     }
 
@@ -47,9 +47,6 @@ String getArg(const char *args, const char *arg, const char *def) {
         String key, val;
 
         str = str.substring(sep+1);
-
-        //Serial.println("Args: " + str);
-
         sep = str.indexOf('&');
         if (sep != -1) {
             elem = str.substring(0, sep);
@@ -58,25 +55,18 @@ String getArg(const char *args, const char *arg, const char *def) {
             elem = str;
         }
 
-        //Serial.println("Elem=" + elem);
-
         eq = elem.indexOf('=');
         if (eq != -1) {
             key = elem.substring(0, eq);
             val = elem.substring(eq+1);
 
-            //Serial.println("k=" + key + ", v=" + val);
-
             if (key.equals(arg)) {
-                //Serial.println("Found arg " + key + ": " + val);
                 return val;
             }
         }
         else {
             key = elem;
-            //Serial.println("k=" + key);
             if (key.equals(arg)) {
-                //Serial.println("Found arg (no value)" + key + ": " + def + "(default)");
                 return def;
             }
         }
@@ -106,14 +96,16 @@ void handleWebSocketMessage(void *arg, uint8_t *data, size_t len)
             String order = getArg((const char *) data, "order", "");
             String pattern = getArg((const char *) data, "pattern", "");
 
-            Serial.println("New device name: " + name);
-            Serial.println("num LEDs: " + numleds);
-            Serial.println("LED order: " + order);
-            Serial.println("Pattern #: " + pattern);
-            Serial.println("-------------------");
+            //Serial.println("New device name: " + name);
+            //Serial.println("num LEDs: " + numleds);
+            //Serial.println("LED order: " + order);
+            //Serial.println("Pattern #: " + pattern);
+            //Serial.println("-------------------");
 
             if (Settings::setDeviceName(name)) {
                 Serial.println("Name has changed.");
+                
+                MDNS.setInstanceName(Settings::deviceName.c_str());
             }
 
             if (Settings::setNumLEDs(numleds)) {
@@ -208,7 +200,7 @@ String lookupMacro(const String& macroName)
                 res += " selected";
             }
             res += ">";
-            res += effects[i].effect->getName();
+            res += effects[i]->getName();
             res += "</option>";
         }
     }

@@ -16,7 +16,8 @@ extern bool ledState;
 extern const int ledPin;
 extern int effectNum;
 extern int numEffects;
-extern struct Effects effects[];
+//extern struct Effects effects[];
+extern Effect *effects[];
 
 // webserver.cpp
 extern void setupWebserver();

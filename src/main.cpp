@@ -23,7 +23,14 @@ const char* password = "K69JyKkdNHm7ce";
 
 int runningEffect=0;
 int effectNum=0;
-struct Effects effects[4];
+//struct Effects effects[4];
+Effect *effects[] = {
+  dynamic_cast<Effect*>(&jub),
+  dynamic_cast<Effect*>(&torp),
+  dynamic_cast<Effect*>(&simple),
+  dynamic_cast<Effect*>(&rte)
+};
+
 int numEffects = 4; //(sizeof(effects) / sizeof(struct Effect));
 
 bool ledState = 0;
@@ -37,33 +44,14 @@ int getColour(CRGB colour)
 
 void setup()
 {
-  Effect *zob[] = {
-    dynamic_cast<Effect*>(&jub),
-    dynamic_cast<Effect*>(&torp),
-    dynamic_cast<Effect*>(&simple),
-    dynamic_cast<Effect*>(&rte)
-  };
-
-  // Serial port for debugging purposes
   Serial.begin(115200);
   Settings::load();
 
-  for (int i=0; i<4; i++) {
-    Serial.println("FX: " + String(zob[i]->getName()));
-  }
-  Serial.println("-----------------");
-  
-  effects[0].name = jub.getName();
-  effects[0].effect = dynamic_cast<Effect*>(&jub);
-  effects[1].name = torp.getName();
-  effects[1].effect = dynamic_cast<Effect*>(&torp);
-  effects[2].name = torp.getName();
-  effects[2].effect = dynamic_cast<Effect*>(&simple);
-  effects[3].name = rte.getName();
-  effects[3].effect = dynamic_cast<Effect*>(&rte);
-
   Serial.println("Device name: " + Settings::deviceName);
-
+  for (int i=0; i<4; i++) {
+    Serial.println(" FX: " + String(effects[i]->getName()));
+  }
+  
   //FastLED.addLeds<WS2812B, DATA_PIN, RGB>(leds, NUM_LEDS);
   FastLED.addLeds<WS2812B, DATA_PIN, GRB>(leds, MAX_LEDS);
   FastLED.setBrightness(16);
@@ -71,18 +59,14 @@ void setup()
   pinMode(ledPin, OUTPUT);
   digitalWrite(ledPin, LOW);
 
-  //Serial.println(jub.getName());
-  //Serial.println(torp.getName());
-  //Serial.println(effects[0].effect->getName());
-  //Serial.println(effects[1].effect->getName());
   for (int i=0; i<numEffects; i++) {
-    Serial.println(effects[i].effect->getName());
+    Serial.println(effects[i]->getName());
   }
   
   // Connect to Wi-Fi
   WiFi.begin(ssid, password);
   while (WiFi.status() != WL_CONNECTED) {
-    delay(1000);
+    delay(2000);
     Serial.println("Connecting to WiFi..");
   }
 
@@ -109,8 +93,8 @@ void setup()
   runningEffect = effectNum;
 
   Serial.print("Starting pattern: ");
-  Serial.println(effects[effectNum].effect->getName());
-  effects[effectNum].effect->reset();
+  Serial.println(effects[effectNum]->getName());
+  effects[effectNum]->reset();
 }
 
 void loop() {
@@ -119,11 +103,11 @@ void loop() {
 
   // Have the selected effect changed?
   if (runningEffect != effectNum) {
-    effects[effectNum].effect->reset();
+    effects[effectNum]->reset();
     runningEffect = effectNum;
   }
 
-  effects[effectNum].effect->loop();
+  effects[effectNum]->loop();
 }
 
 int setLED(int offset, CRGB colour) {
