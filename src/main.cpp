@@ -111,10 +111,3 @@ void loop() {
 
   effects[effectNum]->loop();
 }
-
-/*int setLED(int offset, CRGB colour) {
-  offset = offset%MAX_LEDS;
-  leds[offset] = colour;
-
-  return offset;
-}*/

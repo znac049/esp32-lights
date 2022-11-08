@@ -17,20 +17,18 @@ void RandomTwinkleEffect::reset()
 
 void RandomTwinkleEffect::loop()
 {
-    for (int i=0; i<Settings::numLEDs; i++) {
-        leds[i] = CRGB::Black;
-    }
+    clearAll();
 
     for (int i=0; i<count; i++) {
         int led = random(Settings::numLEDs);
-
-        leds[led] = CRGB(random(0,255), random(0,255), random(0,255));
-        FastLED.show();
+        
+        setLED(led, random(0,255), random(0,255), random(0,255));
+        show();
 
         delay(speedDelay);
         if (onlyOne) {
-            //leds[led] = CRGB::Black;
-            FastLED.show();
+            setLED(led, CRGB::Black);
+            show();
         }
     }
  

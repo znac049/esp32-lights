@@ -16,26 +16,26 @@ void SimpleEffect::reset()
 void SimpleEffect::loop()
 {
   for (int i=0; i<Settings::numLEDs; i++) {
-    leds[i] = CRGB::Red;
+    setLED(i, CRGB::Red);
   }
-  FastLED.show();
+  show();
   delay(1000);
 
   for (int i=0; i<Settings::numLEDs; i++) {
-    leds[i] = CRGB::Green;
+    setLED(i, CRGB::Green);
   }
-  FastLED.show();
+  show();
   delay(1000);
 
   for (int i=0; i<Settings::numLEDs; i++) {
-    leds[i] = CRGB::Blue;
+    setLED(i, CRGB::Blue);
   }
-  FastLED.show();
+  show();
   delay(1000);
 
   for (int i=0; i<Settings::numLEDs; i++) {
-    leds[i] = CRGB::Black;
+    setLED(i, CRGB::Black);
   }
-  FastLED.show();
+  show();
   delay(1000);    
 }

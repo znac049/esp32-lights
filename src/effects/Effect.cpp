@@ -2,6 +2,7 @@
 #include <FastLED.h>
 
 #include "defs.h"
+#include "Settings.h"
 #include "Effect.h"
 
 #include "lights.h"
@@ -12,15 +13,42 @@ const char *Effect::getName(void) {
 
 void Effect::reset() 
 {
-
 }
 
 void Effect::loop()
 {
-
 }
 
-byte *Effect::Wheel(byte WheelPos) {
+void Effect::clearAll()
+{
+  for (int i=0; i<Settings::numLEDs; i++) {
+    leds[i] = CRGB::Black;
+  }
+}
+
+void Effect::show()
+{
+  FastLED.show();
+}
+
+void Effect::setLED(int ledNum, CRGB colour) 
+{
+  if ((ledNum >= 0) && (ledNum < Settings::numLEDs)) {
+    leds[ledNum] = colour;
+  }
+}
+
+void Effect::setLED(int ledNum, int r, int g, int b) 
+{
+  if ((ledNum >= 0) && (ledNum < Settings::numLEDs)) {
+    leds[ledNum].red = r;
+    leds[ledNum].green = g;
+    leds[ledNum].blue = b;
+  }
+}
+
+byte *Effect::Wheel(byte WheelPos) 
+{
     static byte c[3];
  
     if (WheelPos < 85) {

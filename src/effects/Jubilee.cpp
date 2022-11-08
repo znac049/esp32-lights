@@ -19,20 +19,20 @@ const char *JubileeEffect::getName(void) {
 void JubileeEffect::reset()
 {
   for (int i=0; i<Settings::numLEDs; i++) {
-    leds[i] = colours[i%15];
+    setLED(i, colours[i%15]);
     smartLeds[i].step(i*5);
   }
 
-  FastLED.show();
+  show();
 }
 
 void JubileeEffect::loop()
 {
   for (int i=0; i<Settings::numLEDs; i++) {
     smartLeds[i].step();
-    leds[i] = smartLeds[i].getCurrent();
+    setLED(i, smartLeds[i].getCurrent());
   }
 
-  FastLED.show();
+  show();
   delay(stepDelay);
 }

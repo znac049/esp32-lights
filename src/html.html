@@ -8,7 +8,7 @@ const char index_html[] PROGMEM = R"rawliteral(
 </head>
 <body>
  <div class="columns">
-  <div class="column is-half is-offset-one-quarter">
+  <div class="column is-one-quarter is-offset-2">
    <div class="panel is-primary">
     <p class="panel-heading">
       Device Settings - %DEVICEIP%
@@ -82,7 +82,29 @@ const char index_html[] PROGMEM = R"rawliteral(
     </div>
    </div>
 
-   <div class="column is-quarter">
+   <div class="column is-one-quarter">
+    <div class="panel is-primary">
+     <p class="panel-heading">
+      Heading
+     </p>
+    </div>
+
+    <div class="field">
+     <label class="label">Speed</label>
+     <div class="control">
+      <input id="speed" class="input" type="text" value="%SPEED%" />
+     </div>
+    </div>
+     
+    <div class="field">
+     <label class="label">Delay</label>
+     <div class="control">
+      <input id="delay" class="input" type="text" value="%DELAY%" />
+     </div>
+    </div>  
+   </div>
+ 
+   <div class="column is-one-fifth">
     <div class="panel is-warning">
      <p class="panel-heading">
       Debug LEDs

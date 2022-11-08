@@ -71,6 +71,8 @@ String getArg(const char *args, const char *arg, const char *def) {
             }
         }
     }
+
+    return def;
 }
 
 void handleWebSocketMessage(void *arg, uint8_t *data, size_t len)
