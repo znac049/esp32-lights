@@ -4,7 +4,6 @@
 class RandomTwinkleEffect : public Effect {
     private:
         int count = 12;
-        int speedDelay = 40;
         bool onlyOne = false;
 
     public:

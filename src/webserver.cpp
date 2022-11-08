@@ -100,7 +100,6 @@ void handleWebSocketMessage(void *arg, uint8_t *data, size_t len)
 
             if (Settings::setNumLEDs(numleds)) {
                 Serial.println("Number of LEDs has changed.");
-                numleds = Settings::numLEDs;
             }
 
             if (Settings::setLEDOrder(order)) {
@@ -151,10 +150,10 @@ String lookupMacro(const String& macroName)
     Serial.println(macroName);
     if(macroName == "STATE"){
         if (ledState){
-            res = "ON";
+            res = "ON - " + String(Settings::numLEDs);
         }
         else{
-            res = "OFF";
+            res = "OFF" + String(Settings::numLEDs);
         }
     } else if (macroName == "DEVICENAME") {
         res = Settings::deviceName;

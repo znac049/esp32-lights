@@ -39,10 +39,10 @@ bool ledState = 0;
 const int ledPin = 21;
 String hostname;
 
-int getColour(CRGB colour)
+/*int getColour(CRGB colour)
 {
   return 0x10000000 | colour.r<<16 | colour.g<<8 | colour.b;
-}
+}*/
 
 void setup()
 {
@@ -112,9 +112,9 @@ void loop() {
   effects[effectNum]->loop();
 }
 
-int setLED(int offset, CRGB colour) {
+/*int setLED(int offset, CRGB colour) {
   offset = offset%MAX_LEDS;
   leds[offset] = colour;
 
   return offset;
-}
+}*/

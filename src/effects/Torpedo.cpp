@@ -10,10 +10,8 @@ const char *TorpedoEffect::getName(void) {
 
 void TorpedoEffect::reset()
 {
-
 }
 
 void TorpedoEffect::loop()
-{
-    
+{   
 }

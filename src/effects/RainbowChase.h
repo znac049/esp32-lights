@@ -3,8 +3,8 @@
 
 class RainbowChaseEffect : public Effect {
     private:
-        int speedDelay = 20;
-        
+        int colourNum=0;
+
     public:
         virtual const char *getName();
         virtual void reset();

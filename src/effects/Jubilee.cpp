@@ -2,6 +2,7 @@
 
 #include "defs.h"
 #include "SmartLED.h"
+#include "Settings.h"
 #include "effects/Effect.h"
 #include "effects/Jubilee.h"
 
@@ -17,7 +18,7 @@ const char *JubileeEffect::getName(void) {
 
 void JubileeEffect::reset()
 {
-  for (int i=0; i<numLEDs; i++) {
+  for (int i=0; i<Settings::numLEDs; i++) {
     leds[i] = colours[i%15];
     smartLeds[i].step(i*5);
   }
@@ -27,12 +28,11 @@ void JubileeEffect::reset()
 
 void JubileeEffect::loop()
 {
-  for (int i=0; i<numLEDs; i++) {
+  for (int i=0; i<Settings::numLEDs; i++) {
     smartLeds[i].step();
     leds[i] = smartLeds[i].getCurrent();
   }
 
-  //Serial.print("-");
   FastLED.show();
-  delay(20);
+  delay(stepDelay);
 }

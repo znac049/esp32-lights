@@ -1,6 +1,7 @@
 #include <FastLED.h>
 
 #include "defs.h"
+#include "Settings.h"
 #include "Effect.h"
 #include "RainbowChase.h"
 
@@ -16,19 +17,22 @@ void RainbowChaseEffect::loop()
 {
     byte *c;
  
-    for (int j=0; j < 256; j++) {     // cycle all 256 colors in the wheel
-        for (int q=0; q < 3; q++) {
-            for (int i=0; i<numLEDs; i+=3) {
-                c = Wheel( (i+j) % 255);
-                leds[i+q] = CRGB(*c, *(c+1), *(c+2));
-            }
-            FastLED.show();
-       
-            delay(speedDelay);
-       
-            for (int i=0; i<numLEDs; i+=3) {
-                leds[i+q] = CRGB::Black;
-            }
+    for (int q=0; q < 3; q++) {
+        for (int i=0; i<Settings::numLEDs; i+=3) {
+            c = Wheel( (i+colourNum) % 255);
+            leds[i+q] = CRGB(*c, *(c+1), *(c+2));
         }
+        FastLED.show();
+       
+        delay(speedDelay);
+       
+        for (int i=0; i<Settings::numLEDs; i+=3) {
+            leds[i+q] = CRGB::Black;
+        }
+    }
+
+    colourNum++;
+    if (colourNum >= 256) {
+        colourNum = 0;
     }
 }

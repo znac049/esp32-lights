@@ -12,6 +12,7 @@ const char *RandomTwinkleEffect::getName(void) {
 
 void RandomTwinkleEffect::reset()
 {
+    speedDelay = 40;
 }
 
 void RandomTwinkleEffect::loop()
