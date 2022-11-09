@@ -117,6 +117,14 @@ void handleWebSocketMessage(void *arg, uint8_t *data, size_t len)
                 Serial.println("Speed has changed.");
             }
 
+            if (Settings::setBrightness(getArg((const char *) data, "brightness", "40"))) {
+                Serial.println("Brightness has changed.");
+            }
+
+            if (Settings::setDensity(getArg((const char *) data, "density", "40"))) {
+                Serial.println("Density has changed.");
+            }
+
             if (Settings::setLoopDelay(getArg((const char *) data, "delay", "40"))) {
                 Serial.println("Loop delay has changed.");
             }
@@ -158,8 +166,12 @@ String lookupMacro(const String& macroName)
     String res = "";
 
     Serial.println(macroName);
-    if (macroName == "DELAY") {
+    if (macroName == "BRIGHTNESS") {
+        res = Settings::brightness;
+    } else if (macroName == "DELAY") {
         res = Settings::loopDelay;
+    } else if (macroName == "DENSITY") {
+        res = Settings::density;
     } else if (macroName == "DEVICEIP") {
         res = WiFi.localIP().toString();
     } else if (macroName == "DEVICENAME") {

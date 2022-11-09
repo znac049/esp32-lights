@@ -30,28 +30,35 @@ const char index_html[] PROGMEM = R"rawliteral(
     </div>
 
     <div class="field">
-     <label class="label">LED Colour Order</label>
-     <div class="control">
-      <div class="select">
-       <select id="order" class="input" type="text" value="%NUMLEDS%">
-        %LEDORDER%
-       </select>
+      <label class="label">LED Colour Order</label>
+      <div class="control">
+       <div class="select">
+        <select id="order" class="input" type="text">
+         %LEDORDER%
+        </select>
+       </div>
       </div>
      </div>
-    </div>
-
-    <div class="field">
+ 
+     <div class="field">
      <label class="label">Pattern</label>
      <div class="control">
       <div class="select">
-       <select id="pattern" class="input" type="text" value="%NUMLEDS%">
+       <select id="pattern" class="input" type="text">
         %PATTERNS%
        </select>
       </div>
      </div>
     </div>
 
-    <div class="control">
+    <div class="field">
+      <label class="label">Brightness</label>
+      <div class="control">
+       <input id="brightness" class="input" type="text" value="%BRIGHTNESS%" />
+      </div>
+     </div>
+ 
+      <div class="control">
      <div class="control">
       <button id="save" class="button is-primary">Save</button>
      </div>
@@ -81,6 +88,14 @@ const char index_html[] PROGMEM = R"rawliteral(
      <input id="delay" class="input" type="text" value="%DELAY%" />
     </div>
    </div>  
+
+   <div class="field">
+    <label class="label">Density</label>
+    <div class="control">
+     <input id="density" class="input" type="text" value="%DENSITY%" />
+    </div>
+   </div>  
+
   </div>
  
   <div class="column is-one-fifth">
@@ -165,6 +180,8 @@ const char index_html[] PROGMEM = R"rawliteral(
                   '&order=' + document.getElementById('order').value +
                   '&speed=' + document.getElementById('speed').value +
                   '&delay=' + document.getElementById('delay').value +
+                  '&brightness=' + document.getElementById('brightness').value +
+                  '&density=' + document.getElementById('density').value +
                   '&pattern=' + document.getElementById('pattern').value;
 
     websocket.send(res);

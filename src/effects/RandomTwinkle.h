@@ -3,8 +3,9 @@
 
 class RandomTwinkleEffect : public Effect {
     private:
-        int count = 12;
-        bool onlyOne = false;
+        int fifo[MAX_LEDS];
+        int insertIndex;
+        int removeIndex;
 
     public:
         virtual const char *getName();

@@ -12,25 +12,19 @@ const char *RandomTwinkleEffect::getName(void) {
 
 void RandomTwinkleEffect::reset()
 {
-    speedDelay = 40;
+    insertIndex = removeIndex = 0;
 }
 
 void RandomTwinkleEffect::loop()
 {
     clearAll();
 
-    for (int i=0; i<count; i++) {
+    for (int i=0; i<Settings::density; i++) {
         int led = random(Settings::numLEDs);
         
         setLED(led, random(0,255), random(0,255), random(0,255));
         show();
 
-        delay(speedDelay);
-        if (onlyOne) {
-            setLED(led, CRGB::Black);
-            show();
-        }
+        delay(Settings::loopDelay);
     }
- 
-    delay(speedDelay);
 }

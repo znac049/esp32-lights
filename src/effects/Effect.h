@@ -5,9 +5,6 @@ extern CRGB leds[MAX_LEDS];
 
 class Effect {
     protected:
-        int speedDelay = 20;
-        int stepDelay = 20;
-
         byte *Wheel(byte WheelPos);
         
     public:

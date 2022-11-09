@@ -17,6 +17,8 @@ int Settings::LEDOrder;
 int Settings::patternNumber;
 int Settings::speed;
 int Settings::loopDelay;
+int Settings::density = -25;
+int Settings::brightness = 16;
 
 bool Settings::load()
 {
@@ -38,6 +40,8 @@ bool Settings::load()
         Settings::patternNumber = 0;
         Settings::speed = 30;
         Settings::loopDelay = 30;
+        Settings::brightness = 16;
+        Settings::density = -25;
 
         Settings::save();
     }
@@ -48,6 +52,8 @@ bool Settings::load()
         Settings::patternNumber = prefs.getInt("patternNumber", 0);
         Settings::speed = prefs.getInt("speed", RGB);
         Settings::loopDelay = prefs.getInt("loopDelay", RGB);
+        Settings::density = prefs.getInt("density", RGB);
+        Settings::brightness = prefs.getInt("brightness", RGB);
     }
 
     prefs.end();
@@ -59,6 +65,8 @@ bool Settings::load()
     Serial.println(" Pattern #: " + String(Settings::patternNumber));
     Serial.println(" Speed: " + String(Settings::speed));
     Serial.println(" Loop Delay: " + String(Settings::loopDelay));
+    Serial.println(" Density: " + String(Settings::density));
+    Serial.println(" Brightness: " + String(Settings::brightness));
     
     return true;
 }
@@ -74,6 +82,8 @@ bool Settings::save()
     prefs.putInt("patternNumber", Settings::patternNumber);
     prefs.putInt("speed", Settings::speed);
     prefs.putInt("loopDelay", Settings::loopDelay);
+    prefs.putInt("density", Settings::density);
+    prefs.putInt("brightness", Settings::brightness);
     prefs.end();
 
     Serial.println("Settings saved to nvram.");
@@ -150,6 +160,36 @@ bool Settings::setSpeed(int newval) {
 
 bool Settings::setSpeed(String newval) {
     return Settings::setSpeed(newval.toInt());
+}
+
+bool Settings::setDensity(int newval) {
+    if (newval != Settings::density) {
+        Settings::density = newval;
+        Settings::save();
+
+        return true;
+    }   
+
+    return false;
+}
+
+bool Settings::setDensity(String newval) {
+    return Settings::setDensity(newval.toInt());
+}
+
+bool Settings::setBrightness(int newval) {
+    if (newval != Settings::brightness) {
+        Settings::brightness = newval;
+        Settings::save();
+
+        return true;
+    }   
+
+    return false;
+}
+
+bool Settings::setBrightness(String newval) {
+    return Settings::setBrightness(newval.toInt());
 }
 
 bool Settings::setLoopDelay(int newval) {

@@ -25,7 +25,7 @@ void RainbowChaseEffect::loop()
         }
         show();
        
-        delay(speedDelay);
+        delay(Settings::loopDelay);
        
         for (int i=0; i<Settings::numLEDs; i+=3) {
             setLED(i+q, CRGB::Black);

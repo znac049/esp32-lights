@@ -9,6 +9,8 @@ class Settings {
         static int patternNumber;
         static int speed;
         static int loopDelay;
+        static int density;
+        static int brightness;
 
         static bool load();
         static bool save();
@@ -26,6 +28,12 @@ class Settings {
 
         static bool setSpeed(String newval);
         static bool setSpeed(int newval);
+        
+        static bool setBrightness(String newval);
+        static bool setBrightness(int newval);
+        
+        static bool setDensity(String newval);
+        static bool setDensity(int newval);
         
         static bool setLoopDelay(String newval);
         static bool setLoopDelay(int newval);        
