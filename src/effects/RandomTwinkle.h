@@ -5,7 +5,8 @@ class RandomTwinkleEffect : public Effect {
     private:
         int fifo[MAX_LEDS];
         int insertIndex;
-        int removeIndex;
+
+        int twinkleCount;
 
     public:
         virtual const char *getName();

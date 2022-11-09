@@ -12,19 +12,30 @@ const char *RandomTwinkleEffect::getName(void) {
 
 void RandomTwinkleEffect::reset()
 {
-    insertIndex = removeIndex = 0;
+    insertIndex = 0;
+    twinkleCount = percentOrValue(Settings::density, Settings::numLEDs);
+    for (int i=0; i<Settings::numLEDs; i++) {
+        fifo[i] = Settings::numLEDs;
+    }
+
+    Serial.println("Twinkle count=" + String(twinkleCount));
+
+    clearAll();
 }
 
 void RandomTwinkleEffect::loop()
 {
-    clearAll();
+    int led = random(Settings::numLEDs);
 
-    for (int i=0; i<Settings::density; i++) {
-        int led = random(Settings::numLEDs);
-        
-        setLED(led, random(0,255), random(0,255), random(0,255));
-        show();
+    setLED(fifo[insertIndex], CRGB::Black);
+    fifo[insertIndex] = led;       
+    setLED(led, random(0,255), random(0,255), random(0,255));
+    show();
 
-        delay(Settings::loopDelay);
+    insertIndex++;
+    if (insertIndex >= Settings::numLEDs) {
+        insertIndex = 0;
     }
+
+    delay(Settings::loopDelay);
 }

@@ -70,6 +70,15 @@ byte *Effect::Wheel(byte WheelPos)
     return c;
 }
 
+int Effect::percentOrValue(int pcnt, int val)
+{
+    if (pcnt > 0) {
+        return pcnt;
+    }
+
+    return (-pcnt * val)/100;
+}
+
 /*
 
 void Sparkle(byte red, byte green, byte blue, int SpeedDelay) {

@@ -18,6 +18,7 @@ class Effect {
         void setLED(int lebNum, CRGB colour);
         void setLED(int ledNum, int r, int g, int b);
         void show();
+        int percentOrValue(int pcnt, int val);
 };
 
 #endif
