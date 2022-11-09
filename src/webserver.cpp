@@ -94,7 +94,7 @@ void handleWebSocketMessage(void *arg, uint8_t *data, size_t len)
             String order = getArg((const char *) data, "order", "");
             String pattern = getArg((const char *) data, "pattern", "");
 
-            if (Settings::setDeviceName(name)) {
+            if (Settings::setDeviceName(getArg((const char *) data, "name", "esp32"))) {
                 Serial.println("Name has changed.");
                 
                 MDNS.setInstanceName(Settings::deviceName.c_str());
@@ -111,6 +111,14 @@ void handleWebSocketMessage(void *arg, uint8_t *data, size_t len)
             if (Settings::setPatternNumber(pattern)) {
                 Serial.println("Patern Number changed.");
                 effectNum = Settings::patternNumber;
+            }
+
+            if (Settings::setSpeed(getArg((const char *) data, "speed", "40"))) {
+                Serial.println("Speed has changed.");
+            }
+
+            if (Settings::setLoopDelay(getArg((const char *) data, "delay", "40"))) {
+                Serial.println("Loop delay has changed.");
             }
         }
     }
@@ -150,18 +158,12 @@ String lookupMacro(const String& macroName)
     String res = "";
 
     Serial.println(macroName);
-    if(macroName == "STATE"){
-        if (ledState){
-            res = "ON - " + String(Settings::numLEDs);
-        }
-        else{
-            res = "OFF" + String(Settings::numLEDs);
-        }
+    if (macroName == "DELAY") {
+        res = Settings::loopDelay;
+    } else if (macroName == "DEVICEIP") {
+        res = WiFi.localIP().toString();
     } else if (macroName == "DEVICENAME") {
         res = Settings::deviceName;
-    }
-    else if (macroName == "DEVICEIP") {
-        res = WiFi.localIP().toString();
     }
     else if (macroName == "LEDORDER") {
         res = "<option value=\"";
@@ -178,11 +180,11 @@ String lookupMacro(const String& macroName)
         res += BGR;
         res += "\">BGR</option>";
     }
-    else if (macroName == "NUMLEDS") {
-        res = Settings::numLEDs;
-    }
     else if (macroName == "LEDPIN") {
         res = ledPin;
+    }
+    else if (macroName == "NUMLEDS") {
+        res = Settings::numLEDs;
     }
     else if (macroName == "PATTERNS") {
         res = "";
@@ -194,6 +196,17 @@ String lookupMacro(const String& macroName)
             res += ">";
             res += effects[i]->getName();
             res += "</option>";
+        }
+    }
+    else if (macroName == "SPEED") {
+        res = Settings::speed;
+    }
+    else if(macroName == "STATE") {
+        if (ledState){
+            res = "ON";
+        }
+        else{
+            res = "OFF";
         }
     }
 

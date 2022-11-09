@@ -15,6 +15,8 @@ String Settings::deviceName;
 int Settings::numLEDs;
 int Settings::LEDOrder;
 int Settings::patternNumber;
+int Settings::speed;
+int Settings::loopDelay;
 
 bool Settings::load()
 {
@@ -34,6 +36,8 @@ bool Settings::load()
         Settings::numLEDs = MAX_LEDS;
         Settings::LEDOrder = RGB;
         Settings::patternNumber = 0;
+        Settings::speed = 30;
+        Settings::loopDelay = 30;
 
         Settings::save();
     }
@@ -42,6 +46,8 @@ bool Settings::load()
         Settings::numLEDs = prefs.getInt("numLEDs", MAX_LEDS);
         Settings::LEDOrder = prefs.getInt("LEDOrder", RGB);
         Settings::patternNumber = prefs.getInt("patternNumber", 0);
+        Settings::speed = prefs.getInt("speed", RGB);
+        Settings::loopDelay = prefs.getInt("loopDelay", RGB);
     }
 
     prefs.end();
@@ -51,6 +57,8 @@ bool Settings::load()
     Serial.println(" Num LEDS: " + String(Settings::numLEDs));
     Serial.println(" LED Order: " + String(Settings::LEDOrder));
     Serial.println(" Pattern #: " + String(Settings::patternNumber));
+    Serial.println(" Speed: " + String(Settings::speed));
+    Serial.println(" Loop Delay: " + String(Settings::loopDelay));
     
     return true;
 }
@@ -64,6 +72,8 @@ bool Settings::save()
     prefs.putInt("numLEDs", Settings::numLEDs);
     prefs.putInt("LEDOrder", Settings::LEDOrder);
     prefs.putInt("patternNumber", Settings::patternNumber);
+    prefs.putInt("speed", Settings::speed);
+    prefs.putInt("loopDelay", Settings::loopDelay);
     prefs.end();
 
     Serial.println("Settings saved to nvram.");
@@ -125,5 +135,35 @@ bool Settings::setPatternNumber(int newval) {
 
 bool Settings::setPatternNumber(String newval) {
     return Settings::setPatternNumber(newval.toInt());
+}
+
+bool Settings::setSpeed(int newval) {
+    if (newval != Settings::speed) {
+        Settings::speed = newval;
+        Settings::save();
+
+        return true;
+    }   
+
+    return false;
+}
+
+bool Settings::setSpeed(String newval) {
+    return Settings::setSpeed(newval.toInt());
+}
+
+bool Settings::setLoopDelay(int newval) {
+    if (newval != Settings::loopDelay) {
+        Settings::loopDelay = newval;
+        Settings::save();
+
+        return true;
+    }   
+
+    return false;
+}
+
+bool Settings::setLoopDelay(String newval) {
+    return Settings::setLoopDelay(newval.toInt());
 }
 
