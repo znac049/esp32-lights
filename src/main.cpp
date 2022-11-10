@@ -41,11 +41,6 @@ bool ledState = 0;
 const int ledPin = 21;
 String hostname;
 
-/*int getColour(CRGB colour)
-{
-  return 0x10000000 | colour.r<<16 | colour.g<<8 | colour.b;
-}*/
-
 void setup()
 {
   Serial.begin(115200);
@@ -58,7 +53,7 @@ void setup()
   
   //FastLED.addLeds<WS2812B, DATA_PIN, RGB>(leds, NUM_LEDS);
   FastLED.addLeds<WS2812B, DATA_PIN, GRB>(leds, MAX_LEDS);
-  FastLED.setBrightness(16);
+  FastLED.setBrightness(Settings::brightness);
 
   pinMode(ledPin, OUTPUT);
   digitalWrite(ledPin, LOW);
@@ -94,6 +89,7 @@ void setup()
     Settings::setPatternNumber(effectNum);
   }
 
+  dirty = false;
   runningEffect = effectNum;
 
   Serial.print("Starting pattern: ");
@@ -102,14 +98,24 @@ void setup()
 }
 
 void loop() {
-  cleanupWebsocketClients();
-  digitalWrite(ledPin, ledState);
+    cleanupWebsocketClients();
+    digitalWrite(ledPin, ledState);
 
-  // Have the selected effect changed?
-  if (runningEffect != effectNum) {
-    effects[effectNum]->reset();
-    runningEffect = effectNum;
-  }
+    if (dirty) {
+        Serial.println("In main loop - changes to settings detected.");
+
+        // Has the selected effect changed?
+        if (runningEffect != effectNum) {
+            effects[effectNum]->reset();
+            runningEffect = effectNum;
+        }
+
+        FastLED.setBrightness(Settings::brightness);
+
+        effects[effectNum]->changesMade();
+        dirty = false;
+    }
+
 
   effects[effectNum]->loop();
 }

@@ -13,6 +13,7 @@ class Effect {
         virtual const char *getName();
         virtual void loop();
         virtual void reset();
+        virtual void changesMade();
 
         void clearAll();
         void setAll(CRGB colour);

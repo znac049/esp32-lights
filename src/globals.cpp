@@ -15,3 +15,5 @@ SimpleEffect simple;
 RandomTwinkleEffect rte;
 RainbowChaseEffect rainbow;
 SnowSparkleEffect snow;
+
+bool dirty;

@@ -89,44 +89,49 @@ void handleWebSocketMessage(void *arg, uint8_t *data, size_t len)
             notifyClients();
         }
         else if (action.equals("save")) {
-            String name = getArg((const char *) data, "name", "esp32");
-            String numleds = getArg((const char *) data, "numleds", "");
-            String order = getArg((const char *) data, "order", "");
-            String pattern = getArg((const char *) data, "pattern", "");
+            char *args = (char *) data;
 
-            if (Settings::setDeviceName(getArg((const char *) data, "name", "esp32"))) {
+            if (Settings::setDeviceName(getArg(args, "name", "esp32"))) {
                 Serial.println("Name has changed.");
                 
                 MDNS.setInstanceName(Settings::deviceName.c_str());
+                dirty = true;
             }
 
-            if (Settings::setNumLEDs(numleds)) {
+            if (Settings::setNumLEDs(getArg(args, "numleds", ""))) {
                 Serial.println("Number of LEDs has changed.");
+                dirty = true;
             }
 
-            if (Settings::setLEDOrder(order)) {
+            if (Settings::setLEDOrder(getArg(args, "order", ""))) {
                 Serial.println("LED Order has changed.");
+                dirty = true;
             }
 
-            if (Settings::setPatternNumber(pattern)) {
+            if (Settings::setPatternNumber(getArg(args, "pattern", ""))) {
                 Serial.println("Patern Number changed.");
                 effectNum = Settings::patternNumber;
+                dirty = true;
             }
 
-            if (Settings::setSpeed(getArg((const char *) data, "speed", "40"))) {
+            if (Settings::setSpeed(getArg(args, "speed", "40"))) {
                 Serial.println("Speed has changed.");
+                dirty = true;
             }
 
-            if (Settings::setBrightness(getArg((const char *) data, "brightness", "40"))) {
+            if (Settings::setBrightness(getArg(args, "brightness", "40"))) {
                 Serial.println("Brightness has changed.");
+                dirty = true;
             }
 
-            if (Settings::setDensity(getArg((const char *) data, "density", "40"))) {
+            if (Settings::setDensity(getArg(args, "density", "40"))) {
                 Serial.println("Density has changed.");
+                dirty = true;
             }
 
-            if (Settings::setLoopDelay(getArg((const char *) data, "delay", "40"))) {
+            if (Settings::setLoopDelay(getArg(args, "delay", "40"))) {
                 Serial.println("Loop delay has changed.");
+                dirty = true;
             }
         }
     }

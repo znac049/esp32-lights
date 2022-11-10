@@ -11,12 +11,21 @@ const char *Effect::getName(void) {
     return "base class";
 }
 
+void Effect::changesMade()
+{
+    Serial.println("Changes have been made!");
+    dirty = false;
+}
+
 void Effect::reset() 
 {
+    Serial.println("Reset the effect.");
+    dirty = false;
 }
 
 void Effect::loop()
 {
+    Serial.println("Empty effect loop!");
 }
 
 void Effect::clearAll()
