@@ -3,11 +3,6 @@
 
 #include "defs.h"
 
-struct Effects {
-    String name;
-    Effect *effect;
-};
-
 // globals.cpp
 extern CRGB leds[MAX_LEDS];
 

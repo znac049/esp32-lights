@@ -14,3 +14,4 @@ TorpedoEffect torp;
 SimpleEffect simple;
 RandomTwinkleEffect rte;
 RainbowChaseEffect rainbow;
+SnowSparkleEffect snow;

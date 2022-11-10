@@ -20,7 +20,6 @@ void RainbowChaseEffect::loop()
     for (int q=0; q < 3; q++) {
         for (int i=0; i<Settings::numLEDs; i+=3) {
             c = Wheel( (i+colourNum) % 255);
-            //leds[i+q] = CRGB(*c, *(c+1), *(c+2));
             setLED(i+q, *c++, *c++, *c++);
         }
         show();

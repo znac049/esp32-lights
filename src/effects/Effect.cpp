@@ -21,9 +21,7 @@ void Effect::loop()
 
 void Effect::clearAll()
 {
-  for (int i=0; i<Settings::numLEDs; i++) {
-    leds[i] = CRGB::Black;
-  }
+  setAll(CRGB::Black);
 }
 
 void Effect::show()
@@ -45,6 +43,18 @@ void Effect::setLED(int ledNum, int r, int g, int b)
     leds[ledNum].green = g;
     leds[ledNum].blue = b;
   }
+}
+
+void Effect::setAll(CRGB colour) 
+{
+  for (int i=0; i<Settings::numLEDs; i++) {
+    leds[i] = colour;
+  }
+}
+
+void Effect::setAll(int r, int g, int b) 
+{
+  setAll(CRGB(r, g, b));
 }
 
 byte *Effect::Wheel(byte WheelPos) 
@@ -91,18 +101,6 @@ void Sparkle(byte red, byte green, byte blue, int SpeedDelay) {
 
 
 
-void SnowSparkle(byte red, byte green, byte blue, int SparkleDelay, int SpeedDelay) {
-  leds.setAll(red,green,blue);
- 
-  int Pixel = random(NUM_LEDS);
-  leds.setPixel(Pixel,0xff,0xff,0xff);
-  leds.show();
-  delay(SparkleDelay);
-  leds.setPixel(Pixel,red,green,blue);
-  leds.show();
-  delay(SpeedDelay);
-}
-
 void rainbowCycle(int SpeedDelay) {
   byte *c;
   uint16_t i, j;
@@ -114,26 +112,6 @@ void rainbowCycle(int SpeedDelay) {
     }
     leds.show();
     delay(SpeedDelay);
-  }
-}
-
-void theaterChaseRainbow(int SpeedDelay) {
-  byte *c;
- 
-  for (int j=0; j < 256; j++) {     // cycle all 256 colors in the wheel
-    for (int q=0; q < 3; q++) {
-        for (int i=0; i < NUM_LEDS; i=i+3) {
-          c = Wheel( (i+j) % 255);
-          leds.setPixel(i+q, *c, *(c+1), *(c+2));    //turn every third pixel on
-        }
-        leds.show();
-       
-        delay(SpeedDelay);
-       
-        for (int i=0; i < NUM_LEDS; i=i+3) {
-          leds.setPixel(i+q, 0,0,0);        //turn every third pixel off
-        }
-    }
   }
 }
 

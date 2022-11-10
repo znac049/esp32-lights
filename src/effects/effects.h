@@ -4,3 +4,4 @@
 #include "effects/Simple.h"
 #include "effects/RandomTwinkle.h"
 #include "effects/RainbowChase.h"
+#include "effects/SnowSparkle.h"

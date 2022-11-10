@@ -15,6 +15,8 @@ class Effect {
         virtual void reset();
 
         void clearAll();
+        void setAll(CRGB colour);
+        void setAll(int r, int g, int b);
         void setLED(int lebNum, CRGB colour);
         void setLED(int ledNum, int r, int g, int b);
         void show();

@@ -16,6 +16,7 @@ extern TorpedoEffect torp;
 extern SimpleEffect simple;
 extern RandomTwinkleEffect rte;
 extern RainbowChaseEffect rainbow;
+extern SnowSparkleEffect snow;
 
 #define DATA_PIN 32
 
@@ -24,16 +25,17 @@ const char* password = "K69JyKkdNHm7ce";
 
 int runningEffect=0;
 int effectNum=0;
-//struct Effects effects[4];
+
 Effect *effects[] = {
   dynamic_cast<Effect*>(&jub),
   dynamic_cast<Effect*>(&torp),
   dynamic_cast<Effect*>(&simple),
   dynamic_cast<Effect*>(&rte),
   dynamic_cast<Effect*>(&rainbow), 
+  dynamic_cast<Effect*>(&snow), 
 };
 
-int numEffects = 5; //(sizeof(effects) / sizeof(struct Effect));
+int numEffects = (sizeof(effects) / sizeof(Effect *));
 
 bool ledState = 0;
 const int ledPin = 21;
