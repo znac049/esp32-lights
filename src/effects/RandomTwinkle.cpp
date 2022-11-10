@@ -33,7 +33,7 @@ void RandomTwinkleEffect::loop()
     show();
 
     insertIndex++;
-    if (insertIndex >= Settings::numLEDs) {
+    if (insertIndex >= twinkleCount) {
         insertIndex = 0;
     }
 
