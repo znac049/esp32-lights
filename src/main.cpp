@@ -41,6 +41,7 @@ bool ledState = 0;
 const int ledPin = 21;
 String hostname;
 
+
 void setup()
 {
     Serial.begin(115200);
@@ -49,8 +50,33 @@ void setup()
     Serial.println("Device name: " + Settings::deviceName);
     blackout = false;
     
-    //FastLED.addLeds<WS2812B, DATA_PIN, RGB>(leds, NUM_LEDS);
-    FastLED.addLeds<WS2812B, DATA_PIN, (enum Eorder) GRB>(leds, MAX_LEDS);
+    switch(Settings::LEDOrder) {
+        default:
+        case RGB:
+            FastLED.addLeds<WS2812B, DATA_PIN, RGB>(leds, MAX_LEDS);
+            break;
+
+        case RBG:
+            FastLED.addLeds<WS2812B, DATA_PIN, RBG>(leds, MAX_LEDS);
+            break;
+            
+        case GBR:
+            FastLED.addLeds<WS2812B, DATA_PIN, GBR>(leds, MAX_LEDS);
+            break;
+            
+        case GRB:
+            FastLED.addLeds<WS2812B, DATA_PIN, GRB>(leds, MAX_LEDS);
+            break;
+            
+        case BGR:
+            FastLED.addLeds<WS2812B, DATA_PIN, BGR>(leds, MAX_LEDS);
+            break;
+            
+        case BRG:
+            FastLED.addLeds<WS2812B, DATA_PIN, BRG>(leds, MAX_LEDS);
+            break;            
+    }
+    //FastLED.addLeds<WS2812B, DATA_PIN, GRB>(leds, MAX_LEDS);
     FastLED.setBrightness(Settings::brightness);
 
     pinMode(ledPin, OUTPUT);

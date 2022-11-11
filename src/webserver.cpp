@@ -106,6 +106,9 @@ void handleWebSocketMessage(void *arg, uint8_t *data, size_t len)
             if (Settings::setLEDOrder(getArg(args, "order", ""))) {
                 Serial.println("LED Order has changed.");
                 dirty = true;
+
+                // It seems we have to reboot to change this :-(
+                ESP.restart();
             }
 
             if (Settings::setPatternNumber(getArg(args, "pattern", ""))) {
