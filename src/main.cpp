@@ -27,12 +27,12 @@ int runningEffect=0;
 int effectNum=0;
 
 Effect *effects[] = {
-  dynamic_cast<Effect*>(&jub),
-  dynamic_cast<Effect*>(&torp),
-  dynamic_cast<Effect*>(&simple),
-  dynamic_cast<Effect*>(&rte),
-  dynamic_cast<Effect*>(&rainbow), 
-  dynamic_cast<Effect*>(&snow), 
+    dynamic_cast<Effect*>(&jub),
+    dynamic_cast<Effect*>(&torp),
+    dynamic_cast<Effect*>(&simple),
+    dynamic_cast<Effect*>(&rte),
+    dynamic_cast<Effect*>(&rainbow), 
+    dynamic_cast<Effect*>(&snow), 
 };
 
 int numEffects = (sizeof(effects) / sizeof(Effect *));
@@ -43,79 +43,71 @@ String hostname;
 
 void setup()
 {
-  Serial.begin(115200);
-  Settings::load();
+    Serial.begin(115200);
+    Settings::load();
 
-  Serial.println("Device name: " + Settings::deviceName);
-  for (int i=0; i<4; i++) {
-    Serial.println(" FX: " + String(effects[i]->getName()));
-  }
-  
-  //FastLED.addLeds<WS2812B, DATA_PIN, RGB>(leds, NUM_LEDS);
-  FastLED.addLeds<WS2812B, DATA_PIN, GRB>(leds, MAX_LEDS);
-  FastLED.setBrightness(Settings::brightness);
+    Serial.println("Device name: " + Settings::deviceName);
+    blackout = false;
+    
+    //FastLED.addLeds<WS2812B, DATA_PIN, RGB>(leds, NUM_LEDS);
+    FastLED.addLeds<WS2812B, DATA_PIN, (enum Eorder) GRB>(leds, MAX_LEDS);
+    FastLED.setBrightness(Settings::brightness);
 
-  pinMode(ledPin, OUTPUT);
-  digitalWrite(ledPin, LOW);
+    pinMode(ledPin, OUTPUT);
+    digitalWrite(ledPin, LOW);
 
-  for (int i=0; i<numEffects; i++) {
-    Serial.println(effects[i]->getName());
-  }
-  
-  // Connect to Wi-Fi
-  WiFi.begin(ssid, password);
-  while (WiFi.status() != WL_CONNECTED) {
-    delay(2000);
-    Serial.println("Connecting to WiFi..");
-  }
+    // Connect to Wi-Fi
+    WiFi.begin(ssid, password);
+    while (WiFi.status() != WL_CONNECTED) {
+        delay(2000);
+        Serial.println("Connecting to WiFi..");
+    }
 
-  if(!MDNS.begin(Settings::deviceName.c_str())) {
-     Serial.println("Error starting mDNS");
-     return;
-  }
+    if(!MDNS.begin(Settings::deviceName.c_str())) {
+        Serial.println("Error starting mDNS");
+        return;
+    }
 
-  // Print ESP Local IP Address
-  Serial.println(WiFi.localIP());
+    // Print ESP Local IP Address
+    Serial.println(WiFi.localIP());
 
-  setupWebserver();
-  
-  effectNum = Settings::patternNumber;
+    setupWebserver();
+    
+    effectNum = Settings::patternNumber;
 
-  Serial.print("Pattern Number=");
-  Serial.println(effectNum);
+    Serial.print("Pattern Number=");
+    Serial.println(effectNum);
 
-  if (effectNum >= numEffects) {
-    effectNum = 0;
-    Settings::setPatternNumber(effectNum);
-  }
+    if (effectNum >= numEffects) {
+        effectNum = 0;
+        Settings::setPatternNumber(effectNum);
+    }
 
-  dirty = false;
-  runningEffect = effectNum;
-
-  Serial.print("Starting pattern: ");
-  Serial.println(effects[effectNum]->getName());
-  effects[effectNum]->reset();
+    dirty = false;
+    runningEffect = effectNum;
+    effects[effectNum]->reset();
 }
 
 void loop() {
     cleanupWebsocketClients();
     digitalWrite(ledPin, ledState);
 
-    if (dirty) {
-        Serial.println("In main loop - changes to settings detected.");
+    if (!blackout) {
+        if (dirty) {
+            Serial.println("In main loop - changes to settings detected.");
 
-        // Has the selected effect changed?
-        if (runningEffect != effectNum) {
-            effects[effectNum]->reset();
-            runningEffect = effectNum;
+            // Has the selected effect changed?
+            if (runningEffect != effectNum) {
+                effects[effectNum]->reset();
+                runningEffect = effectNum;
+            }
+
+            FastLED.setBrightness(Settings::brightness);
+
+            effects[effectNum]->changesMade();
+            dirty = false;
         }
-
-        FastLED.setBrightness(Settings::brightness);
-
-        effects[effectNum]->changesMade();
-        dirty = false;
     }
 
-
-  effects[effectNum]->loop();
+    effects[effectNum]->loop();
 }

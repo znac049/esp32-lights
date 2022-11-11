@@ -4,6 +4,7 @@ const char index_html[] PROGMEM = R"rawliteral(
  <title>CLC - Chippers Light Controller</title>
  <meta name="viewport" content="width=device-width, initial-scale=1">
  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+ <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma-extensions@6.2.7/dist/css/bulma-extensions.min.css">
  <link rel="icon" href="data:,">
 </head>
 <body>
@@ -16,12 +17,17 @@ const char index_html[] PROGMEM = R"rawliteral(
    </div>
    <form>
     <div class="field">
+     <input id="blackout" name="blackout" class="switch is-rounded is-medium is-success" type="checkbox" %BLACKOUT%/>
+     <label for="blackout">Master light switch</label>
+    </div>
+   
+    <div class="field">
      <label class="label">Device Name</label>
      <div class="control">
       <input id="devicename" class="input" type="text" value="%DEVICENAME%" />
      </div>
     </div>
-
+   
     <div class="field">
      <label class="label">number of LEDs</label>
      <div class="control">
@@ -134,6 +140,7 @@ const char index_html[] PROGMEM = R"rawliteral(
    </div>
   </div>
  
+<script src="https://cdn.jsdelivr.net/npm/bulma-extensions@6.2.7/dist/js/bulma-extensions.min.js"></script>  
 <script>
   var gateway = `ws://${window.location.hostname}/ws`;
   var websocket;
@@ -169,10 +176,21 @@ const char index_html[] PROGMEM = R"rawliteral(
   function initEventCatchers() {
     document.getElementById('button').addEventListener('click', toggle);
     document.getElementById('save').addEventListener('click', savedata);
+    document.getElementById('blackout').addEventListener('change', blackoutChange);
     document.getElementById('ota').addEventListener('click', function() {window.location='/update'});
   }
   function toggle() {
     websocket.send('toggle');
+  }
+  function blackoutChange() {
+    var sw = document.getElementById('blackout');
+
+    if (sw.checked) {
+        websocket.send('lights?state=on');
+    }
+    else {
+        websocket.send('lights?state=off');
+    }
   }
   function savedata() {
     var res = 'save?name=' + document.getElementById('devicename').value +

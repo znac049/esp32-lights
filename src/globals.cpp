@@ -17,3 +17,4 @@ RainbowChaseEffect rainbow;
 SnowSparkleEffect snow;
 
 bool dirty;
+bool blackout;

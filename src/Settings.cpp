@@ -58,15 +58,15 @@ bool Settings::load()
 
     prefs.end();
 
-    Serial.println("Settings loaded from nvram:");
-    Serial.println(" deviceName: " + Settings::deviceName);
-    Serial.println(" Num LEDS: " + String(Settings::numLEDs));
-    Serial.println(" LED Order: " + String(Settings::LEDOrder));
-    Serial.println(" Pattern #: " + String(Settings::patternNumber));
-    Serial.println(" Speed: " + String(Settings::speed));
-    Serial.println(" Loop Delay: " + String(Settings::loopDelay));
-    Serial.println(" Density: " + String(Settings::density));
-    Serial.println(" Brightness: " + String(Settings::brightness));
+    //Serial.println("Settings loaded from nvram:");
+    //Serial.println(" deviceName: " + Settings::deviceName);
+    //Serial.println(" Num LEDS: " + String(Settings::numLEDs));
+    //Serial.println(" LED Order: " + String(Settings::LEDOrder));
+    //Serial.println(" Pattern #: " + String(Settings::patternNumber));
+    //Serial.println(" Speed: " + String(Settings::speed));
+    //Serial.println(" Loop Delay: " + String(Settings::loopDelay));
+    //Serial.println(" Density: " + String(Settings::density));
+    //Serial.println(" Brightness: " + String(Settings::brightness));
     
     return true;
 }

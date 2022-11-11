@@ -12,6 +12,7 @@ extern const int ledPin;
 extern int effectNum;
 extern int numEffects;
 extern bool dirty;
+extern bool blackout;
 extern Effect *effects[];
 
 // webserver.cpp

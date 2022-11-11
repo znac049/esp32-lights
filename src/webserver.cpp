@@ -134,6 +134,9 @@ void handleWebSocketMessage(void *arg, uint8_t *data, size_t len)
                 dirty = true;
             }
         }
+        else {
+            Serial.println("Unknown command on websocket: " + action);
+        }
     }
 }
 
@@ -171,7 +174,14 @@ String lookupMacro(const String& macroName)
     String res = "";
 
     Serial.println(macroName);
-    if (macroName == "BRIGHTNESS") {
+    if (macroName == "BLACKOUT") {
+        if (!blackout) {
+            res = "checked";
+        }
+        else {
+            res = "";
+        }
+    } else if (macroName == "BRIGHTNESS") {
         res = Settings::brightness;
     } else if (macroName == "DELAY") {
         res = Settings::loopDelay;
