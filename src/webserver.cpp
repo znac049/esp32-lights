@@ -172,6 +172,20 @@ void initWebSocket()
     server.addHandler(&ws);
 }
 
+String getOrderOption(String text, int val) {
+    String res = "<option ";
+
+    res = res + "value=\"";
+    res += val;
+    res += "\"";
+    if (Settings::LEDOrder == val) {
+        res += " selected";
+    }
+    res += ">" + text + "</option>";
+
+    return res;
+}
+
 String lookupMacro(const String& macroName)
 {
     String res = "";
@@ -196,19 +210,12 @@ String lookupMacro(const String& macroName)
         res = Settings::deviceName;
     }
     else if (macroName == "LEDORDER") {
-        res = "<option value=\"";
-        res += RGB;
-        res += "\">RGB</option><option value=\"";
-        res += RBG;
-        res += "\">RBG</option><option value=\"";
-        res += GRB;
-        res += "\">GRB</option><option value=\"";
-        res += GBR;
-        res += "\">GBR</option><option value=\"";
-        res += BRG;
-        res += "\">BRG</option><option value=\"";
-        res += BGR;
-        res += "\">BGR</option>";
+        res = getOrderOption("RGB", RGB);
+        res += getOrderOption("RBG", RBG);
+        res += getOrderOption("GBR", GBR);
+        res += getOrderOption("GRB", GRB);
+        res += getOrderOption("BRG", BRG);
+        res += getOrderOption("BGR", BGR);
     }
     else if (macroName == "LEDPIN") {
         res = ledPin;
