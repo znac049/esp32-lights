@@ -5,3 +5,4 @@
 #include "effects/RandomTwinkle.h"
 #include "effects/RainbowChase.h"
 #include "effects/SnowSparkle.h"
+#include "effects/BouncingBallsEffect.h"

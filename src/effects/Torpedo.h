@@ -3,8 +3,6 @@
 
 class TorpedoEffect : public Effect {
     public:
-        //TorpedoEffect() : Effect() {};
-
         virtual const char *getName();
         virtual void reset();
         virtual void loop();

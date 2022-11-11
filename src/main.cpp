@@ -17,6 +17,7 @@ extern SimpleEffect simple;
 extern RandomTwinkleEffect rte;
 extern RainbowChaseEffect rainbow;
 extern SnowSparkleEffect snow;
+extern BouncingBallsEffect balls;
 
 #define DATA_PIN 32
 
@@ -33,6 +34,7 @@ Effect *effects[] = {
     dynamic_cast<Effect*>(&rte),
     dynamic_cast<Effect*>(&rainbow), 
     dynamic_cast<Effect*>(&snow), 
+    dynamic_cast<Effect*>(&balls), 
 };
 
 int numEffects = (sizeof(effects) / sizeof(Effect *));

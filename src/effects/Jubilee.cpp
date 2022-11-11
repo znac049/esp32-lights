@@ -34,5 +34,5 @@ void JubileeEffect::loop()
   }
 
   show();
-  delay(Settings::loopDelay);
+  delay(Settings::loopDelay/5);
 }

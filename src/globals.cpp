@@ -15,6 +15,7 @@ SimpleEffect simple;
 RandomTwinkleEffect rte;
 RainbowChaseEffect rainbow;
 SnowSparkleEffect snow;
+BouncingBallsEffect balls;
 
 bool dirty;
 bool blackout;
