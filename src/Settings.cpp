@@ -38,9 +38,9 @@ bool Settings::load()
         Settings::numLEDs = MAX_LEDS;
         Settings::LEDOrder = RGB;
         Settings::patternNumber = 0;
-        Settings::speed = 30;
-        Settings::loopDelay = 30;
-        Settings::brightness = 16;
+        Settings::speed = 100;
+        Settings::loopDelay = 100;
+        Settings::brightness = 32;
         Settings::density = -25;
 
         Settings::save();
@@ -50,24 +50,14 @@ bool Settings::load()
         Settings::numLEDs = prefs.getInt("numLEDs", MAX_LEDS);
         Settings::LEDOrder = prefs.getInt("LEDOrder", RGB);
         Settings::patternNumber = prefs.getInt("patternNumber", 0);
-        Settings::speed = prefs.getInt("speed", RGB);
-        Settings::loopDelay = prefs.getInt("loopDelay", RGB);
-        Settings::density = prefs.getInt("density", RGB);
-        Settings::brightness = prefs.getInt("brightness", RGB);
+        Settings::speed = prefs.getInt("speed", 100);
+        Settings::loopDelay = prefs.getInt("loopDelay", 100);
+        Settings::brightness = prefs.getInt("brightness", 32);
+        Settings::density = prefs.getInt("density", -25);
     }
 
     prefs.end();
 
-    //Serial.println("Settings loaded from nvram:");
-    //Serial.println(" deviceName: " + Settings::deviceName);
-    //Serial.println(" Num LEDS: " + String(Settings::numLEDs));
-    //Serial.println(" LED Order: " + String(Settings::LEDOrder));
-    //Serial.println(" Pattern #: " + String(Settings::patternNumber));
-    //Serial.println(" Speed: " + String(Settings::speed));
-    //Serial.println(" Loop Delay: " + String(Settings::loopDelay));
-    //Serial.println(" Density: " + String(Settings::density));
-    //Serial.println(" Brightness: " + String(Settings::brightness));
-    
     return true;
 }
 
@@ -82,8 +72,8 @@ bool Settings::save()
     prefs.putInt("patternNumber", Settings::patternNumber);
     prefs.putInt("speed", Settings::speed);
     prefs.putInt("loopDelay", Settings::loopDelay);
-    prefs.putInt("density", Settings::density);
     prefs.putInt("brightness", Settings::brightness);
+    prefs.putInt("density", Settings::density);
     prefs.end();
 
     Serial.println("Settings saved to nvram.");
