@@ -19,7 +19,10 @@ extern RainbowChaseEffect rainbow;
 extern SnowSparkleEffect snow;
 extern BouncingBallsEffect balls;
 
-#define DATA_PIN 32
+#define DATA_PIN1 32
+#define DATA_PIN2 33
+#define DATA_PIN3 25
+#define DATA_PIN4 26
 
 const char* ssid = "BT-TCCJ6M";
 const char* password = "K69JyKkdNHm7ce";
@@ -46,6 +49,9 @@ String hostname;
 
 void setup()
 {
+    int wifiOk;
+    int wifiTries = 0;
+
     Serial.begin(115200);
     Settings::load();
 
@@ -55,27 +61,45 @@ void setup()
     switch(Settings::LEDOrder) {
         default:
         case RGB:
-            FastLED.addLeds<WS2812B, DATA_PIN, RGB>(leds, MAX_LEDS);
+            FastLED.addLeds<WS2812B, DATA_PIN1, RGB>(leds, MAX_LEDS);
+            FastLED.addLeds<WS2812B, DATA_PIN2, RGB>(leds, MAX_LEDS);
+            FastLED.addLeds<WS2812B, DATA_PIN3, RGB>(leds, MAX_LEDS);
+            FastLED.addLeds<WS2812B, DATA_PIN4, RGB>(leds, MAX_LEDS);
             break;
 
         case RBG:
-            FastLED.addLeds<WS2812B, DATA_PIN, RBG>(leds, MAX_LEDS);
+            FastLED.addLeds<WS2812B, DATA_PIN1, RBG>(leds, MAX_LEDS);
+            FastLED.addLeds<WS2812B, DATA_PIN2, RBG>(leds, MAX_LEDS);
+            FastLED.addLeds<WS2812B, DATA_PIN3, RBG>(leds, MAX_LEDS);
+            FastLED.addLeds<WS2812B, DATA_PIN4, RBG>(leds, MAX_LEDS);
             break;
             
         case GBR:
-            FastLED.addLeds<WS2812B, DATA_PIN, GBR>(leds, MAX_LEDS);
+            FastLED.addLeds<WS2812B, DATA_PIN1, GBR>(leds, MAX_LEDS);
+            FastLED.addLeds<WS2812B, DATA_PIN2, GBR>(leds, MAX_LEDS);
+            FastLED.addLeds<WS2812B, DATA_PIN3, GBR>(leds, MAX_LEDS);
+            FastLED.addLeds<WS2812B, DATA_PIN4, GBR>(leds, MAX_LEDS);
             break;
             
         case GRB:
-            FastLED.addLeds<WS2812B, DATA_PIN, GRB>(leds, MAX_LEDS);
+            FastLED.addLeds<WS2812B, DATA_PIN1, GRB>(leds, MAX_LEDS);
+            FastLED.addLeds<WS2812B, DATA_PIN2, GRB>(leds, MAX_LEDS);
+            FastLED.addLeds<WS2812B, DATA_PIN3, GRB>(leds, MAX_LEDS);
+            FastLED.addLeds<WS2812B, DATA_PIN4, GRB>(leds, MAX_LEDS);
             break;
             
         case BGR:
-            FastLED.addLeds<WS2812B, DATA_PIN, BGR>(leds, MAX_LEDS);
+            FastLED.addLeds<WS2812B, DATA_PIN1, BGR>(leds, MAX_LEDS);
+            FastLED.addLeds<WS2812B, DATA_PIN2, BGR>(leds, MAX_LEDS);
+            FastLED.addLeds<WS2812B, DATA_PIN3, BGR>(leds, MAX_LEDS);
+            FastLED.addLeds<WS2812B, DATA_PIN4, BGR>(leds, MAX_LEDS);
             break;
             
         case BRG:
-            FastLED.addLeds<WS2812B, DATA_PIN, BRG>(leds, MAX_LEDS);
+            FastLED.addLeds<WS2812B, DATA_PIN1, BRG>(leds, MAX_LEDS);
+            FastLED.addLeds<WS2812B, DATA_PIN2, BRG>(leds, MAX_LEDS);
+            FastLED.addLeds<WS2812B, DATA_PIN3, BRG>(leds, MAX_LEDS);
+            FastLED.addLeds<WS2812B, DATA_PIN4, BRG>(leds, MAX_LEDS);
             break;            
     }
     //FastLED.addLeds<WS2812B, DATA_PIN, GRB>(leds, MAX_LEDS);
@@ -86,18 +110,34 @@ void setup()
 
     // Connect to Wi-Fi
     WiFi.begin(ssid, password);
-    while (WiFi.status() != WL_CONNECTED) {
-        delay(2000);
-        Serial.println("Connecting to WiFi..");
+    
+    wifiOk = WiFi.status();
+    while ((wifiOk != WL_CONNECTED) && (wifiTries < 10)) {
+        delay(1000);
+        wifiTries++;
+        Serial.print("Connecting to WiFi... attempt ");
+        Serial.println(wifiTries);
+        wifiOk = WiFi.status();
     }
 
-    if(!MDNS.begin(Settings::deviceName.c_str())) {
-        Serial.println("Error starting mDNS");
-        return;
+    if (wifiOk == WL_CONNECTED) {
+        if(!MDNS.begin(Settings::deviceName.c_str())) {
+            Serial.println("Error starting mDNS");
+            return;
+        }
+
+        // Print ESP Local IP Address
+        Serial.println(WiFi.localIP());
+    }
+    else {
+        // Set myself up as an access point
+        Serial.println("Creating local access point...");
+        WiFi.mode(WIFI_AP);
+        WiFi.softAP("outofrange", "12345678");
+        Serial.println(WiFi.softAPIP());
     }
 
-    // Print ESP Local IP Address
-    Serial.println(WiFi.localIP());
+    Serial.println(WiFi.macAddress());
 
     setupWebserver();
     
