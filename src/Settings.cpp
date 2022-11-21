@@ -43,7 +43,11 @@ bool Settings::loadRequired()
     int version;
 
     startPrefs();
+
     version = prefs.getInt("version", -1);
+    
+    Serial.print("nvram version: ");
+    Serial.println(version);
 
     if (version != 2) {
         Serial.println("Settings reset to defaults in nvram.");
@@ -127,7 +131,7 @@ String Settings::get(String property)
     startPrefs();
 
     property.toLowerCase();
-    Serial.println(String("Settings::get - ") + property);
+    //Serial.println(String("Settings::get - ") + property);
 
     return prefs.getString(property.c_str());
 }
@@ -137,7 +141,7 @@ int Settings::getInt(String property)
     startPrefs();
 
     property.toLowerCase();
-    Serial.println(String("Settings::getInt - ") + property);
+    //Serial.println(String("Settings::getInt - ") + property);
 
     return prefs.getInt(property.c_str());
 }
