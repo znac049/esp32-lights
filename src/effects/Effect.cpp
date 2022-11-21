@@ -40,14 +40,14 @@ void Effect::show()
 
 void Effect::setLED(int ledNum, CRGB colour) 
 {
-  if ((ledNum >= 0) && (ledNum < Settings::numLEDs)) {
+  if ((ledNum >= 0) && (ledNum < Settings::getInt("numLEDs"))) {
     leds[ledNum] = colour;
   }
 }
 
 void Effect::setLED(int ledNum, int r, int g, int b) 
 {
-  if ((ledNum >= 0) && (ledNum < Settings::numLEDs)) {
+  if ((ledNum >= 0) && (ledNum < Settings::getInt("numLEDs"))) {
     leds[ledNum].red = r;
     leds[ledNum].green = g;
     leds[ledNum].blue = b;
@@ -56,7 +56,7 @@ void Effect::setLED(int ledNum, int r, int g, int b)
 
 void Effect::setAll(CRGB colour) 
 {
-  for (int i=0; i<Settings::numLEDs; i++) {
+  for (int i=0; i<Settings::getInt("numLEDs"); i++) {
     leds[i] = colour;
   }
 }

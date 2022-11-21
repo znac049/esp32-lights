@@ -1,9 +1,23 @@
 #ifndef _SETTINGS_H_
 #define _SETTINGS_H_
 
+#include <Preferences.h>
+
 class Settings {
-    public:
+    private:
+        static bool prefsStarted;
+        static Preferences prefs;
+
+        static void startPrefs();
+
+    
         static String deviceName;
+        
+        static String ssid;
+        static String wifiPassword;
+
+        static String webPassword;
+
         static int numLEDs;
         static int LEDOrder;
         static int patternNumber;
@@ -12,31 +26,16 @@ class Settings {
         static int density;
         static int brightness;
 
-        static bool load();
-        static bool save();
-        
-        static bool setDeviceName(String newName);
+        static bool saveRequired();
 
-        static bool setNumLEDs(String newval);
-        static bool setNumLEDs(int newval);
+    public:
+        static bool loadRequired();
 
-        static bool setLEDOrder(String newval);
-        static bool setLEDOrder(int newval);
+        static bool set(String property, String val);
+        static bool set(String property, int val);
 
-        static bool setPatternNumber(String newval);
-        static bool setPatternNumber(int newval);
-
-        static bool setSpeed(String newval);
-        static bool setSpeed(int newval);
-        
-        static bool setBrightness(String newval);
-        static bool setBrightness(int newval);
-        
-        static bool setDensity(String newval);
-        static bool setDensity(int newval);
-        
-        static bool setLoopDelay(String newval);
-        static bool setLoopDelay(int newval);        
+        static String get(String property);
+        static int getInt(String property);
 };
 
 #endif

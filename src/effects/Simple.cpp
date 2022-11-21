@@ -5,6 +5,8 @@
 #include "Effect.h"
 #include "Simple.h"
 
+int SimpleEffect::sequence[] = {CRGB::Red, CRGB::Green, CRGB::Blue, CRGB::Black};
+
 const char *SimpleEffect::getName(void) {
     return "Simple";
 }
@@ -15,27 +17,17 @@ void SimpleEffect::reset()
 
 void SimpleEffect::loop()
 {
-  for (int i=0; i<Settings::numLEDs; i++) {
-    setLED(i, CRGB::Red);
-  }
-  show();
-  delay(1000);
+    int numLEDs = Settings::getInt("numLEDs");
+    int loopDelay = Settings::getInt("loopDelay") * 10;
+    int nColours = sizeof(sequence) / sizeof(int);
 
-  for (int i=0; i<Settings::numLEDs; i++) {
-    setLED(i, CRGB::Green);
-  }
-  show();
-  delay(1000);
+    for (int col=0; col<nColours; col++) {
+        int colour = sequence[col];
 
-  for (int i=0; i<Settings::numLEDs; i++) {
-    setLED(i, CRGB::Blue);
-  }
-  show();
-  delay(1000);
-
-  for (int i=0; i<Settings::numLEDs; i++) {
-    setLED(i, CRGB::Black);
-  }
-  show();
-  delay(1000);    
+        for (int i=0; i<numLEDs; i++) {
+            setLED(i, colour);
+        }
+        show();
+        delay(loopDelay);
+    }
 }

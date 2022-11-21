@@ -12,10 +12,11 @@ const char *RandomTwinkleEffect::getName(void) {
 
 void RandomTwinkleEffect::reset()
 {
+    int numLEDs = Settings::getInt("numLEDs");
     insertIndex = 0;
-    twinkleCount = percentOrValue(Settings::density, Settings::numLEDs);
-    for (int i=0; i<Settings::numLEDs; i++) {
-        fifo[i] = Settings::numLEDs;
+    twinkleCount = percentOrValue(Settings::getInt("density"), numLEDs);
+    for (int i=0; i<numLEDs; i++) {
+        fifo[i] = numLEDs;
     }
 
     Serial.println("Twinkle count=" + String(twinkleCount));
@@ -25,7 +26,7 @@ void RandomTwinkleEffect::reset()
 
 void RandomTwinkleEffect::loop()
 {
-    int led = random(Settings::numLEDs);
+    int led = random(Settings::getInt("numLEDs"));
 
     setLED(fifo[insertIndex], CRGB::Black);
     fifo[insertIndex] = led;       
@@ -37,5 +38,5 @@ void RandomTwinkleEffect::loop()
         insertIndex = 0;
     }
 
-    delay(Settings::loopDelay);
+    delay(Settings::getInt("loopDelay"));
 }

@@ -18,7 +18,7 @@ const char *JubileeEffect::getName(void) {
 
 void JubileeEffect::reset()
 {
-  for (int i=0; i<Settings::numLEDs; i++) {
+  for (int i=0; i<Settings::getInt("numLEDs"); i++) {
     setLED(i, colours[i%15]);
     smartLeds[i].step(i*5);
   }
@@ -28,11 +28,11 @@ void JubileeEffect::reset()
 
 void JubileeEffect::loop()
 {
-  for (int i=0; i<Settings::numLEDs; i++) {
+  for (int i=0; i<Settings::getInt("numLEDs"); i++) {
     smartLeds[i].step();
     setLED(i, smartLeds[i].getCurrent());
   }
 
   show();
-  delay(Settings::loopDelay/5);
+  delay(Settings::getInt("loopDelay")/5);
 }

@@ -11,7 +11,16 @@
 #include "Settings.h"
 #include "lights.h"
 
+bool Settings::prefsStarted = false;
+Preferences Settings::prefs;
+
 String Settings::deviceName;
+
+String Settings::ssid;
+String Settings::wifiPassword;
+
+String Settings::webPassword;
+
 int Settings::numLEDs;
 int Settings::LEDOrder;
 int Settings::patternNumber;
@@ -20,180 +29,116 @@ int Settings::loopDelay;
 int Settings::density = -25;
 int Settings::brightness = 16;
 
-bool Settings::load()
+void Settings::startPrefs()
 {
-    Preferences prefs;
+    if (!prefsStarted) {
+        Serial.println("Starting Prefs...");
+        prefs.begin("chippers");
+        prefsStarted = true;
+    }
+}
+
+bool Settings::loadRequired()
+{
     int version;
 
-    prefs.begin("chippers");
+    startPrefs();
     version = prefs.getInt("version", -1);
 
-    if (version == -1) {
+    if (version != 2) {
         Serial.println("Settings reset to defaults in nvram.");
 
         prefs.clear();
-        prefs.putInt("version", 1);
+        set("version", 2);
 
-        Settings::deviceName = "esp32";
-        Settings::numLEDs = MAX_LEDS;
-        Settings::LEDOrder = RGB;
-        Settings::patternNumber = 0;
-        Settings::speed = 100;
-        Settings::loopDelay = 100;
-        Settings::brightness = 32;
-        Settings::density = -25;
+        set("deviceName", DEFAULT_NAME);
 
-        Settings::save();
+        set("ssid", DEFAULT_SSID);
+        set("wifiPassword", DEFAULT_WIFI_PASSWORD);
+
+        set("webPassword", DEFAULT_WEB_PASSWORD);
+        
+        set("numLEDs", MAX_LEDS);
+        set("LEDOrder", RGB);
+        set("patternNumber", 0);
+        set("speed", DEFAULT_SPEED);
+        set("loopDelay", DEFAULT_LOOP_DELAY);
+        set("brightness", DEFAULT_BRIGHTNESS);
+        set("density", DEFAULT_DENSITY);
+
+        Serial.println("Required settings saved to nvram.");
     }
-    else {
-        Settings::deviceName = prefs.getString("deviceName", "esp32");
-        Settings::numLEDs = prefs.getInt("numLEDs", MAX_LEDS);
-        Settings::LEDOrder = prefs.getInt("LEDOrder", RGB);
-        Settings::patternNumber = prefs.getInt("patternNumber", 0);
-        Settings::speed = prefs.getInt("speed", 100);
-        Settings::loopDelay = prefs.getInt("loopDelay", 100);
-        Settings::brightness = prefs.getInt("brightness", 32);
-        Settings::density = prefs.getInt("density", -25);
-    }
-
-    prefs.end();
 
     return true;
 }
 
-bool Settings::save()
+bool Settings::saveRequired()
 {
-    Preferences prefs;
+    set("deviceName", deviceName);
 
-    prefs.begin("chippers");
-    prefs.putString("deviceName", Settings::deviceName);
-    prefs.putInt("numLEDs", Settings::numLEDs);
-    prefs.putInt("LEDOrder", Settings::LEDOrder);
-    prefs.putInt("patternNumber", Settings::patternNumber);
-    prefs.putInt("speed", Settings::speed);
-    prefs.putInt("loopDelay", Settings::loopDelay);
-    prefs.putInt("brightness", Settings::brightness);
-    prefs.putInt("density", Settings::density);
-    prefs.end();
+    set("ssid", ssid);
+    set("wifiPassword", wifiPassword);
 
-    Serial.println("Settings saved to nvram.");
+    set("webPassword", webPassword);
+
+    set("numLEDs", numLEDs);
+    set("LEDOrder", LEDOrder);
+    set("patternNumber", patternNumber);
+    set("speed", speed);
+    set("loopDelay", loopDelay);
+    set("brightness", brightness);
+    set("density", density);
+
+    Serial.println("Required settings saved to nvram.");
 
     return true;
 }
 
-bool Settings::setDeviceName(String newName) {
-    if (!newName.equals(Settings::deviceName)) {
-        Settings::deviceName = newName;
-        Settings::save();
+bool Settings::set(String property, String val)
+{
+    startPrefs();
+    String previousVal;
+    
+    property.toLowerCase();
+    Serial.println(String("Settings::set - ") + property);
 
-        return true;
-    }
+    previousVal = get(property);
 
-    return false;
+    prefs.putString(property.c_str(), val);
+
+    return !previousVal.equalsIgnoreCase(val);
 }
 
-bool Settings::setNumLEDs(int newval) {
-    if (newval != Settings::numLEDs) {
-        Settings::numLEDs = newval;
-        Settings::save();
+bool Settings::set(String property, int val)
+{
+    startPrefs();
+    int previousVal = getInt(property);
 
-        return true;
-    }   
+    property.toLowerCase();
+    Serial.println(String("Settings::setInt - ") + property);
 
-    return false;
+    prefs.putInt(property.c_str(), val);
+
+    return (previousVal != val);
 }
 
-bool Settings::setNumLEDs(String newval) {
-    return Settings::setNumLEDs(newval.toInt());
+String Settings::get(String property)
+{
+    startPrefs();
+
+    property.toLowerCase();
+    Serial.println(String("Settings::get - ") + property);
+
+    return prefs.getString(property.c_str());
 }
 
-bool Settings::setLEDOrder(int newval) {
-    if (newval != Settings::LEDOrder) {
-        Settings::LEDOrder = newval;
-        Settings::save();
+int Settings::getInt(String property)
+{
+    startPrefs();
 
-        return true;
-    }   
+    property.toLowerCase();
+    Serial.println(String("Settings::getInt - ") + property);
 
-    return false;
-}
-
-bool Settings::setLEDOrder(String newval) {
-    return Settings::setLEDOrder(newval.toInt());
-}
-
-bool Settings::setPatternNumber(int newval) {
-    if (newval != Settings::patternNumber) {
-        Settings::patternNumber = newval;
-        Settings::save();
-
-        return true;
-    }   
-
-    return false;
-}
-
-bool Settings::setPatternNumber(String newval) {
-    return Settings::setPatternNumber(newval.toInt());
-}
-
-bool Settings::setSpeed(int newval) {
-    if (newval != Settings::speed) {
-        Settings::speed = newval;
-        Settings::save();
-
-        return true;
-    }   
-
-    return false;
-}
-
-bool Settings::setSpeed(String newval) {
-    return Settings::setSpeed(newval.toInt());
-}
-
-bool Settings::setDensity(int newval) {
-    if (newval != Settings::density) {
-        Settings::density = newval;
-        Settings::save();
-
-        return true;
-    }   
-
-    return false;
-}
-
-bool Settings::setDensity(String newval) {
-    return Settings::setDensity(newval.toInt());
-}
-
-bool Settings::setBrightness(int newval) {
-    if (newval != Settings::brightness) {
-        Settings::brightness = newval;
-        Settings::save();
-
-        return true;
-    }   
-
-    return false;
-}
-
-bool Settings::setBrightness(String newval) {
-    return Settings::setBrightness(newval.toInt());
-}
-
-bool Settings::setLoopDelay(int newval) {
-    if (newval != Settings::loopDelay) {
-        Settings::loopDelay = newval;
-        Settings::save();
-
-        return true;
-    }   
-
-    return false;
-}
-
-bool Settings::setLoopDelay(String newval) {
-    return Settings::setLoopDelay(newval.toInt());
+    return prefs.getInt(property.c_str());
 }
 

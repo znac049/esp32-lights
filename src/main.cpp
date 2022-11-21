@@ -19,22 +19,14 @@ extern RainbowChaseEffect rainbow;
 extern SnowSparkleEffect snow;
 extern BouncingBallsEffect balls;
 
-#define DATA_PIN1 32
-#define DATA_PIN2 33
-#define DATA_PIN3 25
-#define DATA_PIN4 26
-
-const char* ssid = "BT-TCCJ6M";
-const char* password = "K69JyKkdNHm7ce";
-
 int runningEffect=0;
 int effectNum=0;
 
 Effect *effects[] = {
+    dynamic_cast<Effect*>(&rte),
     dynamic_cast<Effect*>(&jub),
     dynamic_cast<Effect*>(&torp),
     dynamic_cast<Effect*>(&simple),
-    dynamic_cast<Effect*>(&rte),
     dynamic_cast<Effect*>(&rainbow), 
     dynamic_cast<Effect*>(&snow), 
     dynamic_cast<Effect*>(&balls), 
@@ -53,12 +45,12 @@ void setup()
     int wifiTries = 0;
 
     Serial.begin(115200);
-    Settings::load();
+    Settings::loadRequired();
 
-    Serial.println("Device name: " + Settings::deviceName);
+    Serial.println("Device name: " + Settings::get("deviceName"));
     blackout = false;
     
-    switch(Settings::LEDOrder) {
+    switch(Settings::getInt("LEDOrder")) {
         default:
         case RGB:
             FastLED.addLeds<WS2812B, DATA_PIN1, RGB>(leds, MAX_LEDS);
@@ -103,13 +95,13 @@ void setup()
             break;            
     }
     //FastLED.addLeds<WS2812B, DATA_PIN, GRB>(leds, MAX_LEDS);
-    FastLED.setBrightness(Settings::brightness);
+    FastLED.setBrightness(Settings::getInt("brightness"));
 
     pinMode(ledPin, OUTPUT);
     digitalWrite(ledPin, LOW);
 
     // Connect to Wi-Fi
-    WiFi.begin(ssid, password);
+    WiFi.begin(Settings::get("ssid").c_str(), Settings::get("wifiPassword").c_str());
     
     wifiOk = WiFi.status();
     while ((wifiOk != WL_CONNECTED) && (wifiTries < 10)) {
@@ -121,7 +113,7 @@ void setup()
     }
 
     if (wifiOk == WL_CONNECTED) {
-        if(!MDNS.begin(Settings::deviceName.c_str())) {
+        if(!MDNS.begin(Settings::get("deviceName").c_str())) {
             Serial.println("Error starting mDNS");
             return;
         }
@@ -133,7 +125,7 @@ void setup()
         // Set myself up as an access point
         Serial.println("Creating local access point...");
         WiFi.mode(WIFI_AP);
-        WiFi.softAP("outofrange", "12345678");
+        WiFi.softAP((Settings::get("ssid") + ".ap").c_str(), "12345678");
         Serial.println(WiFi.softAPIP());
     }
 
@@ -141,14 +133,14 @@ void setup()
 
     setupWebserver();
     
-    effectNum = Settings::patternNumber;
+    effectNum = Settings::getInt("patternNumber");
 
     Serial.print("Pattern Number=");
     Serial.println(effectNum);
 
     if (effectNum >= numEffects) {
         effectNum = 0;
-        Settings::setPatternNumber(effectNum);
+        Settings::set("patternNumber", effectNum);
     }
 
     dirty = false;
@@ -170,7 +162,7 @@ void loop() {
                 runningEffect = effectNum;
             }
 
-            FastLED.setBrightness(Settings::brightness);
+            FastLED.setBrightness(Settings::getInt("brightness"));
 
             effects[effectNum]->changesMade();
             dirty = false;

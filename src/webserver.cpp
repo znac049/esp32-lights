@@ -91,49 +91,38 @@ void handleWebSocketMessage(void *arg, uint8_t *data, size_t len)
         else if (action.equals("save")) {
             char *args = (char *) data;
 
-            if (Settings::setDeviceName(getArg(args, "name", "esp32"))) {
-                Serial.println("Name has changed.");
-                
-                MDNS.setInstanceName(Settings::deviceName.c_str());
+            if (Settings::set("deviceName", getArg(args, "name", DEFAULT_NAME))) {
+                MDNS.setInstanceName(Settings::get("deviceName").c_str());
                 dirty = true;
             }
 
-            if (Settings::setNumLEDs(getArg(args, "numleds", ""))) {
-                Serial.println("Number of LEDs has changed.");
+            if (Settings::set("numLEDs", getArg(args, "numleds", "").toInt())) {
                 dirty = true;
             }
 
-            if (Settings::setLEDOrder(getArg(args, "order", ""))) {
-                Serial.println("LED Order has changed.");
-                dirty = true;
-
+            if (Settings::set("LEDOrder", getArg(args, "order", "").toInt())) {
                 // It seems we have to reboot to change this :-(
                 ESP.restart();
             }
 
-            if (Settings::setPatternNumber(getArg(args, "pattern", ""))) {
-                Serial.println("Patern Number changed.");
-                effectNum = Settings::patternNumber;
+            if (Settings::set("patternNumber", getArg(args, "pattern", "").toInt())) {
+                effectNum = Settings::getInt("patternNumber");
                 dirty = true;
             }
 
-            if (Settings::setSpeed(getArg(args, "speed", "40"))) {
-                Serial.println("Speed has changed.");
+            if (Settings::set("speed", getArg(args, "speed", "40").toInt())) {
                 dirty = true;
             }
 
-            if (Settings::setBrightness(getArg(args, "brightness", "40"))) {
-                Serial.println("Brightness has changed.");
+            if (Settings::set("brightness", getArg(args, "brightness", "40").toInt())) {
                 dirty = true;
             }
 
-            if (Settings::setDensity(getArg(args, "density", "40"))) {
-                Serial.println("Density has changed.");
+            if (Settings::set("density", getArg(args, "density", "40").toInt())) {
                 dirty = true;
             }
 
-            if (Settings::setLoopDelay(getArg(args, "delay", "40"))) {
-                Serial.println("Loop delay has changed.");
+            if (Settings::set("loopDelay", getArg(args, "delay", "40").toInt())) {
                 dirty = true;
             }
         }
@@ -178,7 +167,7 @@ String getOrderOption(String text, int val) {
     res = res + "value=\"";
     res += val;
     res += "\"";
-    if (Settings::LEDOrder == val) {
+    if (Settings::getInt("LEDOrder") == val) {
         res += " selected";
     }
     res += ">" + text + "</option>";
@@ -199,15 +188,15 @@ String lookupMacro(const String& macroName)
             res = "";
         }
     } else if (macroName == "BRIGHTNESS") {
-        res = Settings::brightness;
+        res = Settings::getInt("brightness");
     } else if (macroName == "DELAY") {
-        res = Settings::loopDelay;
+        res = Settings::getInt("loopDelay");
     } else if (macroName == "DENSITY") {
-        res = Settings::density;
+        res = Settings::getInt("density");
     } else if (macroName == "DEVICEIP") {
         res = WiFi.localIP().toString();
     } else if (macroName == "DEVICENAME") {
-        res = Settings::deviceName;
+        res = Settings::get("deviceName");
     }
     else if (macroName == "LEDORDER") {
         res = getOrderOption("RGB", RGB);
@@ -221,7 +210,7 @@ String lookupMacro(const String& macroName)
         res = ledPin;
     }
     else if (macroName == "NUMLEDS") {
-        res = Settings::numLEDs;
+        res = Settings::getInt("numLEDs");
     }
     else if (macroName == "PATTERNS") {
         res = "";
@@ -236,7 +225,7 @@ String lookupMacro(const String& macroName)
         }
     }
     else if (macroName == "SPEED") {
-        res = Settings::speed;
+        res = Settings::getInt("speed");
     }
     else if(macroName == "STATE") {
         if (ledState){
