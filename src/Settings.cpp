@@ -45,15 +45,15 @@ bool Settings::loadRequired()
     startPrefs();
 
     version = prefs.getInt("version", -1);
-    
+
     Serial.print("nvram version: ");
     Serial.println(version);
 
-    if (version != 2) {
+    if (version != 3) {
         Serial.println("Settings reset to defaults in nvram.");
 
         prefs.clear();
-        set("version", 2);
+        set("version", 3);
 
         set("deviceName", DEFAULT_NAME);
 
@@ -69,6 +69,9 @@ bool Settings::loadRequired()
         set("loopDelay", DEFAULT_LOOP_DELAY);
         set("brightness", DEFAULT_BRIGHTNESS);
         set("density", DEFAULT_DENSITY);
+
+        set("numStrings", DEFAULT_NUM_STRINGS);
+        set("mirroredStrings", DEFAULT_MIRRORED_STRINGS);
 
         Serial.println("Required settings saved to nvram.");
     }

@@ -49,7 +49,7 @@ bool setupLEDs()
             FastLED.addLeds<WS2812B, DATA_PIN4, BRG>(leds, MAX_LEDS);
             break;            
     }
-    //FastLED.addLeds<WS2812B, DATA_PIN, GRB>(leds, MAX_LEDS);
+
     FastLED.setBrightness(Settings::getInt("brightness"));
 
     return true;
