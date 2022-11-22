@@ -18,7 +18,7 @@ AsyncWebSocket ws("/ws");
 
 void notifyClients()
 {
-    ws.textAll(String(ledState));
+    //ws.textAll(String(ledState));
 }
 
 String decodeAction(const char *args) {
@@ -84,11 +84,8 @@ void handleWebSocketMessage(void *arg, uint8_t *data, size_t len)
         data[len] = 0;
         action = decodeAction((const char *) data);
 
-        if (action.equals("toggle")) {
-            ledState = !ledState;
-            notifyClients();
-        }
-        else if (action.equals("save")) {
+        Serial.println(String("Got websocket action: ") + action);
+        if (action.equals("save")) {
             char *args = (char *) data;
 
             if (Settings::set("deviceName", getArg(args, "name", DEFAULT_NAME))) {
@@ -126,6 +123,18 @@ void handleWebSocketMessage(void *arg, uint8_t *data, size_t len)
                 dirty = true;
             }
         }
+        else if (action.equalsIgnoreCase("lightson")) {
+            if (blackout) {
+                Serial.println("Turning the lights back on");
+            }
+            blackout = false;
+        }
+        else if (action.equalsIgnoreCase("lightsoff")) {
+            if (!blackout) {
+                Serial.println("Turning the lights off");
+            }
+            blackout = true;
+        }
         else {
             Serial.println("Unknown command on websocket: " + action);
         }
@@ -149,8 +158,15 @@ void onEvent(AsyncWebSocket *server, AsyncWebSocketClient *client, AwsEventType 
             break;
     
         case WS_EVT_PONG:
+            Serial.printf("Ignoring websocket PONG event\n");
+            break;
+
         case WS_EVT_ERROR:
+            Serial.printf("Ignoring websocket ERROR event\n");
+            break;
+        
         default:
+            Serial.printf("Unknown websocket event received\n");
             break;
     }
 }
@@ -161,83 +177,6 @@ void initWebSocket()
     server.addHandler(&ws);
 }
 
-String getOrderOption(String text, int val) {
-    String res = "<option ";
-
-    res = res + "value=\"";
-    res += val;
-    res += "\"";
-    if (Settings::getInt("LEDOrder") == val) {
-        res += " selected";
-    }
-    res += ">" + text + "</option>";
-
-    return res;
-}
-
-String lookupMacro(const String& macroName)
-{
-    String res = "";
-
-    Serial.println(macroName);
-    if (macroName == "BLACKOUT") {
-        if (!blackout) {
-            res = "checked";
-        }
-        else {
-            res = "";
-        }
-    } else if (macroName == "BRIGHTNESS") {
-        res = Settings::getInt("brightness");
-    } else if (macroName == "DELAY") {
-        res = Settings::getInt("loopDelay");
-    } else if (macroName == "DENSITY") {
-        res = Settings::getInt("density");
-    } else if (macroName == "DEVICEIP") {
-        res = WiFi.localIP().toString();
-    } else if (macroName == "DEVICENAME") {
-        res = Settings::get("deviceName");
-    }
-    else if (macroName == "LEDORDER") {
-        res = getOrderOption("RGB", RGB);
-        res += getOrderOption("RBG", RBG);
-        res += getOrderOption("GBR", GBR);
-        res += getOrderOption("GRB", GRB);
-        res += getOrderOption("BRG", BRG);
-        res += getOrderOption("BGR", BGR);
-    }
-    else if (macroName == "LEDPIN") {
-        res = ledPin;
-    }
-    else if (macroName == "NUMLEDS") {
-        res = Settings::getInt("numLEDs");
-    }
-    else if (macroName == "PATTERNS") {
-        res = "";
-        for (int i=0; i<numEffects; i++) {
-            res += "<option value=\"" + String(i) + "\"";
-            if (effectNum == i) {
-                res += " selected";
-            }
-            res += ">";
-            res += effects[i]->getName();
-            res += "</option>";
-        }
-    }
-    else if (macroName == "SPEED") {
-        res = Settings::getInt("speed");
-    }
-    else if(macroName == "STATE") {
-        if (ledState){
-            res = "ON";
-        }
-        else{
-            res = "OFF";
-        }
-    }
-
-    return res;
-}
 
 void setupWebserver()
 {

@@ -34,8 +34,8 @@ Effect *effects[] = {
 
 int numEffects = (sizeof(effects) / sizeof(Effect *));
 
-bool ledState = 0;
-const int ledPin = 21;
+//bool ledState = 0;
+//const int ledPin = 21;
 //String hostname;
 
 void setup()
@@ -47,9 +47,6 @@ void setup()
     blackout = false;
 
     setupLEDs(); 
-
-    pinMode(ledPin, OUTPUT);
-    digitalWrite(ledPin, LOW);
 
     setupWifi();
     setupWebserver();
@@ -71,7 +68,6 @@ void setup()
 
 void loop() {
     cleanupWebsocketClients();
-    digitalWrite(ledPin, ledState);
 
     if (!blackout) {
         if (dirty) {
@@ -88,7 +84,17 @@ void loop() {
             effects[effectNum]->changesMade();
             dirty = false;
         }
+        effects[effectNum]->loop();
+    }
+    else {
+        for (int i=0; i<Settings::getInt("numleds"); i++) {
+            if (leds[i].r) 
+                leds[i].r--;
+            if (leds[i].g) 
+                leds[i].g--;
+            if (leds[i].b) 
+                leds[i].b--;
+        }
     }
 
-    effects[effectNum]->loop();
 }

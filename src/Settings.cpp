@@ -49,11 +49,11 @@ bool Settings::loadRequired()
     Serial.print("nvram version: ");
     Serial.println(version);
 
-    if (version != 3) {
+    if (version != 4) {
         Serial.println("Settings reset to defaults in nvram.");
 
         prefs.clear();
-        set("version", 3);
+        set("version", 4);
 
         set("deviceName", DEFAULT_NAME);
 
