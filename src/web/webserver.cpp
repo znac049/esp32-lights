@@ -97,6 +97,14 @@ void handleWebSocketMessage(void *arg, uint8_t *data, size_t len)
                 dirty = true;
             }
 
+            if (Settings::set("ssid", getArg(args, "ssid", ""))) {
+                dirty = true;
+            }
+
+            if (Settings::set("wifiPassword", getArg(args, "pass", ""))) {
+                dirty = true;
+            }
+
             if (Settings::set("LEDOrder", getArg(args, "order", "").toInt())) {
                 // It seems we have to reboot to change this :-(
                 ESP.restart();

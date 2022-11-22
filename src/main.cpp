@@ -87,14 +87,28 @@ void loop() {
         effects[effectNum]->loop();
     }
     else {
-        for (int i=0; i<Settings::getInt("numleds"); i++) {
-            if (leds[i].r) 
-                leds[i].r--;
-            if (leds[i].g) 
-                leds[i].g--;
-            if (leds[i].b) 
-                leds[i].b--;
+        bool fading = false;
+
+        // Fade down the LEDs
+        for (int i=0; i<MAX_LEDS; i++) {
+            if (leds[i].red > 0) { 
+                leds[i].red--;
+                fading = true;
+            }
+
+            if (leds[i].green > 0) {
+                leds[i].green--;
+                fading = true;
+            }
+
+            if (leds[i].blue > 0) {
+                leds[i].blue--;
+                fading = true;
+            }
+        }
+
+        if (fading) {
+            Serial.println("Fading down to blackout");
         }
     }
-
 }
