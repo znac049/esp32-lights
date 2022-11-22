@@ -110,7 +110,7 @@ bool Settings::set(String property, String val)
 
     previousVal = get(property);
     if (!previousVal.equals(val)) {
-        Serial.printf("Setting '%s' changed: '%s' -> '%s'\n", property, previousVal.c_str(), val.c_str());
+        Serial.printf("Setting '%s' changed: '%s' -> '%s'\n", property.c_str(), previousVal.c_str(), val.c_str());
         prefs.putString(property.c_str(), val);
         
         return true;
@@ -127,7 +127,7 @@ bool Settings::set(String property, int val)
     property.toLowerCase();
 
     if (previousVal != val) {
-        Serial.printf("Setting '%s' changed: '%d' -> '%d'\n", property, previousVal, val);
+        Serial.printf("Setting '%s' changed: '%d' -> '%d'\n", property.c_str(), previousVal, val);
         prefs.putInt(property.c_str(), val);
         
         return true;
