@@ -34,10 +34,6 @@ Effect *effects[] = {
 
 int numEffects = (sizeof(effects) / sizeof(Effect *));
 
-//bool ledState = 0;
-//const int ledPin = 21;
-//String hostname;
-
 void setup()
 {
     Serial.begin(115200);
@@ -47,9 +43,13 @@ void setup()
     blackout = false;
 
     setupLEDs(); 
-
     setupWifi();
     setupWebserver();
+
+    // Jumper to determine if a nvram reset is needed
+    pinMode(RESET_NVRAM_PIN, INPUT_PULLUP);
+    delay(10);
+    Settings::loadRequired();
     
     effectNum = Settings::getInt("patternNumber");
 
@@ -65,11 +65,44 @@ void setup()
     runningEffect = effectNum;
     effects[effectNum]->reset();
 }
+inline int fadeDown(int gun)
+{
+    gun = gun -8;
 
-void loop() {
+    if (gun < 0)
+        return 0;
+
+    return gun;
+}
+
+void fade()
+{
+    // Fade down the LEDs
+    for (int i=0; i<Settings::getInt("numleds"); i++) {
+        if (leds[i].red > 0) { 
+            leds[i].red = fadeDown(leds[i].red);
+        }
+
+        if (leds[i].green > 0) {
+            leds[i].green = fadeDown(leds[i].green);
+        }
+
+        if (leds[i].blue > 0) {
+            leds[i].blue = fadeDown(leds[i].blue);
+        }
+    }
+
+    FastLED.show();
+}
+
+void loop()
+{
     cleanupWebsocketClients();
 
-    if (!blackout) {
+    if (blackout) {
+        fade();
+    }
+    else {
         if (dirty) {
             Serial.println("In main loop - changes to settings detected.");
 
@@ -81,34 +114,11 @@ void loop() {
 
             FastLED.setBrightness(Settings::getInt("brightness"));
 
+            // Give the effect a chance to change based on the changes made
             effects[effectNum]->changesMade();
             dirty = false;
         }
+
         effects[effectNum]->loop();
-    }
-    else {
-        bool fading = false;
-
-        // Fade down the LEDs
-        for (int i=0; i<MAX_LEDS; i++) {
-            if (leds[i].red > 0) { 
-                leds[i].red--;
-                fading = true;
-            }
-
-            if (leds[i].green > 0) {
-                leds[i].green--;
-                fading = true;
-            }
-
-            if (leds[i].blue > 0) {
-                leds[i].blue--;
-                fading = true;
-            }
-        }
-
-        if (fading) {
-            Serial.println("Fading down to blackout");
-        }
     }
 }

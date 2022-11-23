@@ -87,6 +87,7 @@ void handleWebSocketMessage(void *arg, uint8_t *data, size_t len)
         Serial.println(String("Got websocket action: ") + action);
         if (action.equals("save")) {
             char *args = (char *) data;
+            String val;
 
             if (Settings::set("deviceName", getArg(args, "name", DEFAULT_NAME))) {
                 MDNS.setInstanceName(Settings::get("deviceName").c_str());
@@ -101,7 +102,9 @@ void handleWebSocketMessage(void *arg, uint8_t *data, size_t len)
                 dirty = true;
             }
 
-            if (Settings::set("wifiPassword", getArg(args, "pass", ""))) {
+            // Ignore empty password
+            val = getArg(args, "pass", "");
+            if (!val.isEmpty() && Settings::set("wifiPassword", val)) {
                 dirty = true;
             }
 

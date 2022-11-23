@@ -29,6 +29,34 @@ int Settings::loopDelay;
 int Settings::density = -25;
 int Settings::brightness = 16;
 
+void Settings::initSettings()
+{
+    Serial.println("Settings reset to defaults in nvram.");
+
+    prefs.clear();
+    set("version", 4);
+
+    set("deviceName", DEFAULT_NAME);
+
+    set("ssid", DEFAULT_SSID);
+    set("wifiPassword", DEFAULT_WIFI_PASSWORD);
+
+    set("webPassword", DEFAULT_WEB_PASSWORD);
+        
+    set("numLEDs", MAX_LEDS);
+    set("LEDOrder", RGB);
+    set("patternNumber", 0);
+    set("speed", DEFAULT_SPEED);
+    set("loopDelay", DEFAULT_LOOP_DELAY);
+    set("brightness", DEFAULT_BRIGHTNESS);
+    set("density", DEFAULT_DENSITY);
+
+    set("numStrings", DEFAULT_NUM_STRINGS);
+    set("mirroredStrings", DEFAULT_MIRRORED_STRINGS);
+
+    Serial.println("Required settings saved to nvram.");
+}
+
 void Settings::startPrefs()
 {
     if (!prefsStarted) {
@@ -40,40 +68,27 @@ void Settings::startPrefs()
 
 bool Settings::loadRequired()
 {
-    int version;
+    int version = -1;
+    int resetRequired = digitalRead(RESET_NVRAM_PIN);
+
+    Serial.printf("DigitalRead(%d) = %d\n", RESET_NVRAM_PIN, resetRequired);
+    resetRequired = 1;
 
     startPrefs();
 
-    version = prefs.getInt("version", -1);
+    if (resetRequired == 0) {
+        Serial.println("Reset NVRAM jumper present. Re-initialising NVRAM...");
+    }
+    else {
+        if (prefs.isKey("version")) {
+            version = prefs.getInt("version", -1);
+        }
 
-    Serial.print("nvram version: ");
-    Serial.println(version);
+        Serial.printf("nvram version: %d\n", version);
+    }
 
-    if (version != 4) {
-        Serial.println("Settings reset to defaults in nvram.");
-
-        prefs.clear();
-        set("version", 4);
-
-        set("deviceName", DEFAULT_NAME);
-
-        set("ssid", DEFAULT_SSID);
-        set("wifiPassword", DEFAULT_WIFI_PASSWORD);
-
-        set("webPassword", DEFAULT_WEB_PASSWORD);
-        
-        set("numLEDs", MAX_LEDS);
-        set("LEDOrder", RGB);
-        set("patternNumber", 0);
-        set("speed", DEFAULT_SPEED);
-        set("loopDelay", DEFAULT_LOOP_DELAY);
-        set("brightness", DEFAULT_BRIGHTNESS);
-        set("density", DEFAULT_DENSITY);
-
-        set("numStrings", DEFAULT_NUM_STRINGS);
-        set("mirroredStrings", DEFAULT_MIRRORED_STRINGS);
-
-        Serial.println("Required settings saved to nvram.");
+    if ((resetRequired == 0) || (version != CURRENT_VERSION)) {
+        initSettings();
     }
 
     return true;
@@ -81,6 +96,8 @@ bool Settings::loadRequired()
 
 bool Settings::saveRequired()
 {
+    set("version", CURRENT_VERSION);
+
     set("deviceName", deviceName);
 
     set("ssid", ssid);
@@ -103,47 +120,102 @@ bool Settings::saveRequired()
 
 bool Settings::set(String property, String val)
 {
-    startPrefs();
     String previousVal;
+    const char *prop;
+    bool changed = false;
+ 
+    startPrefs();
     
     property.toLowerCase();
+    prop = property.c_str();
 
-    previousVal = get(property);
-    if (!previousVal.equals(val)) {
-        Serial.printf("Setting '%s' changed: '%s' -> '%s'\n", property.c_str(), previousVal.c_str(), val.c_str());
-        prefs.putString(property.c_str(), val);
-        
-        return true;
+    // Does the key alredy exist?
+    if (prefs.isKey(prop)) {
+        PreferenceType keyType = prefs.getType(prop);
+
+        if (keyType != PT_STR) {
+            Serial.printf("Warning: existing key '%s'is not of type STRING.", prop);
+        }
+
+        previousVal = get(property);
+        if (!previousVal.equals(val)) {
+            Serial.printf("Changing existing key '%s' from '%s' to '%s'\n", prop, previousVal.c_str(), val.c_str());
+            prefs.putString(prop, val);
+            
+            changed = true;
+        }
+    }
+    else {
+        Serial.printf("Setting new key '%s' to '%s'\n", property.c_str(), val.c_str());
+        prefs.putString(prop, val);
+
+        changed = true;
     }
 
-    return false;
+    return changed;
 }
 
 bool Settings::set(String property, int val)
 {
+    int previousVal;
+    const char *prop;
+    bool changed = false;
+
     startPrefs();
-    int previousVal = getInt(property);
 
     property.toLowerCase();
+    prop = property.c_str();
 
-    if (previousVal != val) {
-        Serial.printf("Setting '%s' changed: '%d' -> '%d'\n", property.c_str(), previousVal, val);
-        prefs.putInt(property.c_str(), val);
-        
-        return true;
+    // Does the key alredy exist?
+    if (prefs.isKey(prop)) {
+        PreferenceType keyType = prefs.getType(prop);
+
+        if (keyType != PT_I32) {
+            Serial.printf("Warning: existing key '%s' is not of type INT32.", prop);
+        }
+
+        previousVal = getInt(property);
+        if (previousVal != val) {
+            Serial.printf("Changing existing key '%s' from %d to %d\n", prop, previousVal, val);
+            prefs.putInt(prop, val);
+            
+            changed = true;
+        }
+    }
+    else {
+        Serial.printf("Setting new key '%s' to %d\n", prop, val);
+        prefs.putInt(prop, val);
+
+        changed = true;
     }
 
-    return false;
+    return changed;
+}
+
+bool Settings::set(String property, char *val)
+{
+    return set(property, String(val));
 }
 
 String Settings::get(String property)
 {
+    String val;
+    const char *prop;
+
     startPrefs();
 
     property.toLowerCase();
-    //Serial.println(String("Settings::get - ") + property);
+    prop = property.c_str();
 
-    return prefs.getString(property.c_str());
+    if (!prefs.isKey(prop)) {
+        Serial.printf("Attempting to read a non-existant key '%s'\n", prop);
+    }
+    else {
+        val = prefs.getString(prop);
+        Serial.printf("Read '%s' as '%s'\n", prop, val);
+    }
+
+    return val;
 }
 
 int Settings::getInt(String property)

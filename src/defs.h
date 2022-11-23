@@ -22,4 +22,6 @@
 #define DATA_PIN2 33
 #define DATA_PIN3 25
 #define DATA_PIN4 26
+
+#define RESET_NVRAM_PIN 19
 #endif

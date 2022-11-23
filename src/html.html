@@ -14,41 +14,47 @@ const char index_html[] PROGMEM = R"rawliteral(
     <div class="pure-u-1">
       <h1>Device Settings - %DEVICEIP%</h1>
     </div>
-    <div class="pure-u-1 pure-u-md-1-2">
+    <div class="pure-u-1">
       <form class="pure-form pure-form-aligned">
         <fieldset class="pure-group">
-          <label for="ssid">SSID</label>
-          <input id="ssid" type="text" value="%SSID%"/>
-
-          <label for="pass">WiFi password</label>
-          <input id="pass" type="password"/>
+          <legend>Network Settings</legend>
+          <div class="pure-control-group"></div>
+            <label for="ssid">SSID</label>
+            <input id="ssid" type="text" value="%SSID%"/>
+          </div>
+          <div class="pure-control-group">
+            <label for="pass">WiFi password</label>
+            <input id="pass" type="password"/>
+          </div>
+          <div class="pure-control-group">
+            <label for="devicename">Device Name</label>
+            <input id="devicename" type="text" value="%DEVICENAME%" />
+          </div>
         </fieldset>
         <fieldset class="pure-group">
-          <label for="blackout">Master light switch</label>
-          <input id="blackout" name="blackout" class="switch is-rounded is-medium is-success" type="checkbox" %BLACKOUT%/>
-
-          <label for="devicename">Device Name</label>
-          <input id="devicename" type="text" value="%DEVICENAME%" />
+          <legend>Pattern Selection</legend>
+          <label for="blackout" class="pure-checkbox">Master light switch</label>
+          <input id="blackout" name="blackout" type="checkbox" %BLACKOUT%/>
 
           <label for="numleds">number of LEDs</label>
           <input id="numleds" type="text" value="%NUMLEDS%" />
 
+          <label for="brightness">Brightness</label>
+          <input id="brightness" type="text" value="%BRIGHTNESS%" />
+
           <label for="order">LED Colour Order</label>
-          <select id="order" class="input" type="text">
+          <select id="order">
             %LEDORDER%
           </select>
-          <span class="pure-form-message">Triggers a reboot</span>
 
           <label for="pattern">Pattern</label>
           <select id="pattern">
             %PATTERNS%
           </select>
 
-          <label for="brightness">number of LEDs</label>
-          <input id="brightness" type="text" value="%BRIGHTNESS%" />
         </fieldset>
-        <h2>Effect Parameters</h2>
         <fieldset class="pure-group">
+          <legend>Effect Parameters</legend>
           <label for="speed">Speed</label>
           <input id="speed" type="text" value="%SPEED%" />
 
