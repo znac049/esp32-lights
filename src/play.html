@@ -1,0 +1,67 @@
+<!DOCTYPE HTML><html>
+<head>
+ <title>CLC - Chippers Light Controller</title>
+ <meta name="viewport" content="width=device-width, initial-scale=1">
+ <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre.min.css">
+ <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-exp.min.css">
+ <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-icons.min.css">
+ <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+    <div">
+      <h1>Device Settings - %DEVICEIP%</h1>
+    </div>
+    <div class="form-group>">
+        <label class="form-label" for="ssid">SSID</label>
+        <input class="form-input" id="ssid" type="text" value="%SSID%"/>
+    </div>
+    <div class="form-group>">      
+        <label class="form-label" for="pass">WiFi password</label>
+        <input class="form-input" id="pass" type="password"/>
+    </div>
+    <div class="form-group>">
+        <label class="form-label" for="devicename">Device Name</label>
+        <input class="form-input" id="devicename" type="text" value="%DEVICENAME%" />
+    </div>
+    <div class="form-group>">
+        <label class="form-label" for="blackout">Master light switch</label>
+        <input class="form-input" id="blackout" name="blackout" type="checkbox" %BLACKOUT%/>
+    </div>
+    <div class="form-group>">
+        <label class="form-label" for="numleds">number of LEDs</label>
+        <input class="form-input" id="numleds" type="text" value="%NUMLEDS%" />
+    </div>
+    <div class="form-group>">
+        <label class="form-label" for="brightness">Brightness</label>
+        <input class="form-input" id="brightness" type="text" value="%BRIGHTNESS%" />
+    </div>
+    <div class="form-group>">
+        <label class="form-label" for="order">LED Colour Order</label>
+        <select class="form-input" id="order">
+            %LEDORDER%
+        </select>
+    </div>
+    <div class="form-group>">
+        <label class="form-label" for="pattern">Pattern</label>
+        <select class="form-input" id="pattern">
+            %PATTERNS%
+        </select>
+    </div>
+    <div class="form-group>">
+        <label class="form-label" for="speed">Speed</label>
+        <input class="form-input" id="speed" type="text" value="%SPEED%" />
+    </div>
+    <div class="form-group>">
+        <label class="form-label" for="delay">Delay</label>
+        <input class="form-input" id="delay" type="text" value="%DELAY%" />
+    </div>
+    <div class="form-group>">
+        <label class="form-label" for="density">Density</label>
+        <input class="form-input" id="density" type="text" value="%DENSITY%" />
+    </div>
+    <div class="form-group>">   
+        <button class="form-input" id="save">Save</button>
+    </div>
+
+</body>
+</html>

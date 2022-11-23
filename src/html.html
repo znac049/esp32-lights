@@ -1,82 +1,70 @@
 const char index_html[] PROGMEM = R"rawliteral(
-<!DOCTYPE HTML><html>
-<head>
- <title>CLC - Chippers Light Controller</title>
- <meta name="viewport" content="width=device-width, initial-scale=1">
- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/purecss@3.0.0/build/pure-min.css" integrity="sha384-X38yfunGUhNzHpBaEBsWLO+A0HDYOQi8ufWDkZ0k9e0eXz/tH3II7uKZ9msv++Ls" crossorigin="anonymous">
- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/purecss@3.0.0/build/base-min.css">
- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/purecss@3.0.0/build/grids-responsive-min.css">
- <link rel="icon" href="data:,">
- <meta name="viewport" content="width=device-width, initial-scale=1">
-</head>
-<body>
-  <div class="pure-g">
-    <div class="pure-u-1">
-      <h1>Device Settings - %DEVICEIP%</h1>
-    </div>
-    <div class="pure-u-1">
-      <form class="pure-form pure-form-aligned">
-        <fieldset class="pure-group">
-          <legend>Network Settings</legend>
-          <div class="pure-control-group"></div>
-            <label for="ssid">SSID</label>
-            <input id="ssid" type="text" value="%SSID%"/>
-          </div>
-          <div class="pure-control-group">
-            <label for="pass">WiFi password</label>
-            <input id="pass" type="password"/>
-          </div>
-          <div class="pure-control-group">
-            <label for="devicename">Device Name</label>
-            <input id="devicename" type="text" value="%DEVICENAME%" />
-          </div>
-        </fieldset>
-        <fieldset class="pure-group">
-          <legend>Pattern Selection</legend>
-          <label for="blackout" class="pure-checkbox">Master light switch</label>
-          <input id="blackout" name="blackout" type="checkbox" %BLACKOUT%/>
-
-          <label for="numleds">number of LEDs</label>
-          <input id="numleds" type="text" value="%NUMLEDS%" />
-
-          <label for="brightness">Brightness</label>
-          <input id="brightness" type="text" value="%BRIGHTNESS%" />
-
-          <label for="order">LED Colour Order</label>
-          <select id="order">
-            %LEDORDER%
-          </select>
-
-          <label for="pattern">Pattern</label>
-          <select id="pattern">
-            %PATTERNS%
-          </select>
-
-        </fieldset>
-        <fieldset class="pure-group">
-          <legend>Effect Parameters</legend>
-          <label for="speed">Speed</label>
-          <input id="speed" type="text" value="%SPEED%" />
-
-          <label for="delay">Delay</label>
-          <input id="delay" type="text" value="%DELAY%" />
-
-          <label for="density">Density</label>
-          <input id="density" type="text" value="%DENSITY%" />
-        </fieldset>
-        <p>Submit</p>
-        <button id="save" class="pure-button pure-button-primary">Save</button>
-      </form>
-    </div>
-    <div class="pure-u-1">
-      <h1>Danger Zone</h1>
-      <p>This device supports over the air (OTA) firmware updates. If you want to use this feature then be sure you know what you are doing as uploading a bad firmware can brick the device.</p>
-      <p><b>You have been warned!</b></p>
-      <p>If you really want to do this, press the button below:</p>
-      <button id="ota">Update Firmware</button>      
-     </div>
-  </div>
-
+  <!DOCTYPE HTML><html>
+    <head>
+     <title>CLC - Chippers Light Controller</title>
+     <meta name="viewport" content="width=device-width, initial-scale=1">
+     <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre.min.css">
+     <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-exp.min.css">
+     <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-icons.min.css">
+     <meta name="viewport" content="width=device-width, initial-scale=1">
+    </head>
+    <body>
+        <div">
+          <h1>Device Settings - %DEVICEIP%</h1>
+        </div>
+        <form class="form-horizontal">
+        <div class="form-group>">
+            <label class="form-label" for="ssid">SSID</label>
+            <input class="form-input" id="ssid" type="text" value="%SSID%"/>
+        </div>
+        <div class="form-group>">      
+            <label class="form-label" for="pass">WiFi password</label>
+            <input class="form-input" id="pass" type="password"/>
+        </div>
+        <div class="form-group>">
+            <label class="form-label" for="devicename">Device Name</label>
+            <input class="form-input" id="devicename" type="text" value="%DEVICENAME%" />
+        </div>
+        <div class="form-group>">
+            <label class="form-switch" for="blackout"><input id="blackout" name="blackout" type="checkbox" %BLACKOUT%><i class="form-icon"></i>Master light switch</label>
+        </div>
+        <div class="form-group>">
+            <label class="form-label" for="numleds">number of LEDs</label>
+            <input class="form-input" id="numleds" type="text" value="%NUMLEDS%" />
+        </div>
+        <div class="form-group>">
+            <label class="form-label" for="brightness">Brightness</label>
+            <input class="form-input" id="brightness" type="text" value="%BRIGHTNESS%" />
+        </div>
+        <div class="form-group>">
+            <label class="form-label" for="order">LED Colour Order</label>
+            <select class="form-input" id="order">
+                %LEDORDER%
+            </select>
+        </div>
+        <div class="form-group>">
+            <label class="form-label" for="pattern">Pattern</label>
+            <select class="form-input" id="pattern">
+                %PATTERNS%
+            </select>
+        </div>
+        <div class="form-group>">
+            <label class="form-label" for="speed">Speed</label>
+            <input class="form-input" id="speed" type="text" value="%SPEED%" />
+        </div>
+        <div class="form-group>">
+            <label class="form-label" for="delay">Delay</label>
+            <input class="form-input" id="delay" type="text" value="%DELAY%" />
+        </div>
+        <div class="form-group>">
+            <label class="form-label" for="density">Density</label>
+            <input class="form-input" id="density" type="text" value="%DENSITY%" />
+        </div>
+        <div class="form-group>">   
+            <button class="form-input" id="save">Save</button>
+        </div>
+        </form>
+    
 
 <script>
   var gateway = `ws://${window.location.hostname}/ws`;
