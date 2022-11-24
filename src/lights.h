@@ -13,15 +13,16 @@ extern CRGB leds[MAX_LEDS];
 bool setupLEDs();
 
 // main.cpp
-extern bool ledState;
-extern const int ledPin;
 extern int effectNum;
 extern int numEffects;
 extern bool dirty;
-extern bool blackout;
+//extern bool blackout;
 extern Effect *effects[];
 
-// webserver.cpp
+// web/macro.cpp
+extern String lookupMacro(const String& macroName);
+
+// web/webserver.cpp
 extern void setupWebserver();
 extern void cleanupWebsocketClients();
 

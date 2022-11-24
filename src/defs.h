@@ -3,8 +3,8 @@
 
 #define MAX_LEDS 300
 
-#define DEFAULT_SSID "outofrange"
-#define DEFAULT_WIFI_PASSWORD "12345678"
+#define DEFAULT_SSID "BT-TCCJ6M"
+#define DEFAULT_WIFI_PASSWORD "K69JyKkdNHm7ce"
 #define DEFAULT_NAME "esp-lights"
 
 #define DEFAULT_WEB_PASSWORD "12345678"
@@ -22,4 +22,6 @@
 #define DATA_PIN2 33
 #define DATA_PIN3 25
 #define DATA_PIN4 26
+
+#define RESET_NVRAM_PIN 19
 #endif

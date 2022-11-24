@@ -34,25 +34,22 @@ Effect *effects[] = {
 
 int numEffects = (sizeof(effects) / sizeof(Effect *));
 
-bool ledState = 0;
-const int ledPin = 21;
-//String hostname;
-
 void setup()
 {
     Serial.begin(115200);
     Settings::loadRequired();
 
     Serial.println("Device name: " + Settings::get("deviceName"));
-    blackout = false;
+    //blackout = false;
 
     setupLEDs(); 
-
-    pinMode(ledPin, OUTPUT);
-    digitalWrite(ledPin, LOW);
-
     setupWifi();
     setupWebserver();
+
+    // Jumper to determine if a nvram reset is needed
+    pinMode(RESET_NVRAM_PIN, INPUT_PULLUP);
+    delay(10);
+    Settings::loadRequired();
     
     effectNum = Settings::getInt("patternNumber");
 
@@ -68,12 +65,44 @@ void setup()
     runningEffect = effectNum;
     effects[effectNum]->reset();
 }
+inline int fadeDown(int gun)
+{
+    gun = gun -8;
 
-void loop() {
+    if (gun < 0)
+        return 0;
+
+    return gun;
+}
+
+void fade()
+{
+    // Fade down the LEDs
+    for (int i=0; i<Settings::getInt("numleds"); i++) {
+        if (leds[i].red > 0) { 
+            leds[i].red = fadeDown(leds[i].red);
+        }
+
+        if (leds[i].green > 0) {
+            leds[i].green = fadeDown(leds[i].green);
+        }
+
+        if (leds[i].blue > 0) {
+            leds[i].blue = fadeDown(leds[i].blue);
+        }
+    }
+
+    FastLED.show();
+}
+
+void loop()
+{
     cleanupWebsocketClients();
-    digitalWrite(ledPin, ledState);
 
-    if (!blackout) {
+    if (Settings::getInt("blackout")) {
+        fade();
+    }
+    else {
         if (dirty) {
             Serial.println("In main loop - changes to settings detected.");
 
@@ -85,10 +114,11 @@ void loop() {
 
             FastLED.setBrightness(Settings::getInt("brightness"));
 
+            // Give the effect a chance to change based on the changes made
             effects[effectNum]->changesMade();
             dirty = false;
         }
-    }
 
-    effects[effectNum]->loop();
+        effects[effectNum]->loop();
+    }
 }

@@ -5,10 +5,13 @@
 
 class Settings {
     private:
+        static const int CURRENT_VERSION = 4;
+
         static bool prefsStarted;
         static Preferences prefs;
 
         static void startPrefs();
+        static void initSettings();
 
     
         static String deviceName;
@@ -32,6 +35,7 @@ class Settings {
         static bool loadRequired();
 
         static bool set(String property, String val);
+        static bool set(String property, char *val);
         static bool set(String property, int val);
 
         static String get(String property);
