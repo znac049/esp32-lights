@@ -16,7 +16,7 @@ bool setupLEDs();
 extern int effectNum;
 extern int numEffects;
 extern bool dirty;
-extern bool blackout;
+//extern bool blackout;
 extern Effect *effects[];
 
 // web/macro.cpp

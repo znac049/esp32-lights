@@ -24,7 +24,7 @@ String lookupMacro(const String& macroName)
     String res = "";
 
     if (macroName == "BLACKOUT") {
-        if (!blackout) {
+        if (!Settings::getInt("blackout")) {
             res = "checked";
         }
         else {

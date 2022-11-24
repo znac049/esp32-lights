@@ -18,4 +18,4 @@ SnowSparkleEffect snow;
 BouncingBallsEffect balls;
 
 bool dirty;
-bool blackout;
+//bool blackout;

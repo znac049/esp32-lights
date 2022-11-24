@@ -135,16 +135,16 @@ void handleWebSocketMessage(void *arg, uint8_t *data, size_t len)
             }
         }
         else if (action.equalsIgnoreCase("lightson")) {
-            if (blackout) {
+            if (Settings::getInt("blackout")) {
                 Serial.println("Turning the lights back on");
+                Settings::set("blackout", 0);
             }
-            blackout = false;
         }
         else if (action.equalsIgnoreCase("lightsoff")) {
-            if (!blackout) {
+            if (!Settings::getInt("blackout")) {
                 Serial.println("Turning the lights off");
+                Settings::set("blackout", 1);
             }
-            blackout = true;
         }
         else {
             Serial.println("Unknown command on websocket: " + action);

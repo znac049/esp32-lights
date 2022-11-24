@@ -40,7 +40,7 @@ void setup()
     Settings::loadRequired();
 
     Serial.println("Device name: " + Settings::get("deviceName"));
-    blackout = false;
+    //blackout = false;
 
     setupLEDs(); 
     setupWifi();
@@ -99,7 +99,7 @@ void loop()
 {
     cleanupWebsocketClients();
 
-    if (blackout) {
+    if (Settings::getInt("blackout")) {
         fade();
     }
     else {

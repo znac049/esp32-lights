@@ -1,4 +1,4 @@
-const char index_html[] PROGMEM = R"rawliteral(<!DOCTYPE HTML><html>
+<!DOCTYPE HTML><html>
 <head>
   <title>CLC - Chippers Light Controller</title>
   <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre.min.css">
@@ -120,7 +120,7 @@ const char index_html[] PROGMEM = R"rawliteral(<!DOCTYPE HTML><html>
           <!-- Save button -->
           <div class="form-group">
             <div class="col-6 col-sm-12"></div>
-            <button class="btn btn-primary" id="save">Save</button>
+            <button class="btn" id="save">Save Settings</button>
           </div>
         </form>
       </div>
@@ -131,9 +131,9 @@ const char index_html[] PROGMEM = R"rawliteral(<!DOCTYPE HTML><html>
           know what you are doing as uploading a bad firmware can brick the device.</p>
         <p>You have been warned!</p>
         <p>If you really want to do this, press the button below:</p>
-        <button class="btn btn-error" id="ota">Update Firmware</button>
+        <button class="btn is-error" id="ota">Update Firmware</button>
       </div>
-
+    
     </div>
   </div>
   
@@ -198,4 +198,4 @@ const char index_html[] PROGMEM = R"rawliteral(<!DOCTYPE HTML><html>
   }
 </script>
 </body>
-</html>)rawliteral";
+</html>

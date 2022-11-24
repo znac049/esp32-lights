@@ -42,6 +42,8 @@ void Settings::initSettings()
     set("wifiPassword", DEFAULT_WIFI_PASSWORD);
 
     set("webPassword", DEFAULT_WEB_PASSWORD);
+
+    set("blackout", 0);
         
     set("numLEDs", MAX_LEDS);
     set("LEDOrder", RGB);
