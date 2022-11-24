@@ -56,7 +56,12 @@ String lookupMacro(const String& macroName)
         res = Settings::getInt("numstrings");
     }
     else if (macroName == "PARALLEL") {
-        res = (Settings::getInt("parallel")==0?"":"checked");
+        if (!Settings::getInt("parallel")) {
+            res = "checked";
+        }
+        else {
+            res = "";
+        }
     }
     else if (macroName == "PATTERNS") {
         res = "";
