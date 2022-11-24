@@ -46,6 +46,8 @@ void Settings::initSettings()
     set("blackout", 0);
         
     set("numLEDs", MAX_LEDS);
+    set("numstrings", 1);
+    set("parallel", 1);
     set("LEDOrder", RGB);
     set("patternNumber", 0);
     set("speed", DEFAULT_SPEED);

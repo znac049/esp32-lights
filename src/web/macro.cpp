@@ -52,6 +52,12 @@ String lookupMacro(const String& macroName)
     else if (macroName == "NUMLEDS") {
         res = Settings::getInt("numLEDs");
     }
+    else if (macroName == "NUMSTRINGS") {
+        res = Settings::getInt("numstrings");
+    }
+    else if (macroName == "PARALLEL") {
+        res = (Settings::getInt("parallel")==0?"":"checked");
+    }
     else if (macroName == "PATTERNS") {
         res = "";
         for (int i=0; i<numEffects; i++) {

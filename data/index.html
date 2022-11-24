@@ -14,7 +14,7 @@
   <div class="container">
     <div class="columns">
       <div class="column col-2 col-sm-12"></div>
-      <div class="column col-5 col-sm-12">
+      <div class="column col-6 col-sm-12">
 
         <form class="form-horizontal">
           <!-- SSID-->
@@ -47,16 +47,31 @@
           <!-- Blackout switch -->
           <div class="form-group">
             <div class="col-3 col-sm-12">
-              <label class="form-switch is-success" for="blackout"><input id="blackout" name="blackout" type="checkbox" %BLACKOUT%><i class="form-icon"></i>Master light switch</label>
+              <label class="form-switch is-success" for="blackout"><input id="blackout" type="checkbox" %BLACKOUT%><i class="form-icon"></i>Master light switch</label>
             </div>
           </div>
           <!-- Number of LEDs -->
           <div class="form-group">
             <div class="col-3 col-sm-12">
-              <label class="form-label" for="numleds">number of LEDs</label>
+              <label class="form-label" for="numleds">Total number of LEDs (all strings)</label>
             </div>
             <div class="col-4 col-sm-12">
               <input class="form-input" id="numleds" type="text" value="%NUMLEDS%" />
+            </div>
+          </div>
+          <!-- Number of active strings -->
+          <div class="form-group">
+            <div class="col-3 col-sm-12">
+              <label class="form-label" for="numstrings">Number of active LED strings</label>
+            </div>
+            <div class="col-4 col-sm-12">
+              <input class="form-input" id="numstrings" type="text" value="%NUMSTRINGS%" />
+            </div>
+          </div>
+          <!-- Parallel LED Strings -->
+          <div class="form-group">
+            <div class="col-3 col-sm-12">
+              <label class="form-switch is-success" for="parallel"><input id="parallel" type="checkbox" %PARALLEL%><i class="form-icon"></i>Parallel LED strings</label>
             </div>
           </div>
           <!-- Brightness -->
@@ -186,6 +201,8 @@
                   '&ssid=' + document.getElementById('ssid').value + 
                   '&pass=' + document.getElementById('pass').value + 
                   '&numleds=' + document.getElementById('numleds').value + 
+                  '&numstrings=' + document.getElementById('numstrings').value + 
+                  '&parallel=' + document.getElementById('parallel').value + 
                   '&order=' + document.getElementById('order').value +
                   '&speed=' + document.getElementById('speed').value +
                   '&delay=' + document.getElementById('delay').value +

@@ -98,6 +98,14 @@ void handleWebSocketMessage(void *arg, uint8_t *data, size_t len)
                 dirty = true;
             }
 
+            if (Settings::set("numstrings", getArg(args, "numstrings", "").toInt())) {
+                dirty = true;
+            }
+
+            if (Settings::set("parallel", getArg(args, "parallel", "").toInt())) {
+                dirty = true;
+            }
+
             if (Settings::set("ssid", getArg(args, "ssid", ""))) {
                 dirty = true;
             }
