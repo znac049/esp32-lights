@@ -89,6 +89,8 @@ void handleWebSocketMessage(void *arg, uint8_t *data, size_t len)
             char *args = (char *) data;
             String val;
 
+            Serial.printf("Args: '%s'\n", args);
+
             if (Settings::set("deviceName", getArg(args, "name", DEFAULT_NAME))) {
                 MDNS.setInstanceName(Settings::get("deviceName").c_str());
                 dirty = true;
@@ -102,7 +104,7 @@ void handleWebSocketMessage(void *arg, uint8_t *data, size_t len)
                 dirty = true;
             }
 
-            if (Settings::set("parallel", getArg(args, "parallel", "").toInt())) {
+            if (Settings::set("parallel", getArg(args, "parallel", "").equals("true")?0:1)) {
                 dirty = true;
             }
 
