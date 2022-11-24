@@ -6,12 +6,12 @@
 #include <ESPmDNS.h>
 #include <Preferences.h>
 #include <FastLED.h>
+#include <SPIFFS.h>
 
 #include "defs.h"
 #include "effects/Effect.h"
 #include "lights.h"
 #include "Settings.h"
-#include "html.html"
 
 AsyncWebServer server(80);
 AsyncWebSocket ws("/ws");
@@ -194,8 +194,20 @@ void setupWebserver()
     initWebSocket();
 
     // Route for root / web page
-    server.on("/", HTTP_GET, [](AsyncWebServerRequest *request){
-        request->send_P(200, "text/html", index_html, lookupMacro);
+    server.on("/", HTTP_GET, [](AsyncWebServerRequest *request) {
+        request->send(SPIFFS, "/index-min.html", String(), false, lookupMacro);
+    });
+
+    server.on("/spectre.min.css", HTTP_GET, [](AsyncWebServerRequest *request) {
+        request->send(SPIFFS, "/spectre.min.css", "text/css");
+    });
+
+    server.on("/spectre-ext.min.css", HTTP_GET, [](AsyncWebServerRequest *request) {
+        request->send(SPIFFS, "/spectre-ext.min.css", "text/css");
+    });
+
+    server.on("/spectre-icons.min.css", HTTP_GET, [](AsyncWebServerRequest *request) {
+        request->send(SPIFFS, "/spectre-icons.min.css", "text/css");
     });
 
     AsyncElegantOTA.begin(&server);

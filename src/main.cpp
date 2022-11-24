@@ -3,6 +3,7 @@
 #include <WiFi.h>
 #include <AsyncTCP.h>
 #include <FastLED.h>
+#include <SPIFFS.h>
 
 #include "defs.h"
 #include "SmartLED.h"
@@ -40,7 +41,10 @@ void setup()
     Settings::loadRequired();
 
     Serial.println("Device name: " + Settings::get("deviceName"));
-    //blackout = false;
+
+    if (!SPIFFS.begin(true)) {
+        Serial.println("Error mounting /spiffs filesystem.");
+    }
 
     setupLEDs(); 
     setupWifi();
