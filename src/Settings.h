@@ -14,25 +14,27 @@ class Settings {
         static void initSettings();
 
     
-        static String deviceName;
+        //static String deviceName;
         
-        static String ssid;
-        static String wifiPassword;
+        //static String ssid;
+        //static String wifiPassword;
 
-        static String webPassword;
+        //static String webPassword;
 
-        static int numLEDs;
-        static int LEDOrder;
-        static int patternNumber;
-        static int speed;
-        static int loopDelay;
-        static int density;
-        static int brightness;
+        //static int numLEDs;
+        //static int LEDOrder;
+        //static int patternNumber;
+        //static int speed;
+        //static int loopDelay;
+        //static int density;
+        //static int brightness;
 
-        static bool saveRequired();
+        //static bool saveRequired();
 
     public:
-        static bool loadRequired();
+        //static bool loadRequired();
+
+        static void begin();
 
         static bool set(String property, String val);
         static bool set(String property, char *val);

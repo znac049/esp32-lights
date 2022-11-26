@@ -14,20 +14,62 @@
 bool Settings::prefsStarted = false;
 Preferences Settings::prefs;
 
-String Settings::deviceName;
+//String Settings::deviceName;
 
-String Settings::ssid;
-String Settings::wifiPassword;
+//String Settings::ssid;
+//String Settings::wifiPassword;
 
-String Settings::webPassword;
+//String Settings::webPassword;
 
-int Settings::numLEDs;
-int Settings::LEDOrder;
-int Settings::patternNumber;
-int Settings::speed;
-int Settings::loopDelay;
-int Settings::density = -25;
-int Settings::brightness = 16;
+//int Settings::numLEDs;
+//int Settings::LEDOrder;
+//int Settings::patternNumber;
+//int Settings::speed;
+//int Settings::loopDelay;
+//int Settings::density = -25;
+//int Settings::brightness = 16;
+
+void Settings::begin()
+{
+    int version = -1;
+    int resetRequired;
+
+    Serial.printf("Getting the Settings class ready.\n");
+
+    Serial.printf("DigitalRead(%d) = %d\n", RESET_NVRAM_PIN, resetRequired);
+    resetRequired = digitalRead(RESET_NVRAM_PIN);
+    resetRequired = 1;
+
+    if (!prefsStarted) {
+        Serial.println("Starting Prefs...");
+        prefs.begin("chippers");
+        prefsStarted = true;
+    }
+    else {
+        Serial.printf("Settings::begin() called more than once.");
+        return;
+    }
+
+    if (resetRequired == 0) {
+        Serial.println("The reset NVRAM jumper is present. Re-initialising NVRAM...");
+        initSettings();
+        return;
+    }
+
+    if (!prefs.isKey("version")) {
+        Serial.printf("No version key found in NVRAM. Re-initialising NVRAM...");
+        initSettings();
+        return;
+    }
+    
+    version = prefs.getInt("version", -1);
+    Serial.printf("Version number found in NVRAM: %d\n", version);
+
+    if (version != CURRENT_VERSION) {
+        Serial.printf("Version number %d found in NVRAM does not match %d. Re-initialising NVRAM...", version, CURRENT_VERSION);
+        initSettings();
+    }
+}
 
 void Settings::initSettings()
 {
@@ -68,58 +110,6 @@ void Settings::startPrefs()
         prefs.begin("chippers");
         prefsStarted = true;
     }
-}
-
-bool Settings::loadRequired()
-{
-    int version = -1;
-    int resetRequired = digitalRead(RESET_NVRAM_PIN);
-
-    Serial.printf("DigitalRead(%d) = %d\n", RESET_NVRAM_PIN, resetRequired);
-    resetRequired = 1;
-
-    startPrefs();
-
-    if (resetRequired == 0) {
-        Serial.println("Reset NVRAM jumper present. Re-initialising NVRAM...");
-    }
-    else {
-        if (prefs.isKey("version")) {
-            version = prefs.getInt("version", -1);
-        }
-
-        Serial.printf("nvram version: %d\n", version);
-    }
-
-    if ((resetRequired == 0) || (version != CURRENT_VERSION)) {
-        initSettings();
-    }
-
-    return true;
-}
-
-bool Settings::saveRequired()
-{
-    set("version", CURRENT_VERSION);
-
-    set("deviceName", deviceName);
-
-    set("ssid", ssid);
-    set("wifiPassword", wifiPassword);
-
-    set("webPassword", webPassword);
-
-    set("numLEDs", numLEDs);
-    set("LEDOrder", LEDOrder);
-    set("patternNumber", patternNumber);
-    set("speed", speed);
-    set("loopDelay", loopDelay);
-    set("brightness", brightness);
-    set("density", density);
-
-    Serial.println("Required settings saved to nvram.");
-
-    return true;
 }
 
 bool Settings::set(String property, String val)

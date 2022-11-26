@@ -9,6 +9,7 @@
 #include "SmartLED.h"
 #include "effects/effects.h"
 #include "Settings.h"
+#include "lightshow.h"
 
 #include "lights.h"
 
@@ -33,12 +34,22 @@ Effect *effects[] = {
     dynamic_cast<Effect*>(&balls), 
 };
 
+LightShow lightShow;
+
 int numEffects = (sizeof(effects) / sizeof(Effect *));
 
 void setup()
 {
     Serial.begin(115200);
-    Settings::loadRequired();
+    Settings::begin();
+
+    lightShow.addEffect(&rte);
+    lightShow.addEffect(&jub);
+    lightShow.addEffect(&torp);
+    lightShow.addEffect(&simple);
+    lightShow.addEffect(&rainbow);
+    lightShow.addEffect(&snow);
+    lightShow.addEffect(&balls);
 
     Serial.println("Device name: " + Settings::get("deviceName"));
 
@@ -53,7 +64,6 @@ void setup()
     // Jumper to determine if a nvram reset is needed
     pinMode(RESET_NVRAM_PIN, INPUT_PULLUP);
     delay(10);
-    Settings::loadRequired();
     
     effectNum = Settings::getInt("patternNumber");
 
