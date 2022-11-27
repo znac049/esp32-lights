@@ -6,7 +6,7 @@
 class LightShow {
     private:
         static const int MAX_EFFECTS=30;
-        static Effect *effects[MAX_EFFECTS];
+        static Effect *effects[];
         static int numEffects;
         static int currentEffect;
 

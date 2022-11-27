@@ -17,10 +17,10 @@
 int LightShow::numEffects = 0;
 int LightShow::currentEffect = 0;
 
+Effect *LightShow::effects[MAX_EFFECTS];
+
 LightShow::LightShow()
-{
-    //numLEDs = Settings::getInt("numleds");
-}
+{}
 
 void LightShow::run()
 {
@@ -35,7 +35,7 @@ void LightShow::run()
 
 void LightShow::addEffect(Effect *effect)
 {
-    Serial.printf("Registering new effect #^d: '%s'\n", numEffects, effect->getName());
+    Serial.printf("Registering new effect #%d: '%s'\n", numEffects, effect->getName());
 
     effects[numEffects] = effect;
     numEffects++;
