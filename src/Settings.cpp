@@ -97,9 +97,6 @@ void Settings::initSettings()
     set("brightness", DEFAULT_BRIGHTNESS);
     set("density", DEFAULT_DENSITY);
 
-    set("numStrings", DEFAULT_NUM_STRINGS);
-    set("mirroredStrings", DEFAULT_MIRRORED_STRINGS);
-
     Serial.println("Required settings saved to nvram.");
 }
 
