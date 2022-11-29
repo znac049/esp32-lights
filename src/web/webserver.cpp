@@ -78,6 +78,8 @@ String getArg(const char *args, const char *arg, const char *def) {
 void handleWebSocketMessage(void *arg, uint8_t *data, size_t len)
 {
     String action;
+    bool dirty = false;;
+    bool reboot = false;;
 
     AwsFrameInfo *info = (AwsFrameInfo*)arg;
     if (info->final && info->index == 0 && info->len == len && info->opcode == WS_TEXT) {
@@ -101,11 +103,11 @@ void handleWebSocketMessage(void *arg, uint8_t *data, size_t len)
             }
 
             if (Settings::set("numstrings", getArg(args, "numstrings", "").toInt())) {
-                dirty = true;
+                reboot = true;
             }
 
             if (Settings::set("parallel", getArg(args, "parallel", "").equals("true")?0:1)) {
-                dirty = true;
+                reboot = true;
             }
 
             if (Settings::set("ssid", getArg(args, "ssid", ""))) {
@@ -120,7 +122,7 @@ void handleWebSocketMessage(void *arg, uint8_t *data, size_t len)
 
             if (Settings::set("LEDOrder", getArg(args, "order", "").toInt())) {
                 // It seems we have to reboot to change this :-(
-                ESP.restart();
+                reboot = true;
             }
 
             if (Settings::set("patternNumber", getArg(args, "pattern", "").toInt())) {
@@ -148,17 +150,27 @@ void handleWebSocketMessage(void *arg, uint8_t *data, size_t len)
             if (Settings::getInt("blackout")) {
                 Serial.println("Turning the lights back on");
                 Settings::set("blackout", 0);
+                dirty = true;
             }
         }
         else if (action.equalsIgnoreCase("lightsoff")) {
             if (!Settings::getInt("blackout")) {
                 Serial.println("Turning the lights off");
                 Settings::set("blackout", 1);
+                dirty = true;
             }
         }
         else {
             Serial.println("Unknown command on websocket: " + action);
         }
+    }
+
+    if (reboot) {
+        ESP.restart();
+    }
+
+    if (dirty) {
+        lightShow.settingsChanged(); 
     }
 }
 

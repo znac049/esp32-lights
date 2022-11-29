@@ -16,6 +16,9 @@ RandomTwinkleEffect rte;
 RainbowChaseEffect rainbow;
 SnowSparkleEffect snow;
 BouncingBallsEffect balls;
+StringChaseEffect schase;
 
-bool dirty;
+LightShow lightShow;
+
+//bool dirty;
 //bool blackout;

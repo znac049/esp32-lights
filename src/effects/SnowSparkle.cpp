@@ -9,8 +9,10 @@ const char *SnowSparkleEffect::getName(void) {
     return "Snow Sparkle";
 }
 
-void SnowSparkleEffect::reset()
+void SnowSparkleEffect::reset(int _numLEDs, int _numStrings, int _loopDelay)
 {
+    Effect::reset(_numLEDs, _numStrings, _loopDelay);
+    
     setAll(backgroundColour); 
 }
 

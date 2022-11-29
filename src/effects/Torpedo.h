@@ -4,7 +4,7 @@
 class TorpedoEffect : public Effect {
     public:
         virtual const char *getName();
-        virtual void reset();
+        virtual void reset(int _numLEDs, int _numStrings, int _loopDelay);
         virtual void loop();
 };
 

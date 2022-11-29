@@ -3,20 +3,20 @@
 #include "defs.h"
 #include "Settings.h"
 #include "Effect.h"
-#include "Simple.h"
+#include "StringChase.h"
 
-int SimpleEffect::sequence[] = {CRGB::Red, CRGB::Green, CRGB::Blue, CRGB::Black};
+int StringChaseEffect::sequence[] = {CRGB::Red, CRGB::Green, CRGB::Blue, CRGB::Cyan, CRGB::Magenta, CRGB::Yellow};
 
-const char *SimpleEffect::getName(void) {
-    return "Simple";
+const char *StringChaseEffect::getName(void) {
+    return "String Chase";
 }
 
-void SimpleEffect::reset(int _numLEDs, int _numStrings, int _loopDelay)
+void StringChaseEffect::reset(int _numLEDs, int _numStrings, int _loopDelay)
 {
     Effect::reset(_numLEDs, _numStrings, _loopDelay);    
 }
 
-void SimpleEffect::loop()
+void StringChaseEffect::loop()
 {
     int numLEDs = Settings::getInt("numLEDs");
     int loopDelay = Settings::getInt("loopDelay") * 10;

@@ -6,3 +6,4 @@
 #include "effects/RainbowChase.h"
 #include "effects/SnowSparkle.h"
 #include "effects/BouncingBallsEffect.h"
+#include "effects/StringChase.h"

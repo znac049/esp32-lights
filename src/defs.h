@@ -18,10 +18,10 @@
 #define DEFAULT_MIRRORED_STRINGS 1
 
 
-#define DATA_PIN1 32
-#define DATA_PIN2 33
-#define DATA_PIN3 25
-#define DATA_PIN4 26
+#define DATA_PIN1 25
+#define DATA_PIN2 26
+#define DATA_PIN3 32
+#define DATA_PIN4 33
 
 #define RESET_NVRAM_PIN 19
 #endif

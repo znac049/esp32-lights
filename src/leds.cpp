@@ -5,84 +5,112 @@
 
 bool setupLEDs()
 {
-    int numLEDS = Settings::getInt("numLEDs");
+    int numLEDs = Settings::getInt("numLEDs");
     int numStrings = Settings::getInt("numStrings");
-    int parallel = Settings::getInt("parallel");
-    int firstLED = 0;
+    bool parallel = (Settings::getInt("parallel") == 0);
     int order = Settings::getInt("LEDOrder");
-    int increment = 0;
+    int stringLen = numLEDs;
 
-    CRGB *string = &leds[firstLED];
+    if (parallel) {
+        stringLen = numLEDs / numStrings;
+        numLEDs = stringLen;
 
-    //Serial.printf("String %d starts at %d\n", i, firstLED);
-
+        Serial.printf("Setting string length to %d and numLEDs to %d (for parallel use)\n", stringLen, numLEDs);
+    }
+    else {
+        Serial.printf("Setting each string length to %d and numLEDs to %d (for sequential use)\n", stringLen, numLEDs);
+    }
+    
     switch(order) {
         default:
         case RGB:
-            //FastLED.addLeds<WS2812B, DATA_PIN1, RGB>(leds, MAX_LEDS);
-            FastLED.addLeds<WS2812B, DATA_PIN1, RGB>(string, MAX_LEDS);
-            string += increment;
-            FastLED.addLeds<WS2812B, DATA_PIN2, RGB>(string, MAX_LEDS);
-            string += increment;
-            FastLED.addLeds<WS2812B, DATA_PIN3, RGB>(string, MAX_LEDS);
-            string += increment;
-            FastLED.addLeds<WS2812B, DATA_PIN4, RGB>(string, MAX_LEDS);
-            string += increment;
+            if (parallel) {
+                FastLED.addLeds<WS2812B, DATA_PIN1, RGB>(leds, MAX_LEDS);
+                FastLED.addLeds<WS2812B, DATA_PIN2, RGB>(leds, MAX_LEDS);
+                FastLED.addLeds<WS2812B, DATA_PIN3, RGB>(leds, MAX_LEDS);
+                FastLED.addLeds<WS2812B, DATA_PIN4, RGB>(leds, MAX_LEDS);
+            }
+            else {
+                FastLED.addLeds<WS2812B, DATA_PIN1, RGB>(leds, 0, MAX_LEDS);
+                FastLED.addLeds<WS2812B, DATA_PIN2, RGB>(leds, stringLen, MAX_LEDS-stringLen);
+                FastLED.addLeds<WS2812B, DATA_PIN3, RGB>(leds, stringLen*2, MAX_LEDS-(stringLen*2));
+                FastLED.addLeds<WS2812B, DATA_PIN4, RGB>(leds, stringLen*3, MAX_LEDS-(stringLen*3));
+            }
             break;
 
         case RBG:
-            FastLED.addLeds<WS2812B, DATA_PIN1, RBG>(string, MAX_LEDS);
-            string += increment;
-            FastLED.addLeds<WS2812B, DATA_PIN2, RBG>(string, MAX_LEDS);
-            string += increment;
-            FastLED.addLeds<WS2812B, DATA_PIN3, RBG>(string, MAX_LEDS);
-            string += increment;
-            FastLED.addLeds<WS2812B, DATA_PIN4, RBG>(string, MAX_LEDS);
-            string += increment;
+            if (parallel) {
+                FastLED.addLeds<WS2812B, DATA_PIN1, RBG>(leds, MAX_LEDS);
+                FastLED.addLeds<WS2812B, DATA_PIN2, RBG>(leds, MAX_LEDS);
+                FastLED.addLeds<WS2812B, DATA_PIN3, RBG>(leds, MAX_LEDS);
+                FastLED.addLeds<WS2812B, DATA_PIN4, RBG>(leds, MAX_LEDS);
+            } 
+            else {
+                FastLED.addLeds<WS2812B, DATA_PIN1, RBG>(leds, 0, stringLen);
+                FastLED.addLeds<WS2812B, DATA_PIN2, RBG>(leds, stringLen, stringLen);
+                FastLED.addLeds<WS2812B, DATA_PIN3, RBG>(leds, stringLen*2, stringLen);
+                FastLED.addLeds<WS2812B, DATA_PIN4, RBG>(leds, stringLen*3, stringLen);
+            }
             break;
                 
         case GBR:
-            FastLED.addLeds<WS2812B, DATA_PIN1, GBR>(string, MAX_LEDS);
-            string += increment;
-            FastLED.addLeds<WS2812B, DATA_PIN2, GBR>(string, MAX_LEDS);
-            string += increment;
-            FastLED.addLeds<WS2812B, DATA_PIN3, GBR>(string, MAX_LEDS);
-            string += increment;
-            FastLED.addLeds<WS2812B, DATA_PIN4, GBR>(string, MAX_LEDS);
-            string += increment;
+            if (parallel) {
+                FastLED.addLeds<WS2812B, DATA_PIN1, GBR>(leds, MAX_LEDS);
+                FastLED.addLeds<WS2812B, DATA_PIN2, GBR>(leds, MAX_LEDS);
+                FastLED.addLeds<WS2812B, DATA_PIN3, GBR>(leds, MAX_LEDS);
+                FastLED.addLeds<WS2812B, DATA_PIN4, GBR>(leds, MAX_LEDS);
+            }
+            else {
+                FastLED.addLeds<WS2812B, DATA_PIN1, GBR>(leds, 0, stringLen);
+                FastLED.addLeds<WS2812B, DATA_PIN2, GBR>(leds, stringLen, stringLen);
+                FastLED.addLeds<WS2812B, DATA_PIN3, GBR>(leds, stringLen*2, stringLen);
+                FastLED.addLeds<WS2812B, DATA_PIN4, GBR>(leds, stringLen*3, stringLen);
+            }
             break;
                 
         case GRB:
-            FastLED.addLeds<WS2812B, DATA_PIN1, GRB>(string, MAX_LEDS);
-            string += increment;
-            FastLED.addLeds<WS2812B, DATA_PIN2, GRB>(string, MAX_LEDS);
-            string += increment;
-            FastLED.addLeds<WS2812B, DATA_PIN3, GRB>(string, MAX_LEDS);
-            string += increment;
-            FastLED.addLeds<WS2812B, DATA_PIN4, GRB>(string, MAX_LEDS);
-            string += increment;
+            if (parallel) {
+                FastLED.addLeds<WS2812B, DATA_PIN1, GRB>(leds, MAX_LEDS);
+                FastLED.addLeds<WS2812B, DATA_PIN2, GRB>(leds, MAX_LEDS);
+                FastLED.addLeds<WS2812B, DATA_PIN3, GRB>(leds, MAX_LEDS);
+                FastLED.addLeds<WS2812B, DATA_PIN4, GRB>(leds, MAX_LEDS);
+            }
+            else {
+                FastLED.addLeds<WS2812B, DATA_PIN1, GRB>(leds, 0, stringLen);
+                FastLED.addLeds<WS2812B, DATA_PIN2, GRB>(leds, stringLen, stringLen);
+                FastLED.addLeds<WS2812B, DATA_PIN3, GRB>(leds, stringLen, stringLen);
+                FastLED.addLeds<WS2812B, DATA_PIN4, GRB>(leds, stringLen, stringLen);
+            }
             break;
                 
         case BGR:
-            FastLED.addLeds<WS2812B, DATA_PIN1, BGR>(string, MAX_LEDS);
-            string += increment;
-            FastLED.addLeds<WS2812B, DATA_PIN2, BGR>(string, MAX_LEDS);
-            string += increment;
-            FastLED.addLeds<WS2812B, DATA_PIN3, BGR>(string, MAX_LEDS);
-            string += increment;
-            FastLED.addLeds<WS2812B, DATA_PIN4, BGR>(string, MAX_LEDS);
-            string += increment;
+            if (parallel) {
+                FastLED.addLeds<WS2812B, DATA_PIN1, BGR>(leds, MAX_LEDS);
+                FastLED.addLeds<WS2812B, DATA_PIN2, BGR>(leds, MAX_LEDS);
+                FastLED.addLeds<WS2812B, DATA_PIN3, BGR>(leds, MAX_LEDS);
+                FastLED.addLeds<WS2812B, DATA_PIN4, BGR>(leds, MAX_LEDS);
+            }
+            else {
+                FastLED.addLeds<WS2812B, DATA_PIN1, BGR>(leds, 0, stringLen);
+                FastLED.addLeds<WS2812B, DATA_PIN2, BGR>(leds, stringLen, stringLen);
+                FastLED.addLeds<WS2812B, DATA_PIN3, BGR>(leds, stringLen*2, stringLen);
+                FastLED.addLeds<WS2812B, DATA_PIN4, BGR>(leds, stringLen*3, stringLen);
+            }
             break;
                 
         case BRG:
-            FastLED.addLeds<WS2812B, DATA_PIN1, BRG>(string, MAX_LEDS);
-            string += increment;
-            FastLED.addLeds<WS2812B, DATA_PIN2, BRG>(string, MAX_LEDS);
-            string += increment;
-            FastLED.addLeds<WS2812B, DATA_PIN3, BRG>(string, MAX_LEDS);
-            string += increment;
-            FastLED.addLeds<WS2812B, DATA_PIN4, BRG>(string, MAX_LEDS);
-            string += increment;
+            if (parallel) {
+                FastLED.addLeds<WS2812B, DATA_PIN1, BRG>(leds, MAX_LEDS);
+                FastLED.addLeds<WS2812B, DATA_PIN2, BRG>(leds, MAX_LEDS);
+                FastLED.addLeds<WS2812B, DATA_PIN3, BRG>(leds, MAX_LEDS);
+                FastLED.addLeds<WS2812B, DATA_PIN4, BRG>(leds, MAX_LEDS);
+            }
+            else {
+                FastLED.addLeds<WS2812B, DATA_PIN1, BRG>(leds, 0, stringLen);
+                FastLED.addLeds<WS2812B, DATA_PIN2, BRG>(leds, stringLen, stringLen);
+                FastLED.addLeds<WS2812B, DATA_PIN3, BRG>(leds, stringLen*2, stringLen);
+                FastLED.addLeds<WS2812B, DATA_PIN4, BRG>(leds, stringLen*3, stringLen);
+            }
             break;            
     }
 

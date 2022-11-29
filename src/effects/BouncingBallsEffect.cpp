@@ -9,8 +9,10 @@ const char *BouncingBallsEffect::getName(void) {
     return "Bouncing Balls";
 }
 
-void BouncingBallsEffect::reset() 
+void BouncingBallsEffect::reset(int _numLEDs, int _numStrings, int _loopDelay) 
 {
+    Effect::reset(_numLEDs, _numStrings, _loopDelay);
+    
     for (int i = 0 ; i < ballCount ; i++) {  
         ClockTimeSinceLastBounce[i] = millis();
         Height[i] = StartHeight;

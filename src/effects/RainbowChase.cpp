@@ -9,8 +9,9 @@ const char *RainbowChaseEffect::getName(void) {
     return "Rainbow Chase";
 }
 
-void RainbowChaseEffect::reset()
+void RainbowChaseEffect::reset(int _numLEDs, int _numStrings, int _loopDelay)
 {
+    Effect::reset(_numLEDs, _numStrings, _loopDelay);    
 }
 
 void RainbowChaseEffect::loop()

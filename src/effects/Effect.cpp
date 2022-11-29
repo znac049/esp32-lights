@@ -14,13 +14,15 @@ const char *Effect::getName(void) {
 void Effect::changesMade()
 {
     Serial.println("Changes have been made!");
-    dirty = false;
 }
 
-void Effect::reset() 
+void Effect::reset(int _numLEDs, int _numStrings, int _loopDelay) 
 {
     Serial.println("Reset the effect.");
-    dirty = false;
+
+    numLEDs = _numLEDs;
+    numStrings = _numStrings;
+    loopDelay = _loopDelay;
 }
 
 void Effect::loop()

@@ -6,13 +6,14 @@ extern CRGB leds[MAX_LEDS];
 class Effect {
     protected:
         byte *Wheel(byte WheelPos);
+        int numLEDs;
+        int numStrings;
+        int loopDelay;
         
     public:
-        //Effect();
-
         virtual const char *getName();
         virtual void loop();
-        virtual void reset();
+        void reset(int _numLEDs, int _numStrings, int _loopDelay);
         virtual void changesMade();
 
         void clearAll();

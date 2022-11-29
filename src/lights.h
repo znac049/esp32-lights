@@ -4,10 +4,12 @@
 #include <FastLED.h>
 
 #include "defs.h"
+#include "lightshow.h"
 #include "effects/Effect.h"
 
 // globals.cpp
 extern CRGB leds[MAX_LEDS];
+extern LightShow lightShow;
 
 // leds.cpp
 bool setupLEDs();
