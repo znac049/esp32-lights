@@ -4,30 +4,14 @@
 #include <WString.h>
 
 #include "defs.h"
-#include "SmartLED.h"
-#include "effects/Effect.h"
-#include "effects/Jubilee.h"
-#include "effects/Torpedo.h"
+//#include "SmartLED.h"
+//#include "effects/Effect.h"
+//#include "effects/Jubilee.h"
 #include "Settings.h"
 #include "lights.h"
 
 bool Settings::prefsStarted = false;
 Preferences Settings::prefs;
-
-//String Settings::deviceName;
-
-//String Settings::ssid;
-//String Settings::wifiPassword;
-
-//String Settings::webPassword;
-
-//int Settings::numLEDs;
-//int Settings::LEDOrder;
-//int Settings::patternNumber;
-//int Settings::speed;
-//int Settings::loopDelay;
-//int Settings::density = -25;
-//int Settings::brightness = 16;
 
 void Settings::begin()
 {

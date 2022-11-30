@@ -10,7 +10,6 @@
 CRGB leds[MAX_LEDS];
 
 JubileeEffect jub;
-TorpedoEffect torp;
 SimpleEffect simple;
 RandomTwinkleEffect rte;
 RainbowChaseEffect rainbow;
@@ -19,6 +18,3 @@ BouncingBallsEffect balls;
 StringChaseEffect schase;
 
 LightShow lightShow;
-
-//bool dirty;
-//bool blackout;

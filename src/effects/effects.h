@@ -1,6 +1,5 @@
 #include "effects/Effect.h"
 #include "effects/Jubilee.h"
-#include "effects/Torpedo.h"
 #include "effects/Simple.h"
 #include "effects/RandomTwinkle.h"
 #include "effects/RainbowChase.h"

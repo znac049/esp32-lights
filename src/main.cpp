@@ -14,7 +14,6 @@
 #include "lights.h"
 
 extern JubileeEffect jub;
-extern TorpedoEffect torp;
 extern SimpleEffect simple;
 extern RandomTwinkleEffect rte;
 extern RainbowChaseEffect rainbow;
@@ -28,7 +27,6 @@ int effectNum=0;
 Effect *effects[] = {
     dynamic_cast<Effect*>(&rte),
     dynamic_cast<Effect*>(&jub),
-    dynamic_cast<Effect*>(&torp),
     dynamic_cast<Effect*>(&simple),
     dynamic_cast<Effect*>(&rainbow), 
     dynamic_cast<Effect*>(&snow), 
@@ -55,7 +53,6 @@ void setup()
 
     lightShow.addEffect(&rte);
     lightShow.addEffect(&jub);
-    lightShow.addEffect(&torp);
     lightShow.addEffect(&simple);
     lightShow.addEffect(&rainbow);
     lightShow.addEffect(&snow);
