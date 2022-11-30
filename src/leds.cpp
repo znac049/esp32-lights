@@ -9,10 +9,9 @@ bool setupLEDs()
     int numStrings = Settings::getInt("numStrings");
     bool parallel = (Settings::getInt("parallel") == 0);
     int order = Settings::getInt("LEDOrder");
-    int stringLen = numLEDs;
+    int stringLen = numLEDs / numStrings;
 
     if (parallel) {
-        stringLen = numLEDs / numStrings;
         numLEDs = stringLen;
 
         Serial.printf("Setting string length to %d and numLEDs to %d (for parallel use)\n", stringLen, numLEDs);
@@ -31,10 +30,10 @@ bool setupLEDs()
                 FastLED.addLeds<WS2812B, DATA_PIN4, RGB>(leds, MAX_LEDS);
             }
             else {
-                FastLED.addLeds<WS2812B, DATA_PIN1, RGB>(leds, 0, MAX_LEDS);
-                FastLED.addLeds<WS2812B, DATA_PIN2, RGB>(leds, stringLen, MAX_LEDS-stringLen);
-                FastLED.addLeds<WS2812B, DATA_PIN3, RGB>(leds, stringLen*2, MAX_LEDS-(stringLen*2));
-                FastLED.addLeds<WS2812B, DATA_PIN4, RGB>(leds, stringLen*3, MAX_LEDS-(stringLen*3));
+                FastLED.addLeds<WS2812B, DATA_PIN1, RGB>(leds, 0, stringLen);
+                FastLED.addLeds<WS2812B, DATA_PIN2, RGB>(leds, stringLen, stringLen);
+                FastLED.addLeds<WS2812B, DATA_PIN3, RGB>(leds, stringLen*2, stringLen);
+                FastLED.addLeds<WS2812B, DATA_PIN4, RGB>(leds, stringLen*3, stringLen);
             }
             break;
 

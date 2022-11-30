@@ -39,7 +39,7 @@ void BouncingBallsEffect::loop()
             }
         }
 
-        Position[i] = round( Height[i] * (Settings::getInt("numLEDs") - 1) / StartHeight);
+        Position[i] = round((Height[i] * numLEDs - 1) / StartHeight);
 
         for (i=0; i<MAX_BALLS; i++) {
             colours[i] = CRGB(random(255), random(255), random(255));
@@ -54,6 +54,3 @@ void BouncingBallsEffect::loop()
     clearAll();
 }
 
-
-void BouncingColoredBalls(int BallCount, byte colors[][3]) {
- }

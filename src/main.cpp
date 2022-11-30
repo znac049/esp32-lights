@@ -43,15 +43,6 @@ void setup()
     Serial.begin(115200);
     Settings::begin();
 
-    lightShow.addEffect(&rte);
-    lightShow.addEffect(&jub);
-    lightShow.addEffect(&torp);
-    lightShow.addEffect(&simple);
-    lightShow.addEffect(&rainbow);
-    lightShow.addEffect(&snow);
-    lightShow.addEffect(&balls);
-    lightShow.addEffect(&schase);
-
     Serial.println("Device name: " + Settings::get("deviceName"));
 
     if (!SPIFFS.begin(true)) {
@@ -61,6 +52,16 @@ void setup()
     setupLEDs(); 
     setupWifi();
     setupWebserver();
+
+    lightShow.addEffect(&rte);
+    lightShow.addEffect(&jub);
+    lightShow.addEffect(&torp);
+    lightShow.addEffect(&simple);
+    lightShow.addEffect(&rainbow);
+    lightShow.addEffect(&snow);
+    lightShow.addEffect(&balls);
+    lightShow.addEffect(&schase);
+    lightShow.setup();
 
     // Jumper to determine if a nvram reset is needed
     pinMode(RESET_NVRAM_PIN, INPUT_PULLUP);

@@ -8,8 +8,6 @@ class RandomTwinkleEffect : public Effect {
         int remove;
 
         int twinkleCount;
-        int numLEDs;
-        int loopDelay;
 
         void lightLed(int ledNum, int r, int g, int b);
         void lightLed(int ledNum, CRGB col);

@@ -29,6 +29,11 @@ LightShow::LightShow()
 {
 }
 
+void LightShow::setup()
+{
+    settingsChanged();
+}
+
 void LightShow::changeState(LightState targetState)
 {
     switch (state) {
@@ -65,12 +70,31 @@ void LightShow::loop()
 
 void LightShow::settingsChanged()
 {
+    bool parallel = (Settings::getInt("parallel") == 0);
+    int order = Settings::getInt("LEDOrder");
+    int stringLen;
+
+    numLEDs = Settings::getInt("numLEDs");
+    numStrings = Settings::getInt("numStrings");
+    stringLen = numLEDs / numStrings;    
+
+    if (parallel) {
+        numLEDs = stringLen;
+
+        Serial.printf("Setting string length to %d and numLEDs to %d (for parallel use)\n", stringLen, numLEDs);
+    }
+    else {
+        Serial.printf("Setting each string length to %d and numLEDs to %d (for sequential use)\n", stringLen, numLEDs);
+    }
+
     reset();
 }
 
 void LightShow::reset()
 {
     int effectNum = Settings::getInt("patternNumber");
+
+    loopDelay = Settings::getInt("loopDelay");
 
     if ((effectNum >= 0) && (effectNum < numEffects)) {
         currentEffect = effectNum;

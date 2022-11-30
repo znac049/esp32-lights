@@ -18,8 +18,6 @@ void SimpleEffect::reset(int _numLEDs, int _numStrings, int _loopDelay)
 
 void SimpleEffect::loop()
 {
-    int numLEDs = Settings::getInt("numLEDs");
-    int loopDelay = Settings::getInt("loopDelay") * 10;
     int nColours = sizeof(sequence) / sizeof(int);
 
     for (int col=0; col<nColours; col++) {

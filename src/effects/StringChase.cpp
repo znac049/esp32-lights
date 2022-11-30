@@ -6,6 +6,7 @@
 #include "StringChase.h"
 
 int StringChaseEffect::sequence[] = {CRGB::Red, CRGB::Green, CRGB::Blue, CRGB::Cyan, CRGB::Magenta, CRGB::Yellow};
+int StringChaseEffect::baseColour = 0;
 
 const char *StringChaseEffect::getName(void) {
     return "String Chase";
@@ -16,19 +17,27 @@ void StringChaseEffect::reset(int _numLEDs, int _numStrings, int _loopDelay)
     Effect::reset(_numLEDs, _numStrings, _loopDelay);    
 }
 
+int StringChaseEffect::pickColour(int base)
+{
+    const int numColours = sizeof(sequence) / sizeof(int);
+     
+    base = base % numColours;
+    return sequence[base];
+}
+
 void StringChaseEffect::loop()
 {
-    int numLEDs = Settings::getInt("numLEDs");
-    int loopDelay = Settings::getInt("loopDelay") * 10;
     int nColours = sizeof(sequence) / sizeof(int);
 
-    for (int col=0; col<nColours; col++) {
-        int colour = sequence[col];
-
-        for (int i=0; i<numLEDs; i++) {
-            setLED(i, colour);
-        }
-        show();
-        delay(loopDelay);
+    for (int i=0; i<numStrings; i++) {
+        setString(i, pickColour(baseColour+i));
     }
+
+    baseColour++;
+    if (baseColour >= nColours) {
+        baseColour = 0;
+    }
+
+    show();
+    delay(loopDelay*25);
 }

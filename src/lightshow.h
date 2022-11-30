@@ -28,6 +28,7 @@ class LightShow {
         LightShow();
         void run();
         void changeState(LightState targetState);
+        void setup();
 
         void addEffect(Effect *effect);
 

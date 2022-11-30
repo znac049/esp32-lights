@@ -4,6 +4,9 @@
 class StringChaseEffect : public Effect {
     private:
         static int sequence[];
+        static int baseColour;
+
+        int pickColour(int base);
         
     public:
         virtual const char *getName();

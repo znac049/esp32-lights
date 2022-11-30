@@ -18,15 +18,15 @@ void SnowSparkleEffect::reset(int _numLEDs, int _numStrings, int _loopDelay)
 
 void SnowSparkleEffect::loop()
 {
-    int led = random(Settings::getInt("numLEDs"));
+    int led = random(numLEDs);
 
     setLED(led, CRGB::White);
     show();
 
-    delay(Settings::getInt("loopDelay"));
+    delay(loopDelay*2);
     setLED(led, backgroundColour);
     show();
   
-    delay(Settings::getInt("loopDelay"));
+    delay(loopDelay);
 }
 

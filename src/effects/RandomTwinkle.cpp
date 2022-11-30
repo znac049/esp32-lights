@@ -15,6 +15,8 @@ void RandomTwinkleEffect::reset(int _numLEDs, int _numStrings, int _loopDelay)
 {
     Effect::reset(_numLEDs, _numStrings, _loopDelay);
 
+    Serial.printf("Reset called on RandomTwinkleEffect\n");
+
     changesMade();
     clearAll();
 
@@ -29,7 +31,7 @@ void RandomTwinkleEffect::changesMade()
 
     twinkleCount = percentOrValue(Settings::getInt("density"), numLEDs);
 
-    Serial.printf("Twinkle count=%d/%d, delay=%d\n", twinkleCount, numLEDs, loopDelay);
+    Serial.printf("\n\n-------------------------------------------\nTwinkle count=%d/%d, delay=%d\n-------------------------------------------\n", twinkleCount, numLEDs, loopDelay);
 
     if (oldTwinkleCount > twinkleCount) {
         // We have to turn a bunch of LEDs off
@@ -46,6 +48,7 @@ void RandomTwinkleEffect::changesMade()
 void RandomTwinkleEffect::loop()
 {
     int ledNum = random(numLEDs);
+    //Serial.printf("rnd(%d)=%d\n", numLEDs, ledNum);
 
     lightLed(ledNum, pickColour());
 
@@ -81,7 +84,7 @@ void RandomTwinkleEffect::lightLed(int ledNum, CRGB col)
         insert = 0;
     }
 
-    //Serial.printf("Turn on LED %d\n", ledNum);
+    //Serial.printf("lightLED(%d, %(%d,%d,%d))\n", ledNum, col.red, col.green, col.blue);
     setLED(ledNum, col);
 }
 
