@@ -37,6 +37,7 @@ class LightShow {
         int getNumLEDs() { return numLEDs; };
         int getnumStrings() { return numStrings; };
         int getLoopDelay() { return loopDelay; };
+        int getCurrentEffectNum() { return currentEffect; };
 };
 
 #endif

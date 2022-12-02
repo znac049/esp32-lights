@@ -22,7 +22,7 @@ extern BouncingBallsEffect balls;
 extern StringChaseEffect schase;
 
 int runningEffect=0;
-int effectNum=0;
+//int effectNum=0;
 
 Effect *effects[] = {
     dynamic_cast<Effect*>(&rte),

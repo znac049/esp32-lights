@@ -15,7 +15,7 @@ extern LightShow lightShow;
 bool setupLEDs();
 
 // main.cpp
-extern int effectNum;
+//extern int effectNum;
 extern int numEffects;
 extern bool dirty;
 //extern bool blackout;

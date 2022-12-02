@@ -126,7 +126,7 @@ void handleWebSocketMessage(void *arg, uint8_t *data, size_t len)
             }
 
             if (Settings::set("patternNumber", getArg(args, "pattern", "").toInt())) {
-                effectNum = Settings::getInt("patternNumber");
+                //effectNum = Settings::getInt("patternNumber");
                 dirty = true;
             }
 

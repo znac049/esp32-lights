@@ -64,10 +64,12 @@ String lookupMacro(const String& macroName)
         }
     }
     else if (macroName == "PATTERNS") {
+        int currentEffectNum = lightShow.getCurrentEffectNum();
+
         res = "";
         for (int i=0; i<numEffects; i++) {
             res += "<option value=\"" + String(i) + "\"";
-            if (effectNum == i) {
+            if (currentEffectNum == i) {
                 res += " selected";
             }
             res += ">";
